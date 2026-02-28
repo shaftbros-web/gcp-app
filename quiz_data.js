@@ -522,7 +522,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBig",
+      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBigQueryを利用する際、インサイダー等によるデータ流出を防止したい。",
       "options": [
         {
           "text": "プライベート Google アクセスのみを設定する。",
