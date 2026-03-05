@@ -706,7 +706,7 @@ const allQuizData = {
   "2_storage_database": [
     {
       "id": 1,
-      "question": "【Cloud SQLのゾーン障害耐性】\nS",
+      "question": "【Cloud SQLのゾーン障害耐性】\nSQL Serverを構築する際、ゾーン障害時でもダウンタイムが発生しないようにしたい。",
       "options": [
         {
           "text": "Cloud Spannerをリージョン構成にする。",
@@ -758,7 +758,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【Cloud SQLのフェイルオーバー】\nCloud S",
+      "question": "【Cloud SQLのフェイルオーバー】\nCloud SQLで特定のゾーンから提供を行っており、新たに高可用性（HA）を導入したい。",
       "options": [
         {
           "text": "異なるリージョンにリードレプリカを作成する。",
@@ -1018,7 +1018,7 @@ const allQuizData = {
     },
     {
       "id": 13,
-      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMyS",
+      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMySQLサーバーのパフォーマンス（IOPS）を向上させたい。",
       "options": [
         {
           "text": "PostgreSQLに作り直す。",
@@ -1122,7 +1122,7 @@ const allQuizData = {
     },
     {
       "id": 17,
-      "question": "【Cloud SQLのデータ損失最小化】\nCloud S",
+      "question": "【Cloud SQLのデータ損失最小化】\nCloud SQL (MySQL) で致命的な障害が発生した場合のデータ損失を最小限にしたい。（※複数選択の要件を個別に判定）",
       "options": [
         {
           "text": "リードレプリカを実装する。",
@@ -1174,7 +1174,7 @@ const allQuizData = {
     },
     {
       "id": 19,
-      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMyS",
+      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMySQLからCloud SQLへ、ダウンタイムと変更を最小限に抑えて移行したい。",
       "options": [
         {
           "text": "VPN接続後、オンプレを停止しCloud SQLのレプリカをプロモートして切り替える。",
@@ -1356,7 +1356,7 @@ const allQuizData = {
     },
     {
       "id": 26,
-      "question": "【Cloud SQLの負荷・容量最適化】\nCloud S",
+      "question": "【Cloud SQLの負荷・容量最適化】\nCloud SQLのストレージ不足を回避し、CPU使用率を維持しつつ、レプリケーションラグを減らしたい。",
       "options": [
         {
           "text": "ストレージ超過アラートを作成し容量追加、memcached導入、インスタンス変更を行う。",
@@ -2036,7 +2036,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月Big",
+      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月BigQueryで実行したクエリ数を抽出したい。",
       "options": [
         {
           "text": "Cloud Audit Logsを使用し、必要な情報を取得するために問い合わせ操作にフィルタを作成する。",
@@ -2192,7 +2192,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud S",
+      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud SQLへの接続が数日間失敗していた原因を、事後に特定したい。",
       "options": [
         {
           "text": "GCPコンソールでCloud Loggingに移動し、GKEとCloud SQLのログを参照する。",
@@ -2792,7 +2792,7 @@ const allQuizData = {
     },
     {
       "id": 7,
-      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBig",
+      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBigQuery内のPII（個人情報）列へのアクセスを制限しつつ、クエリコストも最小限に抑えたい。",
       "options": [
         {
           "text": "PIIを除いた標準のビューを作成し、IAMロールを割り当てる。**\r    *   **",
@@ -3522,7 +3522,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、",
+      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、本番環境の全トラフィックに影響を出さずに新バージョンをテストしたい。",
       "options": [
         {
           "text": "リレーショナルデータベースをNoSQLデータベースで置き換える。",
@@ -3938,7 +3938,7 @@ const allQuizData = {
     },
     {
       "id": 25,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud S",
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLへの重いクエリを減らすため、App Engine（Standard）にインメモリキャッシュを導入しキャッシュヒット率を最大化したい。",
       "options": [
         {
           "text": "Memcacheを「共有」にし、クエリハッシュキーでキャッシュをチェックする。",
@@ -4018,7 +4018,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【Cloud SQLの負荷・容量最適化】\nCloud S",
+      "question": "【Cloud SQLの負荷・容量最適化】\nCloud SQLのストレージ不足を回避し、CPU使用率を維持しつつ、レプリケーションラグを減らしたい。",
       "options": [
         {
           "text": "ストレージが75%を超えたらStackdriverアラートを作成して手動追加し、memcachedを導入し、32コアマシンタイプに変更する。",
@@ -4226,7 +4226,7 @@ const allQuizData = {
     },
     {
       "id": 11,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud S",
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLへの重いクエリを減らすため、App Engine（Standard）にインメモリキャッシュを導入しキャッシュヒット率を最大化したい。",
       "options": [
         {
           "text": "memcacheのサービスレベルを専用に設定し、1分ごとに実行されるcronタスクで結果を投入する。",
