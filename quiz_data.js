@@ -1226,7 +1226,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMyS",
+      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMySQLのバックアップを完了させたい。",
       "options": [
         {
           "text": "gcsfuseでCloud Storageを直接マウントしmysqldumpする。",
@@ -3704,7 +3704,7 @@ const allQuizData = {
     },
     {
       "id": 16,
-      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBig",
+      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBigQueryに接続する際のエラーを、Googleのベストプラクティスに従って修正したい。",
       "options": [
         {
           "text": "BigQueryのアクセススコープを有効にした新しいVMでスクリプトを実行する。",
