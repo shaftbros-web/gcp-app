@@ -522,7 +522,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBigQueryを利用する際、インサイダー等によるデータ流出を防止したい。",
+      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBig",
       "options": [
         {
           "text": "プライベート Google アクセスのみを設定する。",
@@ -706,7 +706,7 @@ const allQuizData = {
   "2_storage_database": [
     {
       "id": 1,
-      "question": "【Cloud SQLのゾーン障害耐性】\nSQL Serverを構築する際、ゾーン障害時でもダウンタイムが発生しないようにしたい。",
+      "question": "【Cloud SQLのゾーン障害耐性】\nS",
       "options": [
         {
           "text": "Cloud Spannerをリージョン構成にする。",
@@ -758,7 +758,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【Cloud SQLのフェイルオーバー】\nCloud SQLで特定のゾーンから提供を行っており、新たに高可用性（HA）を導入したい。",
+      "question": "【Cloud SQLのフェイルオーバー】\nCloud S",
       "options": [
         {
           "text": "異なるリージョンにリードレプリカを作成する。",
@@ -1018,7 +1018,7 @@ const allQuizData = {
     },
     {
       "id": 13,
-      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMySQLサーバーのパフォーマンス（IOPS）を向上させたい。",
+      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMyS",
       "options": [
         {
           "text": "PostgreSQLに作り直す。",
@@ -1122,7 +1122,7 @@ const allQuizData = {
     },
     {
       "id": 17,
-      "question": "【Cloud SQLのデータ損失最小化】\nCloud SQL (MySQL) で致命的な障害が発生した場合のデータ損失を最小限にしたい。（※複数選択の要件を個別に判定）",
+      "question": "【Cloud SQLのデータ損失最小化】\nCloud S",
       "options": [
         {
           "text": "リードレプリカを実装する。",
@@ -1174,7 +1174,7 @@ const allQuizData = {
     },
     {
       "id": 19,
-      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMySQLからCloud SQLへ、ダウンタイムと変更を最小限に抑えて移行したい。",
+      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMyS",
       "options": [
         {
           "text": "VPN接続後、オンプレを停止しCloud SQLのレプリカをプロモートして切り替える。",
@@ -1226,7 +1226,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMySQLのバックアップを完了させたい。",
+      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMyS",
       "options": [
         {
           "text": "gcsfuseでCloud Storageを直接マウントしmysqldumpする。",
@@ -1356,7 +1356,7 @@ const allQuizData = {
     },
     {
       "id": 26,
-      "question": "【Cloud SQLの負荷・容量最適化】\nCloud SQLのストレージ不足を回避し、CPU使用率を維持しつつ、レプリケーションラグを減らしたい。",
+      "question": "【Cloud SQLの負荷・容量最適化】\nCloud S",
       "options": [
         {
           "text": "ストレージ超過アラートを作成し容量追加、memcached導入、インスタンス変更を行う。",
@@ -2036,7 +2036,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月BigQueryで実行したクエリ数を抽出したい。",
+      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月Big",
       "options": [
         {
           "text": "Cloud Audit Logsを使用し、必要な情報を取得するために問い合わせ操作にフィルタを作成する。",
@@ -2192,7 +2192,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud SQLへの接続が数日間失敗していた原因を、事後に特定したい。",
+      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud S",
       "options": [
         {
           "text": "GCPコンソールでCloud Loggingに移動し、GKEとCloud SQLのログを参照する。",
@@ -2636,365 +2636,365 @@ const allQuizData = {
   "5_security_iam": [
     {
       "id": 1,
-      "question": "【Googleアカウントを持たないユーザーのファイルアップロード】\nGoogleアカウントを持たないユーザーに、24時間限定でCloud Storageへ画像をアップロードさせたい。\r*   **",
+      "question": "【Googleアカウントを持たないユーザーのファイルアップロード】\nGoogleアカウントを持たないユーザーに、24時間限定でCloud Storageへ画像をアップロードさせたい。",
       "options": [
         {
-          "text": "24時間後に失効するパスワードでバケットを保護する。**\r    *   **",
+          "text": "24時間後に失効するパスワードでバケットを保護する。",
           "isCorrect": false,
-          "explanation": "** Cloud Storageにはバケットをパスワードで直接保護する機能はありません。\r*   **"
+          "explanation": "Cloud Storageにはバケットをパスワードで直接保護する機能はありません。"
         },
         {
-          "text": "App Engineでアップロードアプリを作り、24時間後に無効化する。**\r    *   **",
+          "text": "App Engineでアップロードアプリを作り、24時間後に無効化する。",
           "isCorrect": false,
-          "explanation": "** カスタムアプリを作成・運用するのはオーバーヘッドが高く、クラウドネイティブな解決策ではありません。\r*   **"
+          "explanation": "カスタムアプリを作成・運用するのはオーバーヘッドが高く、クラウドネイティブな解決策ではありません。"
         },
         {
-          "text": "App Engineでアプリを作りCloud Identityでユーザーを認証する。**\r    *   **",
+          "text": "App Engineでアプリを作りCloud Identityでユーザーを認証する。",
           "isCorrect": false,
-          "explanation": "** 「Googleアカウントを持たないユーザー」という前提条件に反するためです。\r*   **"
+          "explanation": "「Googleアカウントを持たないユーザー」という前提条件に反するためです。"
         },
         {
-          "text": "24時間後に有効期限が切れる署名付きURLを使って、画像をアップロードさせる。**\r    *   **",
+          "text": "24時間後に有効期限が切れる署名付きURLを使って、画像をアップロードさせる。",
           "isCorrect": true,
-          "explanation": "** 署名付きURL（Signed URL）を生成して渡すことで、Googleアカウントを持たないユーザーでも一時的にセキュアなアップロードが可能になるため最適です。\r\r**"
+          "explanation": "署名付きURL（Signed URL）を生成して渡すことで、Googleアカウントを持たないユーザーでも一時的にセキュアなアップロードが可能になるため最適です。"
         }
       ]
     },
     {
       "id": 2,
-      "question": "【外部IPアドレスの割り当て制限】\n誤設定を防ぐため、フロントエンドのVMのみ外部IPを持てるようにし、バックエンドのVMには付与できないようにしたい。\r*   **",
+      "question": "【外部IPアドレスの割り当て制限】\n誤設定を防ぐため、フロントエンドのVMのみ外部IPを持てるようにし、バックエンドのVMには付与できないようにしたい。",
       "options": [
         {
-          "text": "GCE_FRONTENDというIAMロールを作成し、権限を付与する。**\r    *   **",
+          "text": "GCE_FRONTENDというIAMロールを作成し、権限を付与する。",
           "isCorrect": false,
-          "explanation": "** IAMロールによる権限付与だけでは、特定のVMインスタンス（リソース）に対するシステム的な制限は強制できません。\r*   **"
+          "explanation": "IAMロールによる権限付与だけでは、特定のVMインスタンス（リソース）に対するシステム的な制限は強制できません。"
         },
         {
-          "text": "ITスタッフをcompute.networkAdminロールにマッピングする。**\r    *   **",
+          "text": "ITスタッフをcompute.networkAdminロールにマッピングする。",
           "isCorrect": false,
-          "explanation": "** 権限を持つユーザーが誤ってバックエンドにIPを割り当てるヒューマンエラーを防げません。\r*   **"
+          "explanation": "権限を持つユーザーが誤ってバックエンドにIPを割り当てるヒューマンエラーを防げません。"
         },
         {
-          "text": "フロントエンドVMを持つプロジェクトの全ユーザーからnetworkAdminロールを取り消す。**\r    *   **",
+          "text": "フロントエンドVMを持つプロジェクトの全ユーザーからnetworkAdminロールを取り消す。",
           "isCorrect": false,
-          "explanation": "** 必要なネットワーク管理作業までできなくなってしまいます。\r*   **"
+          "explanation": "必要なネットワーク管理作業までできなくなってしまいます。"
         },
         {
-          "text": "外部IPアドレスを許可するインスタンスを制限する組織ポリシーを作成する。**\r    *   **",
+          "text": "外部IPアドレスを許可するインスタンスを制限する組織ポリシーを作成する。",
           "isCorrect": true,
-          "explanation": "** 組織ポリシー（`constraints/compute.vmExternalIpAccess`）を設定し、許可リストにフロントエンドVMのみを指定することで、システムレベルで付与を完全にブロックできます。\r\r**"
+          "explanation": "組織ポリシー（`constraints/compute.vmExternalIpAccess`）を設定し、許可リストにフロントエンドVMのみを指定することで、システムレベルで付与を完全にブロックできます。"
         }
       ]
     },
     {
       "id": 3,
-      "question": "【MLレコメンドエンジンの精度向上】\nEコマースサイトの機械学習モデル（レコメンド）の「結果の質（精度）」を向上させたい。\r*   **",
+      "question": "【MLレコメンドエンジンの精度向上】\nEコマースサイトの機械学習モデル（レコメンド）の「結果の質（精度）」を向上させたい。",
       "options": [
         {
-          "text": "モデルのトレーニングをCloud GPUからCloud TPUに移行する。**\r    *   **",
+          "text": "モデルのトレーニングをCloud GPUからCloud TPUに移行する。",
           "isCorrect": false,
-          "explanation": "** TPUへの移行は学習時間の短縮（パフォーマンス）には寄与しますが、モデルの精度自体の向上には繋がりません。\r*   **"
+          "explanation": "TPUへの移行は学習時間の短縮（パフォーマンス）には寄与しますが、モデルの精度自体の向上には繋がりません。"
         },
         {
-          "text": "新しいCPUアーキテクチャが利用可能になった時点でモデルをデプロイする。**\r    *   **",
+          "text": "新しいCPUアーキテクチャが利用可能になった時点でモデルをデプロイする。",
           "isCorrect": false,
-          "explanation": "** ハードウェアを新しくしても予測精度は改善しません。\r*   **"
+          "explanation": "ハードウェアを新しくしても予測精度は改善しません。"
         },
         {
-          "text": "メトリクスをBigQueryにエクスポートし、モデルの効率性を分析する。**\r    *   **",
+          "text": "メトリクスをBigQueryにエクスポートし、モデルの効率性を分析する。",
           "isCorrect": false,
-          "explanation": "** 運用効率の分析であり、モデルの推奨精度の改善策ではありません。\r*   **"
+          "explanation": "運用効率の分析であり、モデルの推奨精度の改善策ではありません。"
         },
         {
-          "text": "レコメンデーションの履歴と結果をBigQueryに保存し、トレーニングデータとして使用する。**\r    *   **",
+          "text": "レコメンデーションの履歴と結果をBigQueryに保存し、トレーニングデータとして使用する。",
           "isCorrect": true,
-          "explanation": "** 機械学習の精度を向上させる最も確実な方法は「良質な教師データ（履歴データ）を蓄積・学習させる」ことであり、BigQuery ML等を活用するのがベストプラクティスです。\r\r**"
+          "explanation": "機械学習の精度を向上させる最も確実な方法は「良質な教師データ（履歴データ）を蓄積・学習させる」ことであり、BigQuery ML等を活用するのがベストプラクティスです。"
         }
       ]
     },
     {
       "id": 4,
-      "question": "【PIIとクレジットカード情報の秘匿化】\nカスタマーサポートのチャット履歴を保存・分析する際、個人情報(PII)やカード情報をマスキング・消去したい。\r*   **",
+      "question": "【PIIとクレジットカード情報の秘匿化】\nカスタマーサポートのチャット履歴を保存・分析する際、個人情報(PII)やカード情報をマスキング・消去したい。",
       "options": [
         {
-          "text": "すべてのデータをSHA256でハッシュ化する。**\r    *   **",
+          "text": "すべてのデータをSHA256でハッシュ化する。",
           "isCorrect": false,
-          "explanation": "** 全文ハッシュ化では文章としての分析ができなくなります。\r*   **"
+          "explanation": "全文ハッシュ化では文章としての分析ができなくなります。"
         },
         {
-          "text": "楕円曲線暗号方式による全データの暗号化を行う。**\r    *   **",
+          "text": "楕円曲線暗号方式による全データの暗号化を行う。",
           "isCorrect": false,
-          "explanation": "** 暗号化は復号すれば平文に戻るため、分析業務用のマスキング（非特定化）要件とは異なります。\r*   **"
+          "explanation": "暗号化は復号すれば平文に戻るため、分析業務用のマスキング（非特定化）要件とは異なります。"
         },
         {
-          "text": "正規表現を使用して特定の情報を検索し、手動で再編集する。**\r    *   **",
+          "text": "正規表現を使用して特定の情報を検索し、手動で再編集する。",
           "isCorrect": false,
-          "explanation": "** 自前での正規表現実装は漏れが生じやすく、柔軟性と拡張性に欠けます。\r*   **"
+          "explanation": "自前での正規表現実装は漏れが生じやすく、柔軟性と拡張性に欠けます。"
         },
         {
-          "text": "Cloud Data Loss Prevention (DLP) APIによるデータの非識別化を行う。**\r    *   **",
+          "text": "Cloud Data Loss Prevention (DLP) APIによるデータの非識別化を行う。",
           "isCorrect": true,
-          "explanation": "** Cloud DLP APIはテキスト内のPII（カード番号、氏名など）を自動検知してリダクション（黒塗り）やトークン化を行うための専用マネージドサービスであり最適です。\r\r**"
+          "explanation": "Cloud DLP APIはテキスト内のPII（カード番号、氏名など）を自動検知してリダクション（黒塗り）やトークン化を行うための専用マネージドサービスであり最適です。"
         }
       ]
     },
     {
       "id": 5,
-      "question": "【PCI DSSコンプライアンスのスコープ最小化】\nクレジットカード決済のトレンド分析は行いたいが、平文のカード番号は保存せず、PCIの監査範囲を最小限にしたい。\r*   **",
+      "question": "【PCI DSSコンプライアンスのスコープ最小化】\nクレジットカード決済のトレンド分析は行いたいが、平文のカード番号は保存せず、PCIの監査範囲を最小限にしたい。",
       "options": [
         {
-          "text": "別のサブネットワークを作成し、カード処理を分離する。**\r    *   **",
+          "text": "別のサブネットワークを作成し、カード処理を分離する。",
           "isCorrect": false,
-          "explanation": "** ネットワーク分離は有効ですが、平文のまま保存していれば監査スコープは広範囲に残ります。\r*   **"
+          "explanation": "ネットワーク分離は有効ですが、平文のまま保存していれば監査スコープは広範囲に残ります。"
         },
         {
-          "text": "データを処理するすべてのVMにラベルを付ける。**\r    *   **",
+          "text": "データを処理するすべてのVMにラベルを付ける。",
           "isCorrect": false,
-          "explanation": "** 監査の発見は楽になりますが、PCIスコープそのものを縮小するソリューションではありません。\r*   **"
+          "explanation": "監査の発見は楽になりますが、PCIスコープそのものを縮小するソリューションではありません。"
         },
         {
-          "text": "クレジットカードのデータのみを処理する別のプロジェクトを作成する。**\r    *   **",
+          "text": "クレジットカードのデータのみを処理する別のプロジェクトを作成する。",
           "isCorrect": false,
-          "explanation": "** 分離はされますが、トレンド分析など他データとの結合が困難になります。\r*   **"
+          "explanation": "分離はされますが、トレンド分析など他データとの結合が困難になります。"
         },
         {
-          "text": "トークナイザサービスを作成し、トークン化されたデータのみを保存する。**\r    *   **",
+          "text": "トークナイザサービスを作成し、トークン化されたデータのみを保存する。",
           "isCorrect": true,
-          "explanation": "** カード生情報をトークン（代わりの文字列）に置き換えて保存することで、システムの大半をPCI要件のスコープ外にしつつ、分析に必要な識別性を維持できます。\r\r**"
+          "explanation": "カード生情報をトークン（代わりの文字列）に置き換えて保存することで、システムの大半をPCI要件のスコープ外にしつつ、分析に必要な識別性を維持できます。"
         }
       ]
     },
     {
       "id": 6,
-      "question": "【監査人へのIAMポリシー変更の共有】\n年1回のIAMポリシー変更監査プロセスを合理化し、監査人へ必要なデータ（ログ）のみを迅速に共有したい。\r*   **",
+      "question": "【監査人へのIAMポリシー変更の共有】\n年1回のIAMポリシー変更監査プロセスを合理化し、監査人へ必要なデータ（ログ）のみを迅速に共有したい。",
       "options": [
         {
-          "text": "Cloud Storageにログをエクスポートし、バケットへのアクセスを付与する。**\r    *   **",
+          "text": "Cloud Storageにログをエクスポートし、バケットへのアクセスを付与する。",
           "isCorrect": false,
-          "explanation": "** 生ログファイルの検索や絞り込みは時間がかかり、プロセスの迅速化・合理化に繋がりません。\r*   **"
+          "explanation": "生ログファイルの検索や絞り込みは時間がかかり、プロセスの迅速化・合理化に繋がりません。"
         },
         {
-          "text": "Cloud Functionを使用してログをCloud SQLに転送し、ACLで制限する。**\r    *   **",
+          "text": "Cloud Functionを使用してログをCloud SQLに転送し、ACLで制限する。",
           "isCorrect": false,
-          "explanation": "** 大量のログをリレーショナルDBに転送するのは非効率なアンチパターンです。\r*   **"
+          "explanation": "大量のログをリレーショナルDBに転送するのは非効率なアンチパターンです。"
         },
         {
-          "text": "カスタムアラートを作成し、監査人に送信する。**\r    *   **",
+          "text": "カスタムアラートを作成し、監査人に送信する。",
           "isCorrect": false,
-          "explanation": "** アラートはリアルタイムの通知であり、年1回の過去データ監査の要件には適しません。\r*   **"
+          "explanation": "アラートはリアルタイムの通知であり、年1回の過去データ監査の要件には適しません。"
         },
         {
-          "text": "BigQueryへのログエクスポートを有効にし、ACLとビューを使用して共有データを設定する。**\r    *   **",
+          "text": "BigQueryへのログエクスポートを有効にし、ACLとビューを使用して共有データを設定する。",
           "isCorrect": true,
-          "explanation": "** BigQueryで高速なSQL分析を可能にし、ビュー（View）とアクセス制御（ACL）を使うことで監査人に「必要な部分のみ」を素早く安全に公開できるため最適です。\r\r**"
+          "explanation": "BigQueryで高速なSQL分析を可能にし、ビュー（View）とアクセス制御（ACL）を使うことで監査人に「必要な部分のみ」を素早く安全に公開できるため最適です。"
         }
       ]
     },
     {
       "id": 7,
-      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBigQuery内のPII（個人情報）列へのアクセスを制限しつつ、クエリコストも最小限に抑えたい。",
+      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBig",
       "options": [
         {
-          "text": "PIIを除いた標準のビューを作成し、IAMロールを割り当てる。**\r    *   **",
+          "text": "PIIを除いた標準のビューを作成し、IAMロールを割り当てる。",
           "isCorrect": false,
-          "explanation": "** 標準ビューはアクセスするたびに背後のフルクエリが実行されるため、頻繁に参照される場合の「コスト最小化」の要件を満たしません。\r*   **"
+          "explanation": "標準ビューはアクセスするたびに背後のフルクエリが実行されるため、頻繁に参照される場合の「コスト最小化」の要件を満たしません。"
         },
         {
-          "text": "データサイエンス用の別データセットを作成し、ソースデータセットへのアクセスも許可する。**\r    *   **",
+          "text": "データサイエンス用の別データセットを作成し、ソースデータセットへのアクセスも許可する。",
           "isCorrect": false,
-          "explanation": "** ソースデータセットへのアクセスを許可してしまうと、PII情報も見えてしまうため要件に反します。\r*   **"
+          "explanation": "ソースデータセットへのアクセスを許可してしまうと、PII情報も見えてしまうため要件に反します。"
         },
         {
-          "text": "マテリアライズドビューを作成し、ソースデータへのアクセスを許可する。**\r    *   **",
+          "text": "マテリアライズドビューを作成し、ソースデータへのアクセスを許可する。",
           "isCorrect": false,
-          "explanation": "** 同様にソースへのアクセス権を与えるとPIIが保護されません。\r*   **"
+          "explanation": "同様にソースへのアクセス権を与えるとPIIが保護されません。"
         },
         {
-          "text": "PIIを除いたマテリアライズドビューを作成し、そのビューを含むデータセットにのみアクセス制御を割り当てる。**\r    *   **",
+          "text": "PIIを除いたマテリアライズドビューを作成し、そのビューを含むデータセットにのみアクセス制御を割り当てる。",
           "isCorrect": true,
-          "explanation": "** マテリアライズドビュー（MV）は事前に計算された結果をキャッシュするためクエリコストを大幅に削減でき、ビューのあるデータセットだけに権限を付与することでPIIを安全に保護できます。\r\r**"
+          "explanation": "マテリアライズドビュー（MV）は事前に計算された結果をキャッシュするためクエリコストを大幅に削減でき、ビューのあるデータセットだけに権限を付与することでPIIを安全に保護できます。"
         }
       ]
     },
     {
       "id": 8,
-      "question": "【Active DirectoryとGoogle IDの同期】\n既存のオンプレミスActive Directoryを残したまま、Google CloudのID認証（SSO）と連携させたい。\r*   **",
+      "question": "【Active DirectoryとGoogle IDの同期】\n既存のオンプレミスActive Directoryを残したまま、Google CloudのID認証（SSO）と連携させたい。",
       "options": [
         {
-          "text": "Compute EngineにADドメインコントローラのレプリカを作成する。**\r    *   **",
+          "text": "Compute EngineにADドメインコントローラのレプリカを作成する。",
           "isCorrect": false,
-          "explanation": "** IaaS上にADを立てるだけでは、Google Cloud（IAM）のIDシステムとの統合・連携にはなりません。\r*   **"
+          "explanation": "IaaS上にADを立てるだけでは、Google Cloud（IAM）のIDシステムとの統合・連携にはなりません。"
         },
         {
-          "text": "Admin Directory APIを使用して、ADドメインコントローラに対して認証を行う。**\r    *   **",
+          "text": "Admin Directory APIを使用して、ADドメインコントローラに対して認証を行う。",
           "isCorrect": false,
-          "explanation": "** カスタムでのAPI連携は運用負荷が高く、ベストプラクティスではありません。\r*   **"
+          "explanation": "カスタムでのAPI連携は運用負荷が高く、ベストプラクティスではありません。"
         },
         {
-          "text": "Cloud Identity-Aware ProxyをADのIDプロバイダとして設定する。**\r    *   **",
+          "text": "Cloud Identity-Aware ProxyをADのIDプロバイダとして設定する。",
           "isCorrect": false,
-          "explanation": "** IAPはアクセス制御プロキシであり、IDプロバイダや同期ツールではありません。\r*   **"
+          "explanation": "IAPはアクセス制御プロキシであり、IDプロバイダや同期ツールではありません。"
         },
         {
-          "text": "Google Cloud Directory Syncを使用してユーザーを同期し、SAML SSOを設定する。**\r    *   **",
+          "text": "Google Cloud Directory Syncを使用してユーザーを同期し、SAML SSOを設定する。",
           "isCorrect": true,
-          "explanation": "** GCDSでユーザーやグループのライフサイクルを同期し、SAML 2.0でオンプレミスADに認証をフェデレーション（SSO）させるのがGoogleの推奨ハイブリッドIDアーキテクチャです。\r\r**"
+          "explanation": "GCDSでユーザーやグループのライフサイクルを同期し、SAML 2.0でオンプレミスADに認証をフェデレーション（SSO）させるのがGoogleの推奨ハイブリッドIDアーキテクチャです。"
         }
       ]
     },
     {
       "id": 9,
-      "question": "【AIモデルの解釈性向上】\nMLモデルの予測精度向上と、出力結果に対して解釈性（どの特徴量が貢献したか）を持たせたい。\r*   **",
+      "question": "【AIモデルの解釈性向上】\nMLモデルの予測精度向上と、出力結果に対して解釈性（どの特徴量が貢献したか）を持たせたい。",
       "options": [
         {
-          "text": "Google Cloudのオペレーションスイートを使用する。**\r    *   **",
+          "text": "Google Cloudのオペレーションスイートを使用する。",
           "isCorrect": false,
-          "explanation": "** オペレーションスイート（監視・ロギング）はインフラの可観測性ツールであり、AIモデルの解釈用ではありません。\r*   **"
+          "explanation": "オペレーションスイート（監視・ロギング）はインフラの可観測性ツールであり、AIモデルの解釈用ではありません。"
         },
         {
-          "text": "Vision AIを使う。**\r    *   **",
+          "text": "Vision AIを使う。",
           "isCorrect": false,
-          "explanation": "** Vision AIは画像解析APIであり、予測モデルの解釈性向上とは無関係です。\r*   **"
+          "explanation": "Vision AIは画像解析APIであり、予測モデルの解釈性向上とは無関係です。"
         },
         {
-          "text": "Jupyter Notebooksを使う。**\r    *   **",
+          "text": "Jupyter Notebooksを使う。",
           "isCorrect": false,
-          "explanation": "** 開発環境（ノートブック）自体が、モデルの解釈性機能を自動提供するわけではありません。\r*   **"
+          "explanation": "開発環境（ノートブック）自体が、モデルの解釈性機能を自動提供するわけではありません。"
         },
         {
-          "text": "説明可能なAI (AI Explanations) を使う。**\r    *   **",
+          "text": "説明可能なAI (AI Explanations) を使う。",
           "isCorrect": true,
-          "explanation": "** AI Explanationsを利用することで、各特徴量が予測結果にどの程度寄与したかを定量化・可視化でき、モデルの解釈性を高めることができます。\r\r**"
+          "explanation": "AI Explanationsを利用することで、各特徴量が予測結果にどの程度寄与したかを定量化・可視化でき、モデルの解釈性を高めることができます。"
         }
       ]
     },
     {
       "id": 10,
-      "question": "【コンテナの脆弱性スキャンとデプロイ検証】\nCI/CDパイプラインにおいて、検証済みのコンテナのみがGCPにデプロイされることをシステム的に保証したい。\r*   **",
+      "question": "【コンテナの脆弱性スキャンとデプロイ検証】\nCI/CDパイプラインにおいて、検証済みのコンテナのみがGCPにデプロイされることをシステム的に保証したい。",
       "options": [
         {
-          "text": "Jenkinsを構成し、Kritisを利用してコンテナに暗号署名を行う。**\r    *   **",
+          "text": "Jenkinsを構成し、Kritisを利用してコンテナに暗号署名を行う。",
           "isCorrect": false,
-          "explanation": "** 外部ツールに頼らず、GCPネイティブのフルマネージドサービスを利用する方が推奨されます。\r*   **"
+          "explanation": "外部ツールに頼らず、GCPネイティブのフルマネージドサービスを利用する方が推奨されます。"
         },
         {
-          "text": "信頼されたサービスアカウントのみがデプロイできるようにContainer Registryを構成する。**\r    *   **",
+          "text": "信頼されたサービスアカウントのみがデプロイできるようにContainer Registryを構成する。",
           "isCorrect": false,
-          "explanation": "** 権限の制限だけでは、「コンテナに脆弱性がないか（検証済みか）」の内容の担保はできません。\r*   **"
+          "explanation": "権限の制限だけでは、「コンテナに脆弱性がないか（検証済みか）」の内容の担保はできません。"
         },
         {
-          "text": "セキュリティSMEがすべてのコードのチェックインをピアレビューする。**\r    *   **",
+          "text": "セキュリティSMEがすべてのコードのチェックインをピアレビューする。",
           "isCorrect": false,
-          "explanation": "** 手動レビューはデプロイの自動化・迅速化の妨げになり、システム的な強制力もありません。\r*   **"
+          "explanation": "手動レビューはデプロイの自動化・迅速化の妨げになり、システム的な強制力もありません。"
         },
         {
-          "text": "Container Registryで脆弱性スキャンを使用し、GKEでBinary Authorizationを有効にして署名・検証する。**\r    *   **",
+          "text": "Container Registryで脆弱性スキャンを使用し、GKEでBinary Authorizationを有効にして署名・検証する。",
           "isCorrect": true,
-          "explanation": "** 脆弱性スキャンで安全性を確認し、Binary Authorizationで「署名（検証）されたイメージ以外はクラスタ上で起動させない」という強制力を持たせるのがベストプラクティスです。\r\r**"
+          "explanation": "脆弱性スキャンで安全性を確認し、Binary Authorizationで「署名（検証）されたイメージ以外はクラスタ上で起動させない」という強制力を持たせるのがベストプラクティスです。"
         }
       ]
     },
     {
       "id": 11,
-      "question": "【非構造化データの探索とクリーニング】\n時間の経過とともに劣化したオンプレミスのデータに対して、異常を検出しクリーニング（データラングリング）を行いたい。\r*   **",
+      "question": "【非構造化データの探索とクリーニング】\n時間の経過とともに劣化したオンプレミスのデータに対して、異常を検出しクリーニング（データラングリング）を行いたい。",
       "options": [
         {
-          "text": "Cloud Storageにアップロードし、Cloud Datalabを使用してクリーニングする。**\r    *   **",
+          "text": "Cloud Storageにアップロードし、Cloud Datalabを使用してクリーニングする。",
           "isCorrect": false,
-          "explanation": "** Datalab（Jupyter環境）はコードベースの分析環境であり、GUIベースの高速なデータクリーニングには専用ツールの方が適しています。\r*   **"
+          "explanation": "Datalab（Jupyter環境）はコードベースの分析環境であり、GUIベースの高速なデータクリーニングには専用ツールの方が適しています。"
         },
         {
-          "text": "Cloud Datalabをオンプレミスシステムに直接接続する。**\r    *   **",
+          "text": "Cloud Datalabをオンプレミスシステムに直接接続する。",
           "isCorrect": false,
-          "explanation": "** クラウドへのアップロードを介さない直接接続はパフォーマンスや連携の面で推奨されません。\r*   **"
+          "explanation": "クラウドへのアップロードを介さない直接接続はパフォーマンスや連携の面で推奨されません。"
         },
         {
-          "text": "Cloud Dataprepをオンプレミスシステムに直接接続する。**\r    *   **",
+          "text": "Cloud Dataprepをオンプレミスシステムに直接接続する。",
           "isCorrect": false,
-          "explanation": "** DataprepはCloud StorageやBigQueryを直接のソースとすることが前提のクラウドネイティブなサービスです。\r*   **"
+          "explanation": "DataprepはCloud StorageやBigQueryを直接のソースとすることが前提のクラウドネイティブなサービスです。"
         },
         {
-          "text": "Cloud Storageにファイルをアップロードし、Cloud Dataprepを使用して検索とクリーニングを行う。**\r    *   **",
+          "text": "Cloud Storageにファイルをアップロードし、Cloud Dataprepを使用して検索とクリーニングを行う。",
           "isCorrect": true,
-          "explanation": "** Cloud Dataprepは、GUIベースで異常値の検出やデータクレンジングを視覚的かつ高速に行えるため、このユースケースに最適です。\r\r**"
+          "explanation": "Cloud Dataprepは、GUIベースで異常値の検出やデータクレンジングを視覚的かつ高速に行えるため、このユースケースに最適です。"
         }
       ]
     },
     {
       "id": 12,
-      "question": "【監査可能なコンテナのバージョン管理】\n本番環境のデプロイメントが、ソースコードのどのコミットに該当するかを完全にリンクさせ監査可能にしたい。\r*   **",
+      "question": "【監査可能なコンテナのバージョン管理】\n本番環境のデプロイメントが、ソースコードのどのコミットに該当するかを完全にリンクさせ監査可能にしたい。",
       "options": [
         {
-          "text": "デプロイメントにリンクするコメントをコミットに追加する。**\r    *   **",
+          "text": "デプロイメントにリンクするコメントをコミットに追加する。",
           "isCorrect": false,
-          "explanation": "** 開発者の手動入力に依存するため、ミスが発生しやすく監査証跡として不十分です。\r*   **"
+          "explanation": "開発者の手動入力に依存するため、ミスが発生しやすく監査証跡として不十分です。"
         },
         {
-          "text": "開発者がコミットに \"latest\" のタグを付ける。**\r    *   **",
+          "text": "開発者がコミットに \"latest\" のタグを付ける。",
           "isCorrect": false,
-          "explanation": "** \"latest\"タグは常に最新のものに上書きされてしまうため、過去のバージョンを特定できず監査不可能です。\r*   **"
+          "explanation": "\"latest\"タグは常に最新のものに上書きされてしまうため、過去のバージョンを特定できず監査不可能です。"
         },
         {
-          "text": "コードのコミットに日時のタグを付ける。**\r    *   **",
+          "text": "コードのコミットに日時のタグを付ける。",
           "isCorrect": false,
-          "explanation": "** 日時だけでは、正確なソースコードの状態（どのブランチのどの変更か）を一意に特定できません。\r*   **"
+          "explanation": "日時だけでは、正確なソースコードの状態（どのブランチのどの変更か）を一意に特定できません。"
         },
         {
-          "text": "コンテナタグがソースコードのコミットハッシュと一致するようにする。**\r    *   **",
+          "text": "コンテナタグがソースコードのコミットハッシュと一致するようにする。",
           "isCorrect": true,
-          "explanation": "** Gitのコミットハッシュをコンテナイメージのタグとして使用することで、稼働中のコンテナとソースコードの正確な状態が1対1で一意に結びつき、完全な監査性を担保できます。\r\r**"
+          "explanation": "Gitのコミットハッシュをコンテナイメージのタグとして使用することで、稼働中のコンテナとソースコードの正確な状態が1対1で一意に結びつき、完全な監査性を担保できます。"
         }
       ]
     },
     {
       "id": 13,
-      "question": "【Kubernetes環境への動的デプロイメントとCI/CD】\nGKEベースで、動的拡張、CI/CD、ダイナミックテンプレートによるバンドルデプロイを実現するツールを組み合わせたい。\r*   **",
+      "question": "【Kubernetes環境への動的デプロイメントとCI/CD】\nGKEベースで、動的拡張、CI/CD、ダイナミックテンプレートによるバンドルデプロイを実現するツールを組み合わせたい。",
       "options": [
         {
-          "text": "GKE, Jenkins, Cloud Load Balancing**\r    *   **",
+          "text": "GKE, Jenkins, Cloud Load Balancing",
           "isCorrect": false,
-          "explanation": "** Cloud Load Balancingはインフラ要素であり、動的テンプレート（バンドル）をデプロイする機能は持っていません。\r*   **"
+          "explanation": "Cloud Load Balancingはインフラ要素であり、動的テンプレート（バンドル）をデプロイする機能は持っていません。"
         },
         {
-          "text": "GKE, Cloud Load Balancing**\r    *   **",
+          "text": "GKE, Cloud Load Balancing",
           "isCorrect": false,
-          "explanation": "** 同様に、CI/CDやテンプレートエンジンの要件を満たすツールが欠けています。\r*   **"
+          "explanation": "同様に、CI/CDやテンプレートエンジンの要件を満たすツールが欠けています。"
         },
         {
-          "text": "GKE, Cloud Deployment Manager**\r    *   **",
+          "text": "GKE, Cloud Deployment Manager",
           "isCorrect": false,
-          "explanation": "** Deployment ManagerはGCPリソースを作るものであり、K8s内のアプリケーションバンドルのデプロイには適していません。\r*   **"
+          "explanation": "Deployment ManagerはGCPリソースを作るものであり、K8s内のアプリケーションバンドルのデプロイには適していません。"
         },
         {
-          "text": "GKE, Jenkins, Helm**\r    *   **",
+          "text": "GKE, Jenkins, Helm",
           "isCorrect": true,
-          "explanation": "** 実行環境にGKE、CI/CDにJenkins、そしてKubernetesアプリケーションのダイナミックテンプレートおよびパッケージマネージャーとして「Helm」を使用するのが要件をすべて満たす正解です。\r\r**"
+          "explanation": "実行環境にGKE、CI/CDにJenkins、そしてKubernetesアプリケーションのダイナミックテンプレートおよびパッケージマネージャーとして「Helm」を使用するのが要件をすべて満たす正解です。"
         }
       ]
     },
     {
       "id": 14,
-      "question": "【HIPAAコンプライアンス監査への対応】\n医療系システムがHIPAAなどのプライバシーコンプライアンス監査を確実に通過するようにしたい。\r*   **",
+      "question": "【HIPAAコンプライアンス監査への対応】\n医療系システムがHIPAAなどのプライバシーコンプライアンス監査を確実に通過するようにしたい。",
       "options": [
         {
-          "text": "すべてのワークロードにGKEプライベートクラスターを使用する。**\r    *   **",
+          "text": "すべてのワークロードにGKEプライベートクラスターを使用する。",
           "isCorrect": false,
-          "explanation": "** プライベートクラスタはセキュリティを向上させますが、それだけでHIPAAコンプライアンス要件（法律・契約上の要件）を満たすわけではありません。\r*   **"
+          "explanation": "プライベートクラスタはセキュリティを向上させますが、それだけでHIPAAコンプライアンス要件（法律・契約上の要件）を満たすわけではありません。"
         },
         {
-          "text": "ユーザー向けアプリにFirebase認証を使用する。**\r    *   **",
+          "text": "ユーザー向けアプリにFirebase認証を使用する。",
           "isCorrect": false,
-          "explanation": "** 認証機能の選択とHIPAAコンプライアンスの監査要件は直接関係ありません。\r*   **"
+          "explanation": "認証機能の選択とHIPAAコンプライアンスの監査要件は直接関係ありません。"
         },
         {
-          "text": "Prometheusを導入してセキュリティ侵害を検知する。**\r    *   **",
+          "text": "Prometheusを導入してセキュリティ侵害を検知する。",
           "isCorrect": false,
-          "explanation": "** 監視ツールの導入自体は良いことですが、HIPAA法規制上の監査対応としては本質ではありません。\r*   **"
+          "explanation": "監視ツールの導入自体は良いことですが、HIPAA法規制上の監査対応としては本質ではありません。"
         },
         {
-          "text": "コンプライアンスページの準拠サービスリストと照合し、Google Cloudとビジネスアソシエイト契約（BAA）を締結する。**\r    *   **",
+          "text": "コンプライアンスページの準拠サービスリストと照合し、Google Cloudとビジネスアソシエイト契約（BAA）を締結する。",
           "isCorrect": true,
-          "explanation": "** HIPAAに対応するには、GCPのHIPAA準拠サービスのみを使用し、法的要件であるGoogleとのBAA（業務提携契約）を締結することが必須のプロセスです。\r\r**"
+          "explanation": "HIPAAに対応するには、GCPのHIPAA準拠サービスのみを使用し、法的要件であるGoogleとのBAA（業務提携契約）を締結することが必須のプロセスです。"
         }
       ]
     },
@@ -3003,310 +3003,310 @@ const allQuizData = {
       "question": "【PIIデータを保存しないDataflowパイプライン】\n外部パートナーから受け取るデータ内のPII（個人情報）を、ストレージに一切保存することなく処理してBig",
       "options": [
         {
-          "text": "PIIを分離し、保持ポリシーが設定されたCloud Storageに保存する。**\r    *   **",
+          "text": "PIIを分離し、保持ポリシーが設定されたCloud Storageに保存する。",
           "isCorrect": false,
-          "explanation": "** 「PIIデータを一切保存しない」という要件に完全に違反しています。\r*   **"
+          "explanation": "「PIIデータを一切保存しない」という要件に完全に違反しています。"
         },
         {
-          "text": "一度Cloud Storageに保存し、パイプラインでDLP APIを使ってPIIを削除する。**\r    *   **",
+          "text": "一度Cloud Storageに保存し、パイプラインでDLP APIを使ってPIIを削除する。",
           "isCorrect": false,
-          "explanation": "** 一時的にせよCloud StorageにPIIを含む生データを書き込んでしまうため、要件違反です。\r*   **"
+          "explanation": "一時的にせよCloud StorageにPIIを含む生データを書き込んでしまうため、要件違反です。"
         },
         {
-          "text": "BigQueryにインポートし、パイプラインでPIIを持つ列をスキップして新しいテーブルにコピーする。**\r    *   **",
+          "text": "BigQueryにインポートし、パイプラインでPIIを持つ列をスキップして新しいテーブルにコピーする。",
           "isCorrect": false,
-          "explanation": "** こちらも一度BigQueryにPIIが保存されてしまうため不可です。\r*   **"
+          "explanation": "こちらも一度BigQueryにPIIが保存されてしまうため不可です。"
         },
         {
-          "text": "Dataflowでデータを取り込み、インメモリのパイプライン処理中にDLP APIでPIIを削除して結果をBigQueryに保存する。**\r    *   **",
+          "text": "Dataflowでデータを取り込み、インメモリのパイプライン処理中にDLP APIでPIIを削除して結果をBigQueryに保存する。",
           "isCorrect": true,
-          "explanation": "** Dataflowによるストリーミング/バッチ処理の途中でDLP APIを呼び出してPIIを秘匿化・削除することで、ディスクにPIIを一度も保存せずに安全なデータのみをウェアハウスにロードできます。\r\r**"
+          "explanation": "Dataflowによるストリーミング/バッチ処理の途中でDLP APIを呼び出してPIIを秘匿化・削除することで、ディスクにPIIを一度も保存せずに安全なデータのみをウェアハウスにロードできます。"
         }
       ]
     },
     {
       "id": 16,
-      "question": "【セキュリティチームへの権限付与】\nセキュリティチームに対し、組織内のすべてのプロジェクトを詳細に「閲覧・把握」できる権限を付与したい。\r*   **",
+      "question": "【セキュリティチームへの権限付与】\nセキュリティチームに対し、組織内のすべてのプロジェクトを詳細に「閲覧・把握」できる権限を付与したい。",
       "options": [
         {
-          "text": "組織Administrator、プロジェクトBrowser**\r    *   **",
+          "text": "組織Administrator、プロジェクトBrowser",
           "isCorrect": false,
-          "explanation": "** セキュリティの「閲覧」目的において、Organization Administrator（管理者権限）は過剰であり最小権限の原則に反します。\r*   **"
+          "explanation": "セキュリティの「閲覧」目的において、Organization Administrator（管理者権限）は過剰であり最小権限の原則に反します。"
         },
         {
-          "text": "組織Viewer、プロジェクトOwner**\r    *   **",
+          "text": "組織Viewer、プロジェクトOwner",
           "isCorrect": false,
-          "explanation": "** Project Owner（編集・削除も可能）は閲覧目的には過剰すぎます。\r*   **"
+          "explanation": "Project Owner（編集・削除も可能）は閲覧目的には過剰すぎます。"
         },
         {
-          "text": "プロジェクトOwner、ネットワークAdministrator**\r    *   **",
+          "text": "プロジェクトOwner、ネットワークAdministrator",
           "isCorrect": false,
-          "explanation": "** 同様に過剰な権限であり、不適切です。\r*   **"
+          "explanation": "同様に過剰な権限であり、不適切です。"
         },
         {
-          "text": "組織Viewer、プロジェクトViewer**\r    *   **",
+          "text": "組織Viewer、プロジェクトViewer",
           "isCorrect": true,
-          "explanation": "** 組織全体および各プロジェクトのリソース設定を「閲覧」する要件に対し、Viewer（閲覧者）権限を付与することが最小特権の原則に合致した正しいアプローチです。\r\r**"
+          "explanation": "組織全体および各プロジェクトのリソース設定を「閲覧」する要件に対し、Viewer（閲覧者）権限を付与することが最小特権の原則に合致した正しいアプローチです。"
         }
       ]
     },
     {
       "id": 17,
-      "question": "【CI/CDでのテストとデプロイの連動】\nリポジトリのコード変更を本番環境にデプロイする前に、安全にステージングで検証するパイプラインを作りたい。\r*   **",
+      "question": "【CI/CDでのテストとデプロイの連動】\nリポジトリのコード変更を本番環境にデプロイする前に、安全にステージングで検証するパイプラインを作りたい。",
       "options": [
         {
-          "text": "10%のユーザーにマスターブランチの変更をデプロイして本番でテストする。**\r    *   **",
+          "text": "10%のユーザーにマスターブランチの変更をデプロイして本番でテストする。",
           "isCorrect": false,
-          "explanation": "** ステージング環境での検証を経ずに本番トラフィックを流すのはリスクが高すぎます。\r*   **"
+          "explanation": "ステージング環境での検証を経ずに本番トラフィックを流すのはリスクが高すぎます。"
         },
         {
-          "text": "Spinnakerを使用して本番環境にビルドを配置し、本番環境でテストを実行する。**\r    *   **",
+          "text": "Spinnakerを使用して本番環境にビルドを配置し、本番環境でテストを実行する。",
           "isCorrect": false,
-          "explanation": "** 本番環境で直接テストを行うことは推奨されません。\r*   **"
+          "explanation": "本番環境で直接テストを行うことは推奨されません。"
         },
         {
-          "text": "Spinnakerでred/blackデプロイを使用する。**\r    *   **",
+          "text": "Spinnakerでred/blackデプロイを使用する。",
           "isCorrect": false,
-          "explanation": "** デプロイ手法としては有効ですが、本番前の「検証（ステージングテスト）」のステップが抜けています。\r*   **"
+          "explanation": "デプロイ手法としては有効ですが、本番前の「検証（ステージングテスト）」のステップが抜けています。"
         },
         {
-          "text": "Jenkinsでタグを監視し、ステージングタグでテスト環境にデプロイ・検証後、本番タグを付けてデプロイする。**\r    *   **",
+          "text": "Jenkinsでタグを監視し、ステージングタグでテスト環境にデプロイ・検証後、本番タグを付けてデプロイする。",
           "isCorrect": true,
-          "explanation": "** タグ（バージョン）に基づいて異なる環境へプロモートしていくフローは、誤ったコードの本番流出を防ぐCI/CDのベストプラクティスです。\r\r**"
+          "explanation": "タグ（バージョン）に基づいて異なる環境へプロモートしていくフローは、誤ったコードの本番流出を防ぐCI/CDのベストプラクティスです。"
         }
       ]
     },
     {
       "id": 18,
-      "question": "【Cloud Buildを用いた継続的ビルド】\nCloud Buildでコンテナを継続的にビルドし、バージョンを追跡可能にして保存したい。\r*   **",
+      "question": "【Cloud Buildを用いた継続的ビルド】\nCloud Buildでコンテナを継続的にビルドし、バージョンを追跡可能にして保存したい。",
       "options": [
         {
-          "text": "イメージを1つ構築し、「latest」というラベルを付けてコンテナレジストリにプッシュする。**\r    *   **",
+          "text": "イメージを1つ構築し、「latest」というラベルを付けてコンテナレジストリにプッシュする。",
           "isCorrect": false,
-          "explanation": "** latestタグは常に上書きされるため、バージョン管理や切り戻しができず非推奨です。\r*   **"
+          "explanation": "latestタグは常に上書きされるため、バージョン管理や切り戻しができず非推奨です。"
         },
         {
-          "text": "バージョン番号をタグ付けして、Cloud Storageにプッシュする。**\r    *   **",
+          "text": "バージョン番号をタグ付けして、Cloud Storageにプッシュする。",
           "isCorrect": false,
-          "explanation": "** コンテナイメージはCloud Storageのバケットではなく、専用のContainer Registry (Artifact Registry) に保存すべきです。\r*   **"
+          "explanation": "コンテナイメージはCloud Storageのバケットではなく、専用のContainer Registry (Artifact Registry) に保存すべきです。"
         },
         {
-          "text": "Schedulerで1分ごとにリポジトリをチェックし、タイムスタンプでタグ付けする。**\r    *   **",
+          "text": "Schedulerで1分ごとにリポジトリをチェックし、タイムスタンプでタグ付けする。",
           "isCorrect": false,
-          "explanation": "** ポーリング（定期チェック）は非効率であり、コード変更のWebhookトリガーを使用すべきです。\r*   **"
+          "explanation": "ポーリング（定期チェック）は非効率であり、コード変更のWebhookトリガーを使用すべきです。"
         },
         {
-          "text": "新しいソース変更のトリガーを設定し、コミットハッシュでタグ付けしてコンテナレジストリにプッシュする。**\r    *   **",
+          "text": "新しいソース変更のトリガーを設定し、コミットハッシュでタグ付けしてコンテナレジストリにプッシュする。",
           "isCorrect": true,
-          "explanation": "** コード変更駆動のトリガーと、一意性を保証するGitコミットハッシュをタグに用いてRegistryへ保存するのがベストプラクティスです。\r\r**"
+          "explanation": "コード変更駆動のトリガーと、一意性を保証するGitコミットハッシュをタグに用いてRegistryへ保存するのがベストプラクティスです。"
         }
       ]
     },
     {
       "id": 19,
-      "question": "【IAMポリシーの階層と有効化】\n組織、フォルダ、プロジェクトの各レベルにIAMポリシーが存在する場合、最終的にどの権限が有効になるか。\r*   **",
+      "question": "【IAMポリシーの階層と有効化】\n組織、フォルダ、プロジェクトの各レベルにIAMポリシーが存在する場合、最終的にどの権限が有効になるか。",
       "options": [
         {
-          "text": "ノードで設定されたポリシーと、継承元から継承したポリシーに共通に含まれている（部分集合の）ポリシーである。**\r    *   **",
+          "text": "ノードで設定されたポリシーと、継承元から継承したポリシーに共通に含まれている（部分集合の）ポリシーである。",
           "isCorrect": false,
-          "explanation": "** 共通部分（積集合）だけが有効になるわけではありません。\r*   **"
+          "explanation": "共通部分（積集合）だけが有効になるわけではありません。"
         },
         {
-          "text": "ノードで設定されたポリシーによってのみ決定される。**\r    *   **",
+          "text": "ノードで設定されたポリシーによってのみ決定される。",
           "isCorrect": false,
-          "explanation": "** 親レベルで付与されたポリシーを子ノード側で取り消すことはできないため、ノード独自の設定だけでは決まりません。\r*   **"
+          "explanation": "親レベルで付与されたポリシーを子ノード側で取り消すことはできないため、ノード独自の設定だけでは決まりません。"
         },
         {
-          "text": "継承元のポリシーによって制限される。**\r    *   **",
+          "text": "継承元のポリシーによって制限される。",
           "isCorrect": false,
-          "explanation": "** IAMの許可（Allow）は階層を下るにつれて追加される一方であり、親で許可されたものを子で制限（Deny）することは原則できません。\r*   **"
+          "explanation": "IAMの許可（Allow）は階層を下るにつれて追加される一方であり、親で許可されたものを子で制限（Deny）することは原則できません。"
         },
         {
-          "text": "ノードで設定されたポリシーと、その継承元から継承したポリシーの組み合わせ（和集合）である。**\r    *   **",
+          "text": "ノードで設定されたポリシーと、その継承元から継承したポリシーの組み合わせ（和集合）である。",
           "isCorrect": true,
-          "explanation": "** IAMポリシーは親から子へ継承され、最終的な権限は各階層で付与されたすべての許可ルールの「和集合（結合）」となります。\r\r**"
+          "explanation": "IAMポリシーは親から子へ継承され、最終的な権限は各階層で付与されたすべての許可ルールの「和集合（結合）」となります。"
         }
       ]
     },
     {
       "id": 20,
-      "question": "【CI/CDパイプラインのセキュリティ自動化】\nアジャイル開発においてリリースのスピードを維持しつつ、セキュリティエラー（脆弱性）を未然に防ぎたい。\r*   **",
+      "question": "【CI/CDパイプラインのセキュリティ自動化】\nアジャイル開発においてリリースのスピードを維持しつつ、セキュリティエラー（脆弱性）を未然に防ぎたい。",
       "options": [
         {
-          "text": "インターフェースのテスト用スタブを確保する。**\r    *   **",
+          "text": "インターフェースのテスト用スタブを確保する。",
           "isCorrect": false,
-          "explanation": "** 単体テスト用スタブは機能のテストには役立ちますが、セキュリティ脆弱性の発見には直接寄与しません。\r*   **"
+          "explanation": "単体テスト用スタブは機能のテストには役立ちますが、セキュリティ脆弱性の発見には直接寄与しません。"
         },
         {
-          "text": "すべてのコードのチェックインをセキュリティSMEが手動でピアレビューする。**\r    *   **",
+          "text": "すべてのコードのチェックインをセキュリティSMEが手動でピアレビューする。",
           "isCorrect": false,
-          "explanation": "** 専門家による全量手動レビューはリリーススピードを著しく低下させ、アジリティの要件に反します。\r*   **"
+          "explanation": "専門家による全量手動レビューはリリーススピードを著しく低下させ、アジリティの要件に反します。"
         },
         {
-          "text": "コード署名と信頼できるバイナリリポジトリのみを有効にする。**\r    *   **",
+          "text": "コード署名と信頼できるバイナリリポジトリのみを有効にする。",
           "isCorrect": false,
-          "explanation": "** 署名は改ざん防止にはなりますが、ソースコード内の脆弱性そのものを発見するものではありません。\r*   **"
+          "explanation": "署名は改ざん防止にはなりますが、ソースコード内の脆弱性そのものを発見するものではありません。"
         },
         {
-          "text": "CI/CDパイプラインの一部として、脆弱性スキャナとソースコードセキュリティアナライザを自動実行する。**\r    *   **",
+          "text": "CI/CDパイプラインの一部として、脆弱性スキャナとソースコードセキュリティアナライザを自動実行する。",
           "isCorrect": true,
-          "explanation": "** CI/CDパイプラインに静的/動的なセキュリティスキャンを組み込むことで、開発スピードを落とさずに自動で脆弱性を検知・ブロックできます。\r\r**"
+          "explanation": "CI/CDパイプラインに静的/動的なセキュリティスキャンを組み込むことで、開発スピードを落とさずに自動で脆弱性を検知・ブロックできます。"
         }
       ]
     },
     {
       "id": 21,
-      "question": "【GKEからのGoogle APIへの安全なアクセス】\nGKE上のアプリケーションからGoogle Cloudのサービス（API）へ、セキュリティと管理性を確保して接続したい。\r*   **",
+      "question": "【GKEからのGoogle APIへの安全なアクセス】\nGKE上のアプリケーションからGoogle Cloudのサービス（API）へ、セキュリティと管理性を確保して接続したい。",
       "options": [
         {
-          "text": "HashiCorp VaultをCompute Engine上で構成し、KMSで鍵を管理する。**\r    *   **",
+          "text": "HashiCorp VaultをCompute Engine上で構成し、KMSで鍵を管理する。",
           "isCorrect": false,
-          "explanation": "** サードパーティツールの自前運用は管理オーバーヘッドが高くなります。\r*   **"
+          "explanation": "サードパーティツールの自前運用は管理オーバーヘッドが高くなります。"
         },
         {
-          "text": "Kubernetes SecretsとKMSを使用し、シークレットとして認証情報を渡す。**\r    *   **",
+          "text": "Kubernetes SecretsとKMSを使用し、シークレットとして認証情報を渡す。",
           "isCorrect": false,
-          "explanation": "** クレデンシャル（JSONキーなど）を直接Secretに保存して渡す方法は、漏洩リスクや鍵ローテーションの手間がありベストプラクティスではありません。\r*   **"
+          "explanation": "クレデンシャル（JSONキーなど）を直接Secretに保存して渡す方法は、漏洩リスクや鍵ローテーションの手間がありベストプラクティスではありません。"
         },
         {
-          "text": "デフォルトで難読化されているKubernetesのSecretを使用する。**\r    *   **",
+          "text": "デフォルトで難読化されているKubernetesのSecretを使用する。",
           "isCorrect": false,
-          "explanation": "** 難読化（Base64エンコード）は暗号化ではなく、セキュリティ的に不十分です。\r*   **"
+          "explanation": "難読化（Base64エンコード）は暗号化ではなく、セキュリティ的に不十分です。"
         },
         {
-          "text": "アプリケーションプラットフォームで使用されるWorkload Identityとサービスアカウントを設定する。**\r    *   **",
+          "text": "アプリケーションプラットフォームで使用されるWorkload Identityとサービスアカウントを設定する。",
           "isCorrect": true,
-          "explanation": "** Workload Identityを使用すると、KubernetesのサービスアカウントをGCPのIAMサービスアカウントに安全に紐付けることができ、クレデンシャルキーを管理せずにAPIアクセスが可能になるため最適です。\r\r**"
+          "explanation": "Workload Identityを使用すると、KubernetesのサービスアカウントをGCPのIAMサービスアカウントに安全に紐付けることができ、クレデンシャルキーを管理せずにAPIアクセスが可能になるため最適です。"
         }
       ]
     },
     {
       "id": 22,
-      "question": "【Firestoreデータベース間のアクセス制御】\n新しいゲームのプログラムから、古いゲームのFirestoreにアクセスさせたいが、権限は最小限にしたい。\r*   **",
+      "question": "【Firestoreデータベース間のアクセス制御】\n新しいゲームのプログラムから、古いゲームのFirestoreにアクセスさせたいが、権限は最小限にしたい。",
       "options": [
         {
-          "text": "新しいゲームを古いゲームのプロジェクトに移行・統合する。**\r    *   **",
+          "text": "新しいゲームを古いゲームのプロジェクトに移行・統合する。",
           "isCorrect": false,
-          "explanation": "** 異なるアプリケーションは別々のプロジェクトに分離しておくのがセキュリティ上のベストプラクティスです。\r*   **"
+          "explanation": "異なるアプリケーションは別々のプロジェクトに分離しておくのがセキュリティ上のベストプラクティスです。"
         },
         {
-          "text": "新しいゲームのサービスアカウントに組織管理者ロールを与える。**\r    *   **",
+          "text": "新しいゲームのサービスアカウントに組織管理者ロールを与える。",
           "isCorrect": false,
-          "explanation": "** 組織管理者ロールは権限が強すぎ、最小権限の原則に反します。\r*   **"
+          "explanation": "組織管理者ロールは権限が強すぎ、最小権限の原則に反します。"
         },
         {
-          "text": "古いゲームのSAにOrganization Adminロールを与え、両方にFirebase Adminロールを与える。**\r    *   **",
+          "text": "古いゲームのSAにOrganization Adminロールを与え、両方にFirebase Adminロールを与える。",
           "isCorrect": false,
-          "explanation": "** 同様に、不要な管理者権限を付与することは避けるべきです。\r*   **"
+          "explanation": "同様に、不要な管理者権限を付与することは避けるべきです。"
         },
         {
-          "text": "古いゲームのプロジェクトでサービスアカウントを作成し、新しいゲーム側でそれを利用して、必要なFirestore(Firebase)権限のみを与える。**\r    *   **",
+          "text": "古いゲームのプロジェクトでサービスアカウントを作成し、新しいゲーム側でそれを利用して、必要なFirestore(Firebase)権限のみを与える。",
           "isCorrect": true,
-          "explanation": "** プロジェクトを分離したまま、クロスプロジェクトで専用のサービスアカウントに対して必要な最小限のロール（Firestoreへのアクセス権）を付与するのが正しい設計です。\r\r**"
+          "explanation": "プロジェクトを分離したまま、クロスプロジェクトで専用のサービスアカウントに対して必要な最小限のロール（Firestoreへのアクセス権）を付与するのが正しい設計です。"
         }
       ]
     },
     {
       "id": 23,
-      "question": "【環境間でのコンテナデプロイ制限】\n開発・ステージング環境でテストされていない未承認のコンテナが、本番のGKEクラスタにデプロイされるのを防ぎたい。\r*   **",
+      "question": "【環境間でのコンテナデプロイ制限】\n開発・ステージング環境でテストされていない未承認のコンテナが、本番のGKEクラスタにデプロイされるのを防ぎたい。",
       "options": [
         {
-          "text": "Kubernetesのライフサイクルフックを設定する。**\r    *   **",
+          "text": "Kubernetesのライフサイクルフックを設定する。",
           "isCorrect": false,
-          "explanation": "** ライフサイクルフック（postStartなど）はコンテナ起動時の処理を定義するものであり、デプロイ自体のセキュリティ検証・ブロック機能ではありません。\r*   **"
+          "explanation": "ライフサイクルフック（postStartなど）はコンテナ起動時の処理を定義するものであり、デプロイ自体のセキュリティ検証・ブロック機能ではありません。"
         },
         {
-          "text": "Kubernetesアドミッションコントローラを独自に作成する。**\r    *   **",
+          "text": "Kubernetesアドミッションコントローラを独自に作成する。",
           "isCorrect": false,
-          "explanation": "** 独自実装は可能ですが、「最小限の労力で迅速に導入できるGoogle Cloudソリューション」という要件からは外れます。\r*   **"
+          "explanation": "独自実装は可能ですが、「最小限の労力で迅速に導入できるGoogle Cloudソリューション」という要件からは外れます。"
         },
         {
-          "text": "チームがデプロイを防ぐための企業ポリシー（社内ルール）を導入する。**\r    *   **",
+          "text": "チームがデプロイを防ぐための企業ポリシー（社内ルール）を導入する。",
           "isCorrect": false,
-          "explanation": "** ルールだけではシステム的な強制力がなく、誤操作を防げません。\r*   **"
+          "explanation": "ルールだけではシステム的な強制力がなく、誤操作を防げません。"
         },
         {
-          "text": "開発、ステージング、本番クラスタにバイナリ認証（Binary Authorization）ポリシーを設定し、CI/CDで署名を行う。**\r    *   **",
+          "text": "開発、ステージング、本番クラスタにバイナリ認証（Binary Authorization）ポリシーを設定し、CI/CDで署名を行う。",
           "isCorrect": true,
-          "explanation": "** Binary Authorizationを利用することで、前段の環境でテスト・署名されたイメージ以外は本番クラスタで実行できないようシステムレベルで強制できます。\r\r**"
+          "explanation": "Binary Authorizationを利用することで、前段の環境でテスト・署名されたイメージ以外は本番クラスタで実行できないようシステムレベルで強制できます。"
         }
       ]
     },
     {
       "id": 24,
-      "question": "【マイクロサービスのシークレット管理】\n多数のマイクロサービスが使用するデータベース接続などの「認証情報」を安全に保管・提供したい。\r*   **",
+      "question": "【マイクロサービスのシークレット管理】\n多数のマイクロサービスが使用するデータベース接続などの「認証情報」を安全に保管・提供したい。",
       "options": [
         {
-          "text": "ソースコードの中に直接ハードコードする。**\r    *   **",
+          "text": "ソースコードの中に直接ハードコードする。",
           "isCorrect": false,
-          "explanation": "** 最も危険なアンチパターンであり、コード流出時に認証情報も漏洩します。\r*   **"
+          "explanation": "最も危険なアンチパターンであり、コード流出時に認証情報も漏洩します。"
         },
         {
-          "text": "ACLでアクセスを制限した設定ファイルの中に保存する。**\r    *   **",
+          "text": "ACLでアクセスを制限した設定ファイルの中に保存する。",
           "isCorrect": false,
-          "explanation": "** 平文でファイルに保存することは、バージョン管理システムへの誤登録リスクなどがあり推奨されません。\r*   **"
+          "explanation": "平文でファイルに保存することは、バージョン管理システムへの誤登録リスクなどがあり推奨されません。"
         },
         {
-          "text": "すべての環境変数の中に平文で設定する。**\r    *   **",
+          "text": "すべての環境変数の中に平文で設定する。",
           "isCorrect": false,
-          "explanation": "** 環境変数はデバッグログなどで不意に出力されるリスクがあり、高度な機密情報の管理には不十分です。\r*   **"
+          "explanation": "環境変数はデバッグログなどで不意に出力されるリスクがあり、高度な機密情報の管理には不十分です。"
         },
         {
-          "text": "シークレット管理システム (Secret Manager) の中に保管し、動的に取得する。**\r    *   **",
+          "text": "シークレット管理システム (Secret Manager) の中に保管し、動的に取得する。",
           "isCorrect": true,
-          "explanation": "** APIキーやパスワードなどの機密情報は、暗号化、バージョン管理、アクセス制御が可能な専用のSecret Managerに保存するのがベストプラクティスです。\r\r**"
+          "explanation": "APIキーやパスワードなどの機密情報は、暗号化、バージョン管理、アクセス制御が可能な専用のSecret Managerに保存するのがベストプラクティスです。"
         }
       ]
     },
     {
       "id": 25,
-      "question": "【ログの改ざん防止と信頼性検証】\nアプリケーションに記録されたログデータが、後から変更（改ざん）されていないことを確実に検証したい。\r*   **",
+      "question": "【ログの改ざん防止と信頼性検証】\nアプリケーションに記録されたログデータが、後から変更（改ざん）されていないことを確実に検証したい。",
       "options": [
         {
-          "text": "SQLデータベースを使用し、ログテーブルを変更できる人を制限する。**\r    *   **",
+          "text": "SQLデータベースを使用し、ログテーブルを変更できる人を制限する。",
           "isCorrect": false,
-          "explanation": "** 権限管理だけでは、特権管理者による内部犯行やデータベース侵害時の改ざんを証明（検知）できません。\r*   **"
+          "explanation": "権限管理だけでは、特権管理者による内部犯行やデータベース侵害時の改ざんを証明（検知）できません。"
         },
         {
-          "text": "クラウドとオンプレミスで同時進行でログを書く。**\r    *   **",
+          "text": "クラウドとオンプレミスで同時進行でログを書く。",
           "isCorrect": false,
-          "explanation": "** コストとレイテンシのオーバーヘッドが大きく、両方書き換えられた場合の検証が困難です。\r*   **"
+          "explanation": "コストとレイテンシのオーバーヘッドが大きく、両方書き換えられた場合の検証が困難です。"
         },
         {
-          "text": "各ログエントリのJSONダンプを作成し、それをCloud Storageに保存する。**\r    *   **",
+          "text": "各ログエントリのJSONダンプを作成し、それをCloud Storageに保存する。",
           "isCorrect": false,
-          "explanation": "** 単なるテキストのダンプでは、内容が改ざんされたかどうかの数学的な証明になりません。\r*   **"
+          "explanation": "単なるテキストのダンプでは、内容が改ざんされたかどうかの数学的な証明になりません。"
         },
         {
-          "text": "各タイムスタンプとログエントリにデジタル署名を行い、その署名を保存する。**\r    *   **",
+          "text": "各タイムスタンプとログエントリにデジタル署名を行い、その署名を保存する。",
           "isCorrect": true,
-          "explanation": "** ログのハッシュに対して秘密鍵でデジタル署名を行うことで、後から公開鍵で検証した際に1ビットでも変更されていれば検知できるため、最も確実な改ざん防止（証明）策となります。\r\r**"
+          "explanation": "ログのハッシュに対して秘密鍵でデジタル署名を行うことで、後から公開鍵で検証した際に1ビットでも変更されていれば検知できるため、最も確実な改ざん防止（証明）策となります。"
         }
       ]
     },
     {
       "id": 26,
-      "question": "【Cloud Functions間の認証と呼び出し制限】\nCloud Function (A) から別のCloud Function (B) を呼び出す際、BはAからのみリクエストを受け付けるようにしたい。\r*   **",
+      "question": "【Cloud Functions間の認証と呼び出し制限】\nCloud Function (A) から別のCloud Function (B) を呼び出す際、BはAからのみリクエストを受け付けるようにしたい。",
       "options": [
         {
-          "text": "同じVPC内に作成し、BのingressファイアウォールでAからのトラフィックのみを許可する。**\r    *   **",
+          "text": "同じVPC内に作成し、BのingressファイアウォールでAからのトラフィックのみを許可する。",
           "isCorrect": false,
-          "explanation": "** Cloud FunctionsはVPC外で動作するマネージドサービスであり、ネットワークレベルのFWルールで関数間の呼び出し制御を行うのは不適切です。\r*   **"
+          "explanation": "Cloud FunctionsはVPC外で動作するマネージドサービスであり、ネットワークレベルのFWルールで関数間の呼び出し制御を行うのは不適切です。"
         },
         {
-          "text": "独自のトークンを作成して環境変数で渡し、リクエスト時に照合して拒否する。**\r    *   **",
+          "text": "独自のトークンを作成して環境変数で渡し、リクエスト時に照合して拒否する。",
           "isCorrect": false,
-          "explanation": "** 自前でのトークン照合ロジックの実装はセキュリティホールを生みやすく、マネージドな認証機能を活かしていません。\r*   **"
+          "explanation": "自前でのトークン照合ロジックの実装はセキュリティホールを生みやすく、マネージドな認証機能を活かしていません。"
         },
         {
-          "text": "両方のFunctionに同じサービスアカウントを共有して使用させる。**\r    *   **",
+          "text": "両方のFunctionに同じサービスアカウントを共有して使用させる。",
           "isCorrect": false,
-          "explanation": "** サービスアカウントを共有すると権限の分離ができず、最小権限の原則に反します。\r*   **"
+          "explanation": "サービスアカウントを共有すると権限の分離ができず、最小権限の原則に反します。"
         },
         {
-          "text": "Bを「認証必須」にし、A専用のサービスアカウントにinvokerロールを付与して、IDトークンを付与して呼び出す。**\r    *   **",
+          "text": "Bを「認証必須」にし、A専用のサービスアカウントにinvokerロールを付与して、IDトークンを付与して呼び出す。",
           "isCorrect": true,
-          "explanation": "** 呼び出される関数を認証必須（IAM制限）にし、呼び出し元関数のサービスアカウントにのみ「起動元（Invoker）」ロールを与え、OIDCトークンで認証させるのがGCPのベストプラクティスです。"
+          "explanation": "呼び出される関数を認証必須（IAM制限）にし、呼び出し元関数のサービスアカウントにのみ「起動元（Invoker）」ロールを与え、OIDCトークンで認証させるのがGCPのベストプラクティスです。"
         }
       ]
     }
@@ -3522,7 +3522,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、本番環境の全トラフィックに影響を出さずに新バージョンをテストしたい。",
+      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、",
       "options": [
         {
           "text": "リレーショナルデータベースをNoSQLデータベースで置き換える。",
@@ -3704,7 +3704,7 @@ const allQuizData = {
     },
     {
       "id": 16,
-      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBigQueryに接続する際のエラーを、Googleのベストプラクティスに従って修正したい。",
+      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBig",
       "options": [
         {
           "text": "BigQueryのアクセススコープを有効にした新しいVMでスクリプトを実行する。",
@@ -3938,7 +3938,7 @@ const allQuizData = {
     },
     {
       "id": 25,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLへの重いクエリを減らすため、App Engine（Standard）にインメモリキャッシュを導入しキャッシュヒット率を最大化したい。",
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud S",
       "options": [
         {
           "text": "Memcacheを「共有」にし、クエリハッシュキーでキャッシュをチェックする。",
@@ -4018,7 +4018,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【Cloud SQLの負荷・容量最適化】\nCloud SQLのストレージ不足を回避し、CPU使用率を維持しつつ、レプリケーションラグを減らしたい。",
+      "question": "【Cloud SQLの負荷・容量最適化】\nCloud S",
       "options": [
         {
           "text": "ストレージが75%を超えたらStackdriverアラートを作成して手動追加し、memcachedを導入し、32コアマシンタイプに変更する。",
@@ -4226,7 +4226,7 @@ const allQuizData = {
     },
     {
       "id": 11,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLへの重いクエリを減らすため、App Engine（Standard）にインメモリキャッシュを導入しキャッシュヒット率を最大化したい。",
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud S",
       "options": [
         {
           "text": "memcacheのサービスレベルを専用に設定し、1分ごとに実行されるcronタスクで結果を投入する。",

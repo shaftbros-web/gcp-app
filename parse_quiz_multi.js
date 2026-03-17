@@ -31,7 +31,7 @@ files.forEach(file => {
         let questionText = `【${title}】`;
         const reqMatch = body.match(/要件:\s*([\s\S]*?)(?=(?:•\s*)?Q)/);
         if (reqMatch) {
-            questionText += `\n${reqMatch[1].trim()}`;
+            questionText += `\n${reqMatch[1].replace(/\*/g, '').trim()}`;
         }
 
         // 重複チェック
@@ -49,10 +49,10 @@ files.forEach(file => {
             const bMatch = block.match(blockRegex);
 
             if (bMatch) {
-                const optText = bMatch[1].trim();
+                const optText = bMatch[1].replace(/\*/g, '').trim();
                 const isCorrect = bMatch[2].toLowerCase() === 'yes';
                 // fix weird commas
-                const explanation = bMatch[3].trim().replace(/,。$/, '。');
+                const explanation = bMatch[3].replace(/\*/g, '').trim().replace(/,。$/, '。');
 
                 options.push({
                     text: optText,
