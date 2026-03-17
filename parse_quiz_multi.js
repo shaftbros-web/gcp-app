@@ -7,6 +7,7 @@ const outputFile = path.join(dir, 'quiz_data.js');
 const files = fs.readdirSync(dir).filter(f => f.match(/_b\.(txt|md)$/i));
 
 const allQuizData = {};
+const seenQuestions = new Set();
 
 files.forEach(file => {
     let categoryKey = file.replace(/\s*_b\.(txt|md)$/i, '');
@@ -19,9 +20,6 @@ files.forEach(file => {
     const questions = [];
     let match;
     let questionId = 1;
-
-    // 重複チェック用のSet
-    const seenQuestions = new Set();
 
     while ((match = problemRegex.exec(content)) !== null) {
         const title = match[1].trim();
