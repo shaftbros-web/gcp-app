@@ -3496,7 +3496,7 @@ const allQuizData = {
     },
     {
       "id": 8,
-      "question": "【Bigtableのパフォーマンス・負荷テスト】\nCompute EngineとCloud Bigtableで構成されるサービスの拡張性を検証するため、",
+      "question": "【Bigtableのパフォーマンス・負荷テスト】\nCompute EngineとCloud Bigtableで構成されるサービスの拡張性を検証するため、QAチームが負荷テストツールを展開する際のベストプラクティスを含めたい。",
       "options": [
         {
           "text": "負荷テストツールが本番環境に対して定期的に実行されるようスケジュールする。",
@@ -3522,7 +3522,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、",
+      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、QAプロセスの改善に加えて、アーキテクチャやデプロイ手法のアプローチを変更したい。",
       "options": [
         {
           "text": "リレーショナルデータベースをNoSQLデータベースで置き換える。",
@@ -3704,7 +3704,7 @@ const allQuizData = {
     },
     {
       "id": 16,
-      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBig",
+      "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBigQueryに接続する際のエラーを、Googleのベストプラクティスに従って修正したい。",
       "options": [
         {
           "text": "BigQueryのアクセススコープを有効にした新しいVMでスクリプトを実行する。",
@@ -3730,7 +3730,7 @@ const allQuizData = {
     },
     {
       "id": 17,
-      "question": "【BigQueryの顧客提供暗号鍵（CMEK）】\n会社のセキュリティ要件に従い、Google Cloud外でインポートした暗号化キーを使用してBig",
+      "question": "【BigQueryの顧客提供暗号鍵（CMEK）】\n会社のセキュリティ要件に従い、Google Cloud外でインポートした暗号化キーを使用してBigQueryの機密データを保護したい。",
       "options": [
         {
           "text": "Cloud KMSで鍵を生成し、Cloud Storageに保存後、Dataflowで復号してBigQueryへ入れる。",
@@ -3938,7 +3938,7 @@ const allQuizData = {
     },
     {
       "id": 25,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud S",
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLをバックエンドとするApp Engineアプリで、データベースの負荷を下げるためにクエリ発行数を最小限にしたい。",
       "options": [
         {
           "text": "Memcacheを「共有」にし、クエリハッシュキーでキャッシュをチェックする。",
