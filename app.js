@@ -1,18 +1,18 @@
-// LocalStorage用のキー
+// LocalStorage逕ｨ縺ｮ繧ｭ繝ｼ
 const STORAGE_KEY = 'udemy_gcp_quiz_stats_v2';
 
-// カテゴリ名の日本語マッピング
+// 繧ｫ繝・ざ繝ｪ蜷阪・譌･譛ｬ隱槭・繝・ヴ繝ｳ繧ｰ
 const CATEGORY_NAMES = {
     "1_network": "ネットワーク",
     "2_storage_database": "ストレージとデータベース",
-    "3_compute_container": "コンピューティングとコンテナ",
+    "3_compute_container": "コンピュートとコンテナ",
     "4_operations_monitoring": "運用と監視",
     "5_security_iam": "セキュリティとIAM",
     "6_data_analytics": "データ分析",
-    "7_cicd_deployment": "CI/CDとデプロイメント"
+    "7_cicd_deployment": "CI/CDとデプロイ"
 };
 
-// アプリケーションの状態
+// 繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ迥ｶ諷・
 const state = {
     mode: 'category', // category, menu, quiz, result
     currentCategory: null,
@@ -25,14 +25,14 @@ const state = {
     sessionStats: { correct: 0, wrong: 0, total: 0 }
 };
 
-// DOM要素
+// DOM隕∫ｴ
 const appEl = document.getElementById('app');
 
-// 初期化
+// 蛻晄悄蛹・
 function init() {
     loadStats();
     if (typeof allQuizData === 'undefined') {
-        alert("クイズデータが読み込めませんでした。");
+        alert("クイズデータの読み込みに失敗しました。");
         return;
     }
     renderCategorySelect();
@@ -85,15 +85,15 @@ function cloneQuestionWithShuffledOptions(question) {
     };
 }
 
-// レンダリング - カテゴリ選択
+// 繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ - 繧ｫ繝・ざ繝ｪ驕ｸ謚・
 function renderCategorySelect() {
     state.mode = 'category';
     state.currentCategory = null;
 
     let html = `
         <div class="card">
-            <h1 style="text-align: center;">GCP 認定試験対策クイズ</h1>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">学習するカテゴリを選択してください</p>
+            <h1 style="text-align: center;">GCP 隱榊ｮ夊ｩｦ鬨灘ｯｾ遲悶け繧､繧ｺ</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">蟄ｦ鄙偵☆繧九き繝・ざ繝ｪ繧帝∈謚槭＠縺ｦ縺上□縺輔＞</p>
             <div class="category-list">
     `;
 
@@ -101,7 +101,6 @@ function renderCategorySelect() {
         const questionCount = allQuizData[catKey].length;
         const displayName = CATEGORY_NAMES[catKey] || catKey;
 
-        // 統計データの計算
         let catStats = state.stats[catKey] || {};
         let attempted = Object.keys(catStats).length;
         let totalC = 0, totalW = 0;
@@ -118,8 +117,8 @@ function renderCategorySelect() {
             <div class="category-card" onclick="${questionCount > 0 ? `selectCategory('${catKey}')` : ''}" style="${questionCount === 0 ? 'opacity: 0.5; cursor: not-allowed;' : ''}">
                 <div class="category-title">${displayName}</div>
                 <div class="category-info">
-                    問題数: ${questionCount}問<br>
-                    学習済: ${attempted}問 (正答率 ${rate}%)
+                    蝠城｡梧焚: ${questionCount}蝠・br>
+                    蟄ｦ鄙呈ｸ・ ${attempted}蝠・(豁｣遲皮紫 ${rate}%)
                 </div>
             </div>
         `;
@@ -137,7 +136,7 @@ window.selectCategory = function (catKey) {
     renderMenu();
 }
 
-// レンダリング - メニュー
+// 繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ - 繝｡繝九Η繝ｼ
 function renderMenu() {
     state.mode = 'menu';
     const catKey = state.currentCategory;
@@ -160,38 +159,37 @@ function renderMenu() {
 
     appEl.innerHTML = `
         <div class="card">
-            <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 14px; margin-bottom: 20px;" onclick="renderCategorySelect()">← カテゴリ選択に戻る</button>
+            <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 14px; margin-bottom: 20px;" onclick="renderCategorySelect()">竊・繧ｫ繝・ざ繝ｪ驕ｸ謚槭↓謌ｻ繧・/button>
             
             <h2 style="margin-bottom: 5px;">${displayName}</h2>
             <p style="color: var(--text-muted); margin-bottom: 25px;">
-                総問題数: ${totalQuestions}問 | 学習済み: ${attempted}問 | 全体正答率: ${avgCorrectRate}%
+                邱丞撫鬘梧焚: ${totalQuestions}蝠・| 蟄ｦ鄙呈ｸ医∩: ${attempted}蝠・| 蜈ｨ菴捺ｭ｣遲皮紫: ${avgCorrectRate}%
             </p>
             
             <div class="menu-controls">
-                <h3>学習モードを選択</h3>
+                <h3>蟄ｦ鄙偵Δ繝ｼ繝峨ｒ驕ｸ謚・/h3>
                 <button class="btn" style="padding: 15px;" onclick="startSuddenDeath()">
-                    全問通しモード<br>
-                    <span style="font-size: 13px; font-weight: normal;">(不正解がなくなるまで継続)</span>
+                    蜈ｨ蝠城壹＠繝｢繝ｼ繝・br>
+                    <span style="font-size: 13px; font-weight: normal;">(荳肴ｭ｣隗｣縺後↑縺上↑繧九∪縺ｧ邯咏ｶ・</span>
                 </button>
                 
                 <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--border-color);">
-                    <h4 style="margin-top: 0; color: var(--text-main);">弱点克服モード</h4>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;">過去の正答率に基づいて苦手な問題のみを抽出します。未回答の問題も含みます。</p>
+                    <h4 style="margin-top: 0; color: var(--text-main);">蠑ｱ轤ｹ蜈区恪繝｢繝ｼ繝・/h4>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;">驕主悉縺ｮ豁｣遲皮紫縺ｫ蝓ｺ縺･縺・※闍ｦ謇九↑蝠城｡後・縺ｿ繧呈歓蜃ｺ縺励∪縺吶よ悴蝗樒ｭ斐・蝠城｡後ｂ蜷ｫ縺ｿ縺ｾ縺吶・/p>
                     <label style="font-weight: bold; font-size: 14px;">
-                        正答率が <input type="number" id="threshold" value="50" style="width: 60px; padding: 5px; text-align: right; border-radius: 4px; border: 1px solid #ccc;"> % 以下の問題を出題
+                        豁｣遲皮紫縺・<input type="number" id="threshold" value="50" style="width: 60px; padding: 5px; text-align: right; border-radius: 4px; border: 1px solid #ccc;"> % 莉･荳九・蝠城｡後ｒ蜃ｺ鬘・
                     </label>
-                    <button class="btn btn-secondary" style="margin-top: 15px; display: block; width: 100%" onclick="startWeaknessMode()">弱点克服モード開始</button>
+                    <button class="btn btn-secondary" style="margin-top: 15px; display: block; width: 100%" onclick="startWeaknessMode()">蠑ｱ轤ｹ蜈区恪繝｢繝ｼ繝蛾幕蟋・/button>
                 </div>
             </div>
             
             <div style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
-                <button class="btn btn-secondary" onclick="resetStats()" style="font-size: 12px; color: var(--error-color); border-color: var(--error-color); padding: 5px 10px;">このカテゴリの学習記録をリセット</button>
+                <button class="btn btn-secondary" onclick="resetStats()" style="font-size: 12px; color: var(--error-color); border-color: var(--error-color); padding: 5px 10px;">縺薙・繧ｫ繝・ざ繝ｪ縺ｮ蟄ｦ鄙定ｨ倬鹸繧偵Μ繧ｻ繝・ヨ</button>
             </div>
         </div>
     `;
 }
 
-// モード開始
 window.startSuddenDeath = function () {
     state.queue = shuffleArray(allQuizData[state.currentCategory]).map(cloneQuestionWithShuffledOptions);
     state.isSuddenDeath = true;
@@ -204,13 +202,13 @@ window.startWeaknessMode = function () {
 
     const weakQuestions = allQuizData[state.currentCategory].filter(q => {
         const s = catStats[q.id];
-        if (!s) return true; // 未回答は弱点扱い
+        if (!s) return true;
         const rate = (s.correct / (s.correct + s.wrong)) * 100;
         return rate <= threshold;
     });
 
     if (weakQuestions.length === 0) {
-        alert("設定した条件に当てはまる問題がありません。（全員正解できています！）");
+        alert("設定した条件に合う問題がありません。");
         return;
     }
 
@@ -228,7 +226,6 @@ function startQuiz() {
     renderQuiz();
 }
 
-// レンダリング - クイズ
 function renderQuiz() {
     if (state.queue.length === 0) {
         renderResult();
@@ -239,13 +236,13 @@ function renderQuiz() {
     const catName = CATEGORY_NAMES[state.currentCategory] || state.currentCategory;
     const correctCount = currentQ.options.filter(opt => opt.isCorrect).length;
     const selectionHint = correctCount > 1
-        ? `この問題は複数選択です。正しい選択肢を ${correctCount} 個選んでください。`
-        : '正しい選択肢を 1 つ選んでください。';
+        ? `縺薙・蝠城｡後・隍・焚驕ｸ謚槭〒縺吶よｭ｣縺励＞驕ｸ謚櫁い繧・${correctCount} 蛟矩∈繧薙〒縺上□縺輔＞縲Ａ`
+        : '豁｣縺励＞驕ｸ謚櫁い繧・1 縺､驕ｸ繧薙〒縺上□縺輔＞縲・';
 
     let html = `
         <div class="card">
             <div class="status-bar">
-                <span>[${catName}] 残り: ${state.queue.length} 問</span>
+                <span>[${catName}] 谿九ｊ: ${state.queue.length} 蝠・/span>
                 <span id="q-result" style="font-weight: bold;"></span>
             </div>
             
@@ -262,7 +259,7 @@ function renderQuiz() {
                     ${escapeHtml(opt.text)}
                 </button>
                 <div class="option-explanation" id="expl-${idx}" style="display: none;">
-                    <strong>${opt.isCorrect ? '✅ 理由:' : '❌ 理由:'}</strong>
+                    <strong>${opt.isCorrect ? '笨・逅・罰:' : '笶・逅・罰:'}</strong>
                     ${escapeHtml(opt.explanation)}
                 </div>
             </div>
@@ -272,12 +269,8 @@ function renderQuiz() {
     html += `
             </div>
 
-            <div class="action-container" id="action-container">
-                <button class="btn" id="submit-answer-btn" onclick="submitAnswer()" disabled>回答する</button>
-            </div>
-
             <div class="next-container" id="next-container" style="display: none;">
-                <button class="btn" onclick="nextQuestion()">次へ</button>
+                <button class="btn" onclick="nextQuestion()">谺｡縺ｸ</button>
             </div>
         </div>
     `;
@@ -290,17 +283,22 @@ window.selectOption = function (selectedIndex) {
         return;
     }
 
+    const currentQ = state.queue[0];
+    const requiredSelections = currentQ.options.filter(option => option.isCorrect).length;
     const selectedPos = state.selectedOptions.indexOf(selectedIndex);
+
     if (selectedPos >= 0) {
         state.selectedOptions.splice(selectedPos, 1);
-    } else {
+    } else if (state.selectedOptions.length < requiredSelections) {
         state.selectedOptions.push(selectedIndex);
     }
 
     const button = document.getElementById(`opt-${selectedIndex}`);
-    button.classList.toggle('selected-pending', selectedPos < 0);
+    button.classList.toggle('selected-pending', selectedPos < 0 && state.selectedOptions.includes(selectedIndex));
 
-    document.getElementById('submit-answer-btn').disabled = state.selectedOptions.length === 0;
+    if (state.selectedOptions.length === requiredSelections) {
+        window.submitAnswer();
+    }
 }
 
 window.submitAnswer = function () {
@@ -333,14 +331,13 @@ window.submitAnswer = function () {
     });
 
     const qResult = document.getElementById('q-result');
-    document.getElementById('submit-answer-btn').disabled = true;
 
     if (isCorrect) {
         selectedIndexes.forEach(idx => {
             document.getElementById(`opt-${idx}`).classList.remove('selected-pending');
             document.getElementById(`opt-${idx}`).classList.add('selected-correct');
         });
-        qResult.textContent = "正解";
+        qResult.textContent = "豁｣隗｣";
         qResult.style.color = "var(--success-color)";
         updateStat(state.currentCategory, currentQ.id, true);
         state.queue.shift();
@@ -351,7 +348,7 @@ window.submitAnswer = function () {
                 currentQ.options[idx].isCorrect ? 'selected-correct' : 'selected-wrong'
             );
         });
-        qResult.textContent = "不正解";
+        qResult.textContent = "荳肴ｭ｣隗｣";
         qResult.style.color = "var(--error-color)";
         updateStat(state.currentCategory, currentQ.id, false);
 
@@ -363,7 +360,6 @@ window.submitAnswer = function () {
         }
     }
 
-    document.getElementById('action-container').style.display = "none";
     document.getElementById('next-container').style.display = "flex";
 }
 
@@ -374,7 +370,7 @@ window.nextQuestion = function () {
 }
 
 window.resetStats = function () {
-    if (confirm("このカテゴリの学習記録を本当にリセットしますか？")) {
+    if (confirm("このカテゴリの学習記録をリセットしますか？")) {
         if (state.stats[state.currentCategory]) {
             delete state.stats[state.currentCategory];
         }
@@ -383,7 +379,6 @@ window.resetStats = function () {
     }
 }
 
-// レンダリング - 結果
 function renderResult() {
     state.mode = 'result';
     const s = state.sessionStats;
@@ -394,28 +389,27 @@ function renderResult() {
     appEl.innerHTML = `
         <div class="card" style="text-align: center;">
             <p style="color: var(--text-muted); font-size: 14px;">[${catName}]</p>
-            <h2 style="margin-top: 5px;">完了！お疲れ様でした！</h2>
+            <h2 style="margin-top: 5px;">螳御ｺ・ｼ√♀逍ｲ繧梧ｧ倥〒縺励◆・・/h2>
             <div class="stats">
                 <div class="stat-box">
-                    <h3>正解数</h3>
+                    <h3>豁｣隗｣謨ｰ</h3>
                     <p style="font-size: 28px; color: var(--success-color); font-weight: bold; margin: 10px 0;">${s.correct}</p>
                 </div>
                 <div class="stat-box">
-                    <h3>不正解数</h3>
+                    <h3>荳肴ｭ｣隗｣謨ｰ</h3>
                     <p style="font-size: 28px; color: var(--error-color); font-weight: bold; margin: 10px 0;">${s.wrong}</p>
                 </div>
             </div>
-            <p style="font-size: 20px; margin-top: 30px;">今回セッションの正答率<br><strong style="font-size: 32px; color: var(--primary-color);">${rate}%</strong></p>
+            <p style="font-size: 20px; margin-top: 30px;">莉雁屓繧ｻ繝・す繝ｧ繝ｳ縺ｮ豁｣遲皮紫<br><strong style="font-size: 32px; color: var(--primary-color);">${rate}%</strong></p>
             
             <div style="margin-top: 40px; display: flex; gap: 15px; justify-content: center;">
-                <button class="btn btn-secondary" onclick="renderCategorySelect()">カテゴリ選択へ</button>
-                <button class="btn" onclick="renderMenu()">メニューに戻る</button>
+                <button class="btn btn-secondary" onclick="renderCategorySelect()">繧ｫ繝・ざ繝ｪ驕ｸ謚槭∈</button>
+                <button class="btn" onclick="renderMenu()">繝｡繝九Η繝ｼ縺ｫ謌ｻ繧・/button>
             </div>
         </div>
     `;
 }
 
-// Helper
 function escapeHtml(unsafe) {
     if (!unsafe) return "";
     return unsafe
@@ -426,5 +420,4 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-// 起動
 init();
