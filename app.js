@@ -12,10 +12,53 @@ const CATEGORY_NAMES = {
     "7_cicd_deployment": "CI/CDとデプロイメント"
 };
 
+const SUBCATEGORY_RULES = {
+    "1_network": [
+        { key: "hybrid", name: "ハイブリッド接続", pattern: /(オンプレ|VPN|Interconnect|専用線|ハイブリッド|レプリケーション|IPアドレス競合|NAT)/ },
+        { key: "lb_ingress", name: "LB / Ingress / CDN", pattern: /(ロードバランサ|Ingress|ルーティング|Cloud CDN|CDN|WebSocket|グローバル配信|APIのパスベース)/ },
+        { key: "gke_serverless", name: "GKE / サーバーレス通信", pattern: /(GKE|サーバーレス|Cloud Run|App Engine|外部API|外部露出)/ },
+        { key: "network_security", name: "ネットワーク制御と保護", pattern: /(VPC|Egress|外部IP|データアクセス境界|BigQueryアクセス保護|ファイル取得)/ }
+    ],
+    "2_storage_database": [
+        { key: "sql", name: "Cloud SQL / RDB", pattern: /(Cloud SQL|MySQL|SQL Server|データベース|フェイルオーバー|バックアップ|リカバリ|レプリカ)/ },
+        { key: "storage", name: "Cloud Storage / ストレージ", pattern: /(Cloud Storage|バケット|Filestore|永続ディスク|PD|CSEK|CMEK|ライフサイクル|アップロード|静的ファイル)/ },
+        { key: "bigtable", name: "Bigtable / 高スループット", pattern: /(Bigtable|時系列|センサー|ストリーミング|ホットスポット|高速検索|負荷テスト)/ },
+        { key: "migration", name: "移行 / データレイク / 分析基盤", pattern: /(移行|Transfer Appliance|BigQuery|データウェアハウス|非構造化|データレイク|トークン化)/ }
+    ],
+    "3_compute_container": [
+        { key: "gke", name: "GKE / Kubernetes", pattern: /(GKE|K8s|Kubernetes|クラスタ|サービスディスカバリ)/ },
+        { key: "app_serverless", name: "App Engine / Cloud Run", pattern: /(App Engine|Cloud Run|A\/Bテスト|カナリア)/ },
+        { key: "mig_vm", name: "MIG / VM 運用", pattern: /(MIG|VM|OSパッチ|ホスト名|テスト環境|単一テナンシー|リージョン障害)/ },
+        { key: "migration_batch", name: "移行 / バッチ / Hadoop", pattern: /(Hadoop|VMware|リフト＆シフト|バッチ処理|ホスティング|運用オーバーヘッド)/ }
+    ],
+    "4_operations_monitoring": [
+        { key: "logging_audit", name: "ログ / 監査", pattern: /(ログ|監査|BigQueryのクエリ数|IAMポリシー変更|Cloud VPNログ|ログ集約|ログ分析)/ },
+        { key: "monitoring", name: "監視 / ダッシュボード", pattern: /(監視|レイテンシ|ダッシュボード|SLO|アラート|Cloud Monitoring|インサイト)/ },
+        { key: "incident", name: "障害調査 / 事後検証", pattern: /(障害調査|原因|事後検証|ボトルネック|再起動|遅延特定|問題の特定)/ },
+        { key: "resilience_cost", name: "可用性テスト / コスト最適化", pattern: /(災害対策|レジリエンス|SLA|テスト手順|コスト|ゾンビマシン|割引)/ }
+    ],
+    "5_security_iam": [
+        { key: "iam", name: "IAM / ID 管理", pattern: /(IAM|Active Directory|Google ID|権限|ドメイン制限|Project Owner|監査人)/ },
+        { key: "data_protection", name: "データ保護 / PII", pattern: /(PII|クレジットカード|HIPAA|PCI DSS|秘匿化|CMEK|BigQuery|Cloud Storage)/ },
+        { key: "service_auth", name: "サービス認証 / API アクセス", pattern: /(Cloud Functions|Pub\/Sub|BigQueryへの接続|Google API|Firestore|シークレット)/ },
+        { key: "org_policy", name: "組織制御 / ロケーション", pattern: /(物理ロケーション|外部IPアドレス|改ざん防止|コンプライアンス|スコープ最小化)/ }
+    ],
+    "6_data_analytics": [
+        { key: "ml", name: "ML / AI", pattern: /(ML|AI|モデル|レコメンド|解釈性)/ },
+        { key: "pipeline", name: "Dataflow / データ処理", pattern: /(Dataflow|PII|クリーニング|非構造化)/ }
+    ],
+    "7_cicd_deployment": [
+        { key: "ci_cd", name: "CI/CD パイプライン", pattern: /(CI\/CD|Cloud Build|ビルド|デプロイ|ロールバック)/ },
+        { key: "security", name: "デプロイセキュリティ", pattern: /(脆弱性|検証|セキュリティ|侵入テスト|環境間)/ },
+        { key: "ops", name: "運用自動化 / API", pattern: /(Pub\/Sub|タスクスケジューリング|API|Cloud Shell|Datastore)/ }
+    ]
+};
+
 // アプリケーションの状態
 const state = {
     mode: 'category', // category, menu, quiz, result
     currentCategory: null,
+    currentSubcategory: null,
     queue: [],
     currentIndex: 0,
     isSuddenDeath: false,
@@ -85,6 +128,73 @@ function cloneQuestionWithShuffledOptions(question) {
     };
 }
 
+function getQuestionTitle(question) {
+    return (question.question || '').split('\n')[0];
+}
+
+function getSubcategoryDefinitions(catKey) {
+    return SUBCATEGORY_RULES[catKey] || [];
+}
+
+function getSubcategoryKey(catKey, question) {
+    const title = getQuestionTitle(question);
+    const defs = getSubcategoryDefinitions(catKey);
+
+    for (const def of defs) {
+        if (def.pattern.test(title)) {
+            return def.key;
+        }
+    }
+
+    return 'other';
+}
+
+function getSubcategoryName(catKey, subcategoryKey) {
+    if (!subcategoryKey) {
+        return 'カテゴリ全体';
+    }
+
+    const defs = getSubcategoryDefinitions(catKey);
+    const match = defs.find(def => def.key === subcategoryKey);
+    return match ? match.name : 'その他';
+}
+
+function getSubcategoryGroups(catKey) {
+    const defs = getSubcategoryDefinitions(catKey);
+    const groups = defs.map(def => ({
+        key: def.key,
+        name: def.name,
+        questions: []
+    }));
+    const otherGroup = { key: 'other', name: 'その他', questions: [] };
+
+    for (const question of allQuizData[catKey]) {
+        const key = getSubcategoryKey(catKey, question);
+        const group = groups.find(item => item.key === key) || otherGroup;
+        group.questions.push(question);
+    }
+
+    return [...groups, otherGroup].filter(group => group.questions.length > 0);
+}
+
+function getSelectedQuestionPool() {
+    const questions = allQuizData[state.currentCategory] || [];
+    if (!state.currentSubcategory) {
+        return questions;
+    }
+
+    return questions.filter(question => getSubcategoryKey(state.currentCategory, question) === state.currentSubcategory);
+}
+
+function getCurrentScopeLabel() {
+    const catName = CATEGORY_NAMES[state.currentCategory] || state.currentCategory;
+    if (!state.currentSubcategory) {
+        return catName;
+    }
+
+    return `${catName} / ${getSubcategoryName(state.currentCategory, state.currentSubcategory)}`;
+}
+
 // レンダリング - カテゴリ選択
 function renderCategorySelect() {
     state.mode = 'category';
@@ -130,6 +240,12 @@ function renderCategorySelect() {
 
 window.selectCategory = function (catKey) {
     state.currentCategory = catKey;
+    state.currentSubcategory = null;
+    renderMenu();
+}
+
+window.selectSubcategory = function (subcategoryKey) {
+    state.currentSubcategory = subcategoryKey || null;
     renderMenu();
 }
 
@@ -140,6 +256,9 @@ function renderMenu() {
     const questions = allQuizData[catKey];
     const catStats = state.stats[catKey] || {};
     const displayName = CATEGORY_NAMES[catKey] || catKey;
+    const groups = getSubcategoryGroups(catKey);
+    const selectedPool = getSelectedQuestionPool();
+    const activeSubcategoryName = getSubcategoryName(catKey, state.currentSubcategory);
 
     let totalQuestions = questions.length;
     let attempted = Object.keys(catStats).length;
@@ -162,6 +281,28 @@ function renderMenu() {
             <p style="color: var(--text-muted); margin-bottom: 25px;">
                 総問題数: ${totalQuestions}問 | 学習済み: ${attempted}問 | 全体正答率: ${avgCorrectRate}%
             </p>
+
+            <div style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px;">サブカテゴリ</h3>
+                <div class="category-list">
+                    <div class="category-card" onclick="selectSubcategory('')" style="${state.currentSubcategory === null ? 'border-color: var(--primary-color); box-shadow: 0 0 0 1px var(--primary-color) inset;' : ''}">
+                        <div class="category-title">カテゴリ全体</div>
+                        <div class="category-info">
+                            問題数: ${questions.length}問<br>
+                            現在の対象: ${selectedPool.length}問
+                        </div>
+                    </div>
+                    ${groups.map(group => `
+                        <div class="category-card" onclick="selectSubcategory('${group.key}')" style="${state.currentSubcategory === group.key ? 'border-color: var(--primary-color); box-shadow: 0 0 0 1px var(--primary-color) inset;' : ''}">
+                            <div class="category-title">${group.name}</div>
+                            <div class="category-info">
+                                問題数: ${group.questions.length}問
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 12px 0 0;">現在の出題対象: ${activeSubcategoryName} (${selectedPool.length}問)</p>
+            </div>
             
             <div class="menu-controls">
                 <h3>学習モードを選択</h3>
@@ -189,7 +330,7 @@ function renderMenu() {
 
 // モード開始
 window.startSuddenDeath = function () {
-    state.queue = shuffleArray(allQuizData[state.currentCategory]).map(cloneQuestionWithShuffledOptions);
+    state.queue = shuffleArray(getSelectedQuestionPool()).map(cloneQuestionWithShuffledOptions);
     state.isSuddenDeath = true;
     startQuiz();
 }
@@ -198,7 +339,7 @@ window.startWeaknessMode = function () {
     const threshold = parseInt(document.getElementById('threshold').value, 10);
     const catStats = state.stats[state.currentCategory] || {};
 
-    const weakQuestions = allQuizData[state.currentCategory].filter(q => {
+    const weakQuestions = getSelectedQuestionPool().filter(q => {
         const s = catStats[q.id];
         if (!s) return true; // 未回答は弱点扱い
         const rate = (s.correct / (s.correct + s.wrong)) * 100;
@@ -206,7 +347,7 @@ window.startWeaknessMode = function () {
     });
 
     if (weakQuestions.length === 0) {
-        alert("設定した条件に当てはまる問題がありません。（全問正解できています！）");
+        alert("設定した条件に当てはまる問題がありません。");
         return;
     }
 
@@ -232,7 +373,7 @@ function renderQuiz() {
     }
 
     const currentQ = state.queue[0];
-    const catName = CATEGORY_NAMES[state.currentCategory] || state.currentCategory;
+    const catName = getCurrentScopeLabel();
     const correctCount = currentQ.options.filter(opt => opt.isCorrect).length;
     const selectionHint = correctCount > 1
         ? `この問題は複数選択です。正しい選択肢を ${correctCount} 個選んでください。`
@@ -384,7 +525,7 @@ function renderResult() {
     const s = state.sessionStats;
     const totalAns = s.correct + s.wrong;
     const rate = totalAns > 0 ? Math.round((s.correct / totalAns) * 100) : 0;
-    const catName = CATEGORY_NAMES[state.currentCategory] || state.currentCategory;
+    const catName = getCurrentScopeLabel();
 
     appEl.innerHTML = `
         <div class="card" style="text-align: center;">
