@@ -19,6 +19,8 @@ const state = {
     queue: [],
     currentIndex: 0,
     isSuddenDeath: false,
+    selectedOptions: [],
+    hasSubmittedAnswer: false,
     stats: {}, // { "categoryKey": { questionId: { correct: 0, wrong: 0 } } }
     sessionStats: { correct: 0, wrong: 0, total: 0 }
 };
@@ -63,6 +65,24 @@ function updateStat(cat, id, isCorrect) {
         state.sessionStats.wrong++;
     }
     saveStats();
+}
+
+function shuffleArray(items) {
+    const shuffled = [...items];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled;
+}
+
+function cloneQuestionWithShuffledOptions(question) {
+    return {
+        ...question,
+        options: shuffleArray(question.options)
+    };
 }
 
 // レンダリング - カテゴリ選択
@@ -173,8 +193,7 @@ function renderMenu() {
 
 // モード開始
 window.startSuddenDeath = function () {
-    state.queue = [...allQuizData[state.currentCategory]];
-    state.queue.sort(() => Math.random() - 0.5);
+    state.queue = shuffleArray(allQuizData[state.currentCategory]).map(cloneQuestionWithShuffledOptions);
     state.isSuddenDeath = true;
     startQuiz();
 }
@@ -195,7 +214,7 @@ window.startWeaknessMode = function () {
         return;
     }
 
-    state.queue = weakQuestions.sort(() => Math.random() - 0.5);
+    state.queue = shuffleArray(weakQuestions).map(cloneQuestionWithShuffledOptions);
     state.isSuddenDeath = false;
     startQuiz();
 }
@@ -203,6 +222,8 @@ window.startWeaknessMode = function () {
 function startQuiz() {
     state.mode = 'quiz';
     state.currentIndex = 0;
+    state.selectedOptions = [];
+    state.hasSubmittedAnswer = false;
     state.sessionStats = { correct: 0, wrong: 0, total: state.queue.length };
     renderQuiz();
 }
@@ -216,6 +237,10 @@ function renderQuiz() {
 
     const currentQ = state.queue[0];
     const catName = CATEGORY_NAMES[state.currentCategory] || state.currentCategory;
+    const correctCount = currentQ.options.filter(opt => opt.isCorrect).length;
+    const selectionHint = correctCount > 1
+        ? `この問題は複数選択です。正しい選択肢を ${correctCount} 個選んでください。`
+        : '正しい選択肢を 1 つ選んでください。';
 
     let html = `
         <div class="card">
@@ -225,7 +250,8 @@ function renderQuiz() {
             </div>
             
             <div class="question-text">${escapeHtml(currentQ.question)}</div>
-            
+            <div class="selection-hint">${escapeHtml(selectionHint)}</div>
+
             <div class="options-list" id="options-container">
     `;
 
@@ -245,7 +271,11 @@ function renderQuiz() {
 
     html += `
             </div>
-            
+
+            <div class="action-container" id="action-container">
+                <button class="btn" id="submit-answer-btn" onclick="submitAnswer()" disabled>回答する</button>
+            </div>
+
             <div class="next-container" id="next-container" style="display: none;">
                 <button class="btn" onclick="nextQuestion()">次へ</button>
             </div>
@@ -255,24 +285,44 @@ function renderQuiz() {
     appEl.innerHTML = html;
 }
 
-// 選択処理
 window.selectOption = function (selectedIndex) {
-    const currentQ = state.queue[0];
-    const isCorrect = currentQ.options[selectedIndex].isCorrect;
+    if (state.hasSubmittedAnswer) {
+        return;
+    }
 
-    // 全ボタン無効化＆各選択肢ごとの解説を表示
+    const selectedPos = state.selectedOptions.indexOf(selectedIndex);
+    if (selectedPos >= 0) {
+        state.selectedOptions.splice(selectedPos, 1);
+    } else {
+        state.selectedOptions.push(selectedIndex);
+    }
+
+    const button = document.getElementById(`opt-${selectedIndex}`);
+    button.classList.toggle('selected-pending', selectedPos < 0);
+
+    document.getElementById('submit-answer-btn').disabled = state.selectedOptions.length === 0;
+}
+
+window.submitAnswer = function () {
+    const currentQ = state.queue[0];
+    const selectedIndexes = [...state.selectedOptions].sort((a, b) => a - b);
+    const correctIndexes = currentQ.options
+        .map((option, idx) => option.isCorrect ? idx : -1)
+        .filter(idx => idx >= 0);
+    const isCorrect = selectedIndexes.length === correctIndexes.length
+        && selectedIndexes.every((idx, pos) => idx === correctIndexes[pos]);
+    state.hasSubmittedAnswer = true;
+
     const container = document.getElementById('options-container');
     const buttons = container.querySelectorAll('.option-btn');
 
     buttons.forEach((btn, idx) => {
         btn.disabled = true;
 
-        // 正解の選択肢を強調表示
         if (currentQ.options[idx].isCorrect) {
             btn.classList.add('show-correct');
         }
 
-        // 解説を表示する
         const explDiv = document.getElementById(`expl-${idx}`);
         explDiv.style.display = "block";
         if (currentQ.options[idx].isCorrect) {
@@ -282,37 +332,44 @@ window.selectOption = function (selectedIndex) {
         }
     });
 
-    const selectedBtn = document.getElementById(`opt-${selectedIndex}`);
     const qResult = document.getElementById('q-result');
+    document.getElementById('submit-answer-btn').disabled = true;
 
     if (isCorrect) {
-        selectedBtn.classList.add('selected-correct');
-        qResult.textContent = "⭕ 正解！";
+        selectedIndexes.forEach(idx => {
+            document.getElementById(`opt-${idx}`).classList.remove('selected-pending');
+            document.getElementById(`opt-${idx}`).classList.add('selected-correct');
+        });
+        qResult.textContent = "正解";
         qResult.style.color = "var(--success-color)";
         updateStat(state.currentCategory, currentQ.id, true);
-
-        // 正解ならキューから外れる
         state.queue.shift();
     } else {
-        selectedBtn.classList.add('selected-wrong');
-        qResult.textContent = "❌ 不正解...";
+        selectedIndexes.forEach(idx => {
+            document.getElementById(`opt-${idx}`).classList.remove('selected-pending');
+            document.getElementById(`opt-${idx}`).classList.add(
+                currentQ.options[idx].isCorrect ? 'selected-correct' : 'selected-wrong'
+            );
+        });
+        qResult.textContent = "不正解";
         qResult.style.color = "var(--error-color)";
         updateStat(state.currentCategory, currentQ.id, false);
 
         if (state.isSuddenDeath) {
-            // 間違えたらキューの最後に追加（サドンデス）
             const q = state.queue.shift();
             state.queue.push(q);
         } else {
-            // 通常モードならそのまま消す
             state.queue.shift();
         }
     }
 
+    document.getElementById('action-container').style.display = "none";
     document.getElementById('next-container').style.display = "flex";
 }
 
 window.nextQuestion = function () {
+    state.selectedOptions = [];
+    state.hasSubmittedAnswer = false;
     renderQuiz();
 }
 

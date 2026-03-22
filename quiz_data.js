@@ -522,7 +522,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBig",
+      "question": "【オンプレからのBigQueryアクセス保護】\nオンプレからVPN経由でBigQueryを利用する際、インサイダー等によるデータ流出を防止したい。",
       "options": [
         {
           "text": "プライベート Google アクセスのみを設定する。",
@@ -701,12 +701,90 @@ const allQuizData = {
           "explanation": "プライベートGoogleアクセスを使えば、インターネットの外部IPを持たないVMからでも内部IPのみでCloud Storageへ安全にアクセス・ダウンロードできるため。"
         }
       ]
+    },
+    {
+      "id": 28,
+      "question": "【人気コンテンツ配信のパフォーマンス改善（CDN）】\nGCEインスタンスからユーザーへ直接音楽ファイルをストリーミングしている環境で、人気曲へのアクセス集中による再生失敗（負荷）を解決したい。",
+      "options": [
+        {
+          "text": "人気曲をCloud SQLにコピーし、オーバーロード時にそこから取得するようにする。",
+          "isCorrect": false,
+          "explanation": "Cloud SQLはリレーショナルDBであり、大容量のメディアファイル（Blob）のストリーミング配信には不向きでコストもかかります。"
+        },
+        {
+          "text": "Cloud Filestoreボリュームを作成し、ダウンロードしてバックエンドGCEから配信する。",
+          "isCorrect": false,
+          "explanation": "ファイルストレージに変えても、GCEインスタンス自体へのネットワーク・処理負荷が集中する問題は解決しません。"
+        },
+        {
+          "text": "すべてのGCEにgcsfuseを使用してバケットをマウントし、GCEから配信する。",
+          "isCorrect": false,
+          "explanation": "GCEがストリーミングのボトルネックになるアーキテクチャ上の欠陥が残ったままです。"
+        },
+        {
+          "text": "MIGを作成し、Cloud Storageバケットと共にグローバルLBのバックエンドに設定し、バケット側でCloud CDNを有効にする。",
+          "isCorrect": true,
+          "explanation": "静的な音楽ファイルをCloud Storageに置き、Cloud CDNを有効にしたロードバランサを経由させることで、エッジでキャッシュが効き、人気曲のトラフィックをGCEインスタンスから完全にオフロードしてパフォーマンスを劇的に改善できます。"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "question": "【GKEからの安全なアウトバウンド通信（NAT）】\n外部IPを持たない（許可されていない）GKEクラスタから、インターネット上のサードパーティサービスへ安全にアクセスしたい。",
+      "options": [
+        {
+          "text": "Compute Engineインスタンスを作成しNATプロキシをインストールし、GKE上の全トラフィックを経由させる。",
+          "isCorrect": false,
+          "explanation": "独自のNATプロキシの運用は管理オーバーヘッドが高く、単一障害点になるリスクがあります。"
+        },
+        {
+          "text": "GKEクラスターをプライベートクラスターとして構成し、VPC上でプライベートGoogleアクセスを構成する。",
+          "isCorrect": false,
+          "explanation": "プライベートGoogleアクセスはGCP内部サービスへのアクセス用であり、インターネット上のサードパーティAPIへのアクセスはできません。"
+        },
+        {
+          "text": "GKEクラスタをルートベースのクラスタとして構成し、VPC上にプライベートGoogleアクセスを構成する。",
+          "isCorrect": false,
+          "explanation": "同様に、サードパーティへのインターネットアクセス要件を満たせません。"
+        },
+        {
+          "text": "GKEクラスターをプライベートクラスターとして設定し、クラスターのサブネットにCloud NAT Gatewayを設定する。",
+          "isCorrect": true,
+          "explanation": "パブリックIPを持たないプライベートGKEクラスタのノードがインターネットへアクセスするには、マネージドなCloud NATゲートウェイを配置するのが安全でスケーラブルなベストプラクティスです。"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "question": "【グローバルなKubernetes Ingressの構成】\nus-central1にあるGKEクラスタのWeb APIを、アジアのユーザーにも低遅延で提供するためマルチリージョンへ拡張したい。",
+      "options": [
+        {
+          "text": "クラスタ内のアプリケーションに割り当てるメモリとCPUを増やす。",
+          "isCorrect": false,
+          "explanation": "リソースを増やしても、地理的な物理距離によるネットワーク遅延（レイテンシ）は解決しません。"
+        },
+        {
+          "text": "クラウドCDNを有効にしたグローバルHTTPロードバランサーを使用する。",
+          "isCorrect": false,
+          "explanation": "CDNは静的コンテンツのキャッシュに有効ですが、API（動的データ）のレイテンシ改善には、ユーザーに近いリージョンでコンピュートを動かす必要があります。"
+        },
+        {
+          "text": "第2のGKEクラスターを作成し、LoadBalancerタイプのサービスを使用してパブリックIPをDNSゾーンに追加する。",
+          "isCorrect": false,
+          "explanation": "個別のLBとDNS設定では、単一のエニーキャストIPで最適なリージョンへルーティングするグローバルLBの利点を活かせません。"
+        },
+        {
+          "text": "asia-southeast1に第2のGKEクラスターを作成し、kubemci（またはAnthos Ingress）を使用してグローバルHTTP(S)ロードバランサーを作成する。",
+          "isCorrect": true,
+          "explanation": "ユーザーに近い別リージョンにクラスタをデプロイし、マルチクラスタIngressを利用してグローバルロードバランサで束ねることで、単一IPでユーザーを最寄りのクラスタへルーティングし遅延を最小化できます。"
+        }
+      ]
     }
   ],
   "2_storage_database": [
     {
       "id": 1,
-      "question": "【Cloud SQLのゾーン障害耐性】\nS",
+      "question": "【Cloud SQLのゾーン障害耐性】\nSQL Serverを構築する際、ゾーン障害時でもダウンタイムが発生しないようにしたい。",
       "options": [
         {
           "text": "Cloud Spannerをリージョン構成にする。",
@@ -758,7 +836,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【Cloud SQLのフェイルオーバー】\nCloud S",
+      "question": "【Cloud SQLのフェイルオーバー】\nCloud SQLで特定のゾーンから提供を行っており、新たに高可用性（HA）を導入したい。",
       "options": [
         {
           "text": "異なるリージョンにリードレプリカを作成する。",
@@ -1018,7 +1096,7 @@ const allQuizData = {
     },
     {
       "id": 13,
-      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMyS",
+      "question": "【永続ディスクのIOPS向上】\n80GBのSSD永続ディスクを搭載したMySQLサーバーのパフォーマンス（IOPS）を向上させたい。",
       "options": [
         {
           "text": "PostgreSQLに作り直す。",
@@ -1122,7 +1200,7 @@ const allQuizData = {
     },
     {
       "id": 17,
-      "question": "【Cloud SQLのデータ損失最小化】\nCloud S",
+      "question": "【Cloud SQLのデータ損失最小化】\nCloud SQL (MySQL) で致命的な障害が発生した場合のデータ損失を最小限にしたい。（※複数選択の要件を個別に判定）",
       "options": [
         {
           "text": "リードレプリカを実装する。",
@@ -1174,7 +1252,7 @@ const allQuizData = {
     },
     {
       "id": 19,
-      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMyS",
+      "question": "【オンプレミスDBの最小ダウンタイム移行】\nオンプレミスのMySQLからCloud SQLへ、ダウンタイムと変更を最小限に抑えて移行したい。",
       "options": [
         {
           "text": "VPN接続後、オンプレを停止しCloud SQLのレプリカをプロモートして切り替える。",
@@ -1226,7 +1304,7 @@ const allQuizData = {
     },
     {
       "id": 21,
-      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMyS",
+      "question": "【データベースバックアップによるディスク影響の最小化】\nディスクパフォーマンスに影響を与えず、できるだけ早くMySQLのバックアップを完了させたい。",
       "options": [
         {
           "text": "gcsfuseでCloud Storageを直接マウントしmysqldumpする。",
@@ -1356,7 +1434,7 @@ const allQuizData = {
     },
     {
       "id": 26,
-      "question": "【Cloud SQLの負荷・容量最適化】\nCloud S",
+      "question": "【Cloud SQLの負荷・容量最適化】\nCloud SQLのストレージ不足を回避し、CPU使用率を維持しつつ、レプリケーションラグを減らしたい。",
       "options": [
         {
           "text": "ストレージ超過アラートを作成し容量追加、memcached導入、インスタンス変更を行う。",
@@ -1455,6 +1533,58 @@ const allQuizData = {
           "text": "CRC32Cハッシュを計算するカスタムJavaアプリを開発して比較する。",
           "isCorrect": false,
           "explanation": "gsutil に組み込まれているハッシュ計算機能を活用せず、自前でアプリを開発するのは労力がかかりすぎます。"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "question": "【Bigtableのパフォーマンス・負荷テスト】\nCompute EngineとCloud Bigtableで構成されるサービスの拡張性を検証するため、QAチームが負荷テストツールを展開する際のベストプラクティスを含めたい。",
+      "options": [
+        {
+          "text": "負荷テストツールが本番環境に対して定期的に実行されるようスケジュールする。",
+          "isCorrect": false,
+          "explanation": "本番環境への直接的な負荷テストは、実際の顧客に影響を与えるリスクがあるため避けるべきです。"
+        },
+        {
+          "text": "サービスが使用するすべてのサードパーティシステムが高負荷に対応できるか確認する。",
+          "isCorrect": false,
+          "explanation": "サードパーティへの意図しないDDoS攻撃になりかねず、テスト範囲から除外またはモック化すべきです。"
+        },
+        {
+          "text": "負荷テストツールで再現するため、本番サービスのすべてのトランザクションを記録する機能を組み込む。",
+          "isCorrect": false,
+          "explanation": "本番での全件記録はパフォーマンスの低下やプライバシー問題を引き起こすため不適切です。"
+        },
+        {
+          "text": "負荷テストでCloud Bigtableの性能が検証されることを確認し、詳細なロギングとメトリクス収集機能を持たせる。",
+          "isCorrect": true,
+          "explanation": "マネージドサービスであっても、スキーマ設計に依存するBigtable自体のパフォーマンスを計測してボトルネックを特定することは必須であり、詳細なメトリクス収集は負荷テストの基本要件です。"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "question": "【サードパーティからの大容量データ移行】\n10TBのデータをサードパーティのオブジェクトストレージサービスからCloud Storageへ、最小コストかつ最速で移行したい。",
+      "options": [
+        {
+          "text": "Google CloudからTransfer Applianceをリクエストする。",
+          "isCorrect": false,
+          "explanation": "アプライアンスの配送に数週間かかるため、10TB程度であればネットワーク経由の方が圧倒的に早く完了します。"
+        },
+        {
+          "text": "gsutil mvコマンドでデータを移動する。",
+          "isCorrect": false,
+          "explanation": "コマンドを実行するマシンのネットワーク帯域に依存し、マネージドな移行サービスではありません。"
+        },
+        {
+          "text": "オンプレミスにデータをダウンロードして、Cloud Storageにアップロードする。",
+          "isCorrect": false,
+          "explanation": "2回の転送（ダウンロードとアップロード）が発生し、時間と通信コストの無駄です。"
+        },
+        {
+          "text": "Storage Transfer Serviceを使用してデータを移動する。",
+          "isCorrect": true,
+          "explanation": "クラウド間（サードパーティストレージからGCSへ）のデータ転送において、中継サーバーを立てることなくGoogleのバックボーンを活用して高速・安全・低コストに自動転送できるStorage Transfer Serviceが最適です。"
         }
       ]
     }
@@ -1979,6 +2109,162 @@ const allQuizData = {
           "explanation": "オートスケーリングを備えたMIGにテスト処理を並列化させることで、必要な時だけ大量のコンピュートリソースを確保し、テスト時間を大幅に短縮できるため。"
         }
       ]
+    },
+    {
+      "id": 21,
+      "question": "【別リージョンへのVMコピー展開】\n本番VMのコピーを管理・交換しやすい形で、別リージョンの別プロジェクトに新しいインスタンスとして迅速に展開したい。",
+      "options": [
+        {
+          "text": "ルートディスクのスナップショットを作成し、それを別リージョンでのVM作成時に直接選択する。",
+          "isCorrect": false,
+          "explanation": "スナップショットから直接別リージョン・別プロジェクトでVMを起動するよりも、カスタムイメージ化する方が管理と展開の汎用性が高くなります。"
+        },
+        {
+          "text": "Linuxのddコマンドでイメージファイルを作成し、新しいVMを作成する。",
+          "isCorrect": false,
+          "explanation": "OS内部のコマンドで手動コピーを行うのはダウンタイムや不整合のリスクがあり、クラウドネイティブな手法ではありません。"
+        },
+        {
+          "text": "Linuxのddコマンドとnetcatを使用してルートディスクをストリーミングコピーする。",
+          "isCorrect": false,
+          "explanation": "同様に、手動でのデータストリーミングは非効率かつエラーが発生しやすくなります。"
+        },
+        {
+          "text": "スナップショットを作成し、そこからCloud Storageにイメージファイルを作成し、それを元に新しいVMを作成する。",
+          "isCorrect": true,
+          "explanation": "スナップショットからカスタムイメージ（イメージファイル）を作成することで、グローバルリソースとして任意のリージョンやプロジェクトで簡単にVMのベースとして再利用・管理が可能になります。"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "question": "【モノリシックからマイクロサービスへの移行の利点説明】\n拡張性と信頼性に欠けるモノリシックアプリを、マイクロサービスとマネージドサービスへ移行する価値（メリット）をリーダーに説得したい。",
+      "options": [
+        {
+          "text": "このプロセスは、Migrate for Compute Engineで自動化できます。",
+          "isCorrect": false,
+          "explanation": "これはリフト＆シフト（VM移行）のツールであり、マイクロサービスへのアーキテクチャ再構築を自動化するものではありません。"
+        },
+        {
+          "text": "コストが大幅に削減され、基盤インフラの管理が容易になり、CI/CDを自動管理できるようになる。",
+          "isCorrect": false,
+          "explanation": "マイクロサービス化によってシステム全体の複雑さは増すことがあり、必ずしも「コストが大幅に削減」されるわけではありません。"
+        },
+        {
+          "text": "モノリシックなソリューションはDockerでコンテナ化しKubernetesにデプロイできる。",
+          "isCorrect": false,
+          "explanation": "コンテナ化するだけではモノリシックのままであり、マイクロサービスとしての利点（疎結合）を得られません。"
+        },
+        {
+          "text": "インフラとアプリの切り離し、新機能の独立したリリース、CI/CD・A/Bテストの管理、スケーリングが容易になる。",
+          "isCorrect": true,
+          "explanation": "マイクロサービス化の最大の利点は「サービスごとの独立した開発・テスト・デプロイ・スケーリング」が可能になり、ビジネスのアジリティとシステムの信頼性が向上することです。"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "question": "【VMwareからのリフト＆シフト移行計画】\nオンプレミスのVMware環境で稼働する多数のLinux VMを、Googleが推奨する方法（ベストプラクティス）に従ってCompute Engineに移行したい。",
+      "options": [
+        {
+          "text": "現在のVM環境を評価し、全VMにサードパーティ製エージェントをインストールして移行する。",
+          "isCorrect": false,
+          "explanation": "個別のエージェントインストールは管理オーバーヘッドが大きく、GCPのネイティブな移行ツールの利点を活かしていません。"
+        },
+        {
+          "text": "アプリケーションリストに基づき、Migrate for Compute Engineで全VMを「個別に」移行する。",
+          "isCorrect": false,
+          "explanation": "依存関係を持つVM群を個別に移行するとシステムが壊れるため、論理的なグループ（ウェーブ）単位で移行すべきです。"
+        },
+        {
+          "text": "現在のVM環境を評価し、全ディスクのイメージを作成してインポートしVMを作成する。",
+          "isCorrect": false,
+          "explanation": "手動でのイメージ作成とインポートはダウンタイムが長くなり、大規模な移行手法としては非効率です。"
+        },
+        {
+          "text": "仮想マシンの評価を行い、移行プランを定義した上でMigrate for Compute EngineのRunBookを準備して移行を実行する。",
+          "isCorrect": true,
+          "explanation": "VMの依存関係と移行順序を定義した「RunBook」を使用し、グループ（ウェーブ）単位で計画的に移行を自動化するのが、GCP公式のベストプラクティスです。"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "question": "【GKEでの一貫したホスト名の維持】\nGKE上のデータベースやクラスタ化されたワークロードにおいて、Podのスケーリングや再起動後も「一貫した永続的なホスト名」のセットを維持したい。",
+      "options": [
+        {
+          "text": "ロールベースのアクセスコントロール (RBAC)",
+          "isCorrect": false,
+          "explanation": "RBACはAPIの権限管理を行うものであり、ネットワークやホスト名のアイデンティティ管理とは無関係です。"
+        },
+        {
+          "text": "永続ボリューム (Persistent Volume)",
+          "isCorrect": false,
+          "explanation": "ストレージの永続化は行えますが、PodのネットワークID（ホスト名）を一貫させる機能はありません。"
+        },
+        {
+          "text": "コンテナの環境変数",
+          "isCorrect": false,
+          "explanation": "Podが再作成された際に新しいIPや名前が割り当てられるため、環境変数だけではDNSレベルの恒久的なホスト名解決はできません。"
+        },
+        {
+          "text": "StatefulSetsを使用する",
+          "isCorrect": true,
+          "explanation": "StatefulSetは、スケジュールされた場所や再起動に関わらず、Podに対して一意で永続的なネットワークID（ホスト名）とストレージを保証するため、ステートフルワークロードに最適です。"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLをバックエンドとするApp Engineアプリで、データベースの負荷を下げるためにクエリ発行数を最小限にしたい。",
+      "options": [
+        {
+          "text": "Memcacheを「共有」にし、クエリハッシュキーでキャッシュをチェックする。",
+          "isCorrect": false,
+          "explanation": "共有Memcacheはベストエフォートでありキャッシュ容量が保証されないため、キャッシュヒット率が安定せずDBの負荷低減策として確実ではありません。"
+        },
+        {
+          "text": "共有Memcacheを使用し、1分ごとのcronタスクで全結果をキャッシュに投入する。",
+          "isCorrect": false,
+          "explanation": "不要なクエリまで定期実行することになり、DB負荷の最小化に逆行します。"
+        },
+        {
+          "text": "専用Memcacheを使用し、1分ごとのcronタスクで結果をキャッシュに投入する。",
+          "isCorrect": false,
+          "explanation": "同様に、cronによる一括キャッシュは非効率です。"
+        },
+        {
+          "text": "専用Memcacheを設定し、クエリハッシュのキーでキャッシュをチェックしてからCloud SQLにクエリを発行する。",
+          "isCorrect": true,
+          "explanation": "容量が固定・保証される「専用Memcache」を使用し、リクエストの都度キャッシュを確認する（キャッシュアサイドアプローチ）ことで、データベースへの不要なクエリを最も効率的に削減できます。"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "question": "【GKEのクラスタオートスケーリング有効化】\n既存のGKEクラスタにおいて、アプリケーションのトラフィック増加に応じてノード数を自動的にスケーリングさせたい。",
+      "options": [
+        {
+          "text": "`gcloud container clusters resize CLUSTER_NAME --size=10` コマンドを使用する。",
+          "isCorrect": false,
+          "explanation": "`resize`コマンドは静的にクラスタのノード数を変更するものであり、「自動スケーリング」を有効化するものではありません。"
+        },
+        {
+          "text": "`gcloud container clusters create` コマンドでオートスケーリング付きの新しいクラスタを作成する。",
+          "isCorrect": false,
+          "explanation": "「既存のクラスタ」を変更する要件に反します。"
+        },
+        {
+          "text": "`gcloud compute instances add-tags` コマンドでインスタンスにタグを追加する。",
+          "isCorrect": false,
+          "explanation": "タグを追加してもオートスケーリング機能は有効になりません。"
+        },
+        {
+          "text": "`gcloud container clusters update CLUSTER_NAME --enable-autoscaling` コマンドを使用して既存のクラスタを更新する。",
+          "isCorrect": true,
+          "explanation": "既存クラスタの設定を更新する`update`コマンドに`--enable-autoscaling`と最小/最大ノード数を付与することで、クラスタの自動スケーリングが正しく有効化されます。"
+        }
+      ]
     }
   ],
   "4_operations_monitoring": [
@@ -2036,7 +2322,7 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月Big",
+      "question": "【BigQueryのクエリ数監査】\n監査のために、各ユーザーが先月BigQueryで実行したクエリ数を確認したい。",
       "options": [
         {
           "text": "Cloud Audit Logsを使用し、必要な情報を取得するために問い合わせ操作にフィルタを作成する。",
@@ -2192,7 +2478,7 @@ const allQuizData = {
     },
     {
       "id": 9,
-      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud S",
+      "question": "【GKE上のDB接続問題の事後検証】\nGKE上のアプリからCloud SQLプロキシ経由のDB接続エラーについて、事後検証（ポストモーテム）を行いたい。",
       "options": [
         {
           "text": "GCPコンソールでCloud Loggingに移動し、GKEとCloud SQLのログを参照する。",
@@ -2631,6 +2917,136 @@ const allQuizData = {
           "explanation": "GCPのネイティブツールを提案するという具体的なアクションが欠如しています。"
         }
       ]
+    },
+    {
+      "id": 26,
+      "question": "【災害対策のテスト手順自動化】\nミッションクリティカルなアプリのDR（災害復旧）テスト手順を、インフラのプロビジョニングと監視を含めGoogleネイティブの手法で自動化したい。",
+      "options": [
+        {
+          "text": "gcloudスクリプトでプロビジョニングし、Activity Logsで監視・デバッグを行う。",
+          "isCorrect": false,
+          "explanation": "自前のスクリプトは管理負荷が高く、Activity Logsは主にAPI監査用であり詳細なインフラ監視には適していません。"
+        },
+        {
+          "text": "gcloudスクリプトでプロビジョニングし、Stackdriverで監視・デバッグを行う。",
+          "isCorrect": false,
+          "explanation": "監視にStackdriverを使用するのは正しいですが、インフラ構築に自前スクリプトを使うのはGoogle推奨のベストプラクティスではありません。"
+        },
+        {
+          "text": "Deployment Managerを使用してプロビジョニングし、Activity Logsで監視・デバッグを行う。",
+          "isCorrect": false,
+          "explanation": "インフラ構築ツールは正しいですが、監視ツールとしてActivity Logsを使用するのは不適切です。"
+        },
+        {
+          "text": "Deployment Managerを使用してプロビジョニングし、Stackdriverを使用して監視とデバッグを行う。",
+          "isCorrect": true,
+          "explanation": "インフラのコード化・自動化にはDeployment Manager（またはTerraform）を使用し、システムの稼働状態の監視にはStackdriver (Cloud Monitoring) を使用するのがDRテストのベストプラクティスです。"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "question": "【高可用性SLAを担保するレジリエンステスト】\n新規ユーザー解放に伴い、負荷増加やゾーン障害発生時でもアプリケーションがSLA(99.99%)を維持できるかレジリエンス（耐障害性）をテストしたい。",
+      "options": [
+        {
+          "text": "リードレプリカを構成しKPIを監視しながら手動でフェイルオーバーをトリガーする。",
+          "isCorrect": false,
+          "explanation": "DBの手動フェイルオーバーだけでは、アプリケーション層のオートスケールやゾーン障害に対する包括的な耐障害性テストになりません。"
+        },
+        {
+          "text": "ユーザーグループを日ごとに大きくし、両方のゾーンのランダムなリソースを終了させる。",
+          "isCorrect": false,
+          "explanation": "段階的な公開はカナリアリリースには有効ですが、急激なスパイクや障害に対するストレステストの要件をすぐには満たせません。"
+        },
+        {
+          "text": "既存ユーザーの入力をキャプチャして再生し、一方のゾーンの全リソースを終了させる。",
+          "isCorrect": false,
+          "explanation": "既存のユーザー入力の再生だけでは、未知の未登録ユーザーの予測不可能なトラフィックパターン（ランダム性）をシミュレートしきれません。"
+        },
+        {
+          "text": "ランダムなユーザー入力を作成して負荷を再生し、両ゾーンのランダムなリソースを停止させカオスエンジニアリングを導入する。",
+          "isCorrect": true,
+          "explanation": "実シナリオに近いランダムなトラフィック負荷をかけつつ、意図的にリソースを停止（カオスエンジニアリング）させることで、オートスケールと自己修復機能がSLAを満たして正しく動作するかを最も確実にテストできます。"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "question": "【新規プロジェクトのコスト最小化（割引の活用）】\n需要が不明瞭なスタートアップのプロジェクトにおいて、インフラコストを自動的に最小化し、運用スタッフを増やさずにベストプラクティスを適用したい。",
+      "options": [
+        {
+          "text": "無料期間と継続利用割引を活用し、コスト管理スタッフを新たに配置する。",
+          "isCorrect": false,
+          "explanation": "スタッフの新規配置は人件費（コスト）の増大を招くため要件に反します。"
+        },
+        {
+          "text": "無料期間とコミットメント利用割引を利用し、スタッフを配置する。",
+          "isCorrect": false,
+          "explanation": "需要が不明瞭な段階で1〜3年の長期契約（コミットメント）を結ぶのはリスクが高く不適切です。"
+        },
+        {
+          "text": "無料期間とコミットメント利用割引を利用し、チームにトレーニングを提供する。",
+          "isCorrect": false,
+          "explanation": "同様に、需要が予測できないワークロードに対するコミットメント利用割引の適用は最適ではありません。"
+        },
+        {
+          "text": "無料期間および継続利用割引を利用し、サービスコスト管理のトレーニングをチームに提供する。",
+          "isCorrect": true,
+          "explanation": "リソースの利用時間に応じて自動的に適用される「継続利用割引（Sustained Use Discount）」を活用し、チームにトレーニングを行って自己管理させるのが、不確実な需要に対する最もコスト効率の良いアプローチです。"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "question": "【マイクロサービス障害のシミュレーション】\nGKE上で動作するアプリケーションにおいて、特定のマイクロサービスが突然クラッシュした際のレジリエンス動作を検証したい。",
+      "options": [
+        {
+          "text": "挙動を観察するために、Kubernetesクラスタのノードの1つを破壊する。",
+          "isCorrect": false,
+          "explanation": "ノード全体の破壊はインフラ障害テストであり、アプリケーションレイヤーの特定の「マイクロサービスのクラッシュ」を正確にシミュレートできません。"
+        },
+        {
+          "text": "Kubernetesクラスタのノードにtaintを追加し、アンチアフィニティラベルを設定する。",
+          "isCorrect": false,
+          "explanation": "スケジューリングの制御機能であり、障害シミュレーションの手法ではありません。"
+        },
+        {
+          "text": "Istioのトラフィック管理機能を使って、クラッシュしたマイクロサービスからトラフィックを誘導する。",
+          "isCorrect": false,
+          "explanation": "障害時の回避策の設定であり、障害自体を人工的に発生（シミュレート）させる機能ではありません。"
+        },
+        {
+          "text": "Istioのフォールト・インジェクション機能を、不具合のある動作をシミュレートしたい特定のマイクロサービスに使用する。",
+          "isCorrect": true,
+          "explanation": "サービスメッシュ（Istio/Anthos）のフォールトインジェクション機能を利用することで、コードを変更せずに意図的な遅延やHTTPエラー（クラッシュ）を挿入し、安全に障害テスト（カオスエンジニアリング）を実施できます。"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "question": "【Firewall Insightsのログ欠落解決】\nNetwork Intelligence CenterのFirewall Insightsダッシュボードで、ルールの効率を評価したいが表示されるログ行がない問題を解決したい。",
+      "options": [
+        {
+          "text": "ユーザーアカウントにcompute.networkAdminのIAMロールが割り当てられていることを確認する。",
+          "isCorrect": false,
+          "explanation": "権限があっても、ログ自体の取得機能がオンになっていなければインサイトは生成されません。"
+        },
+        {
+          "text": "Google Cloud SDKをインストールし、コマンドライン出力にFirewallのログがないことを確認する。",
+          "isCorrect": false,
+          "explanation": "表示されない原因の調査にはならず、問題解決の手段として不適切です。"
+        },
+        {
+          "text": "Virtual Private Cloud（VPC）のフローロギングを有効にする。",
+          "isCorrect": false,
+          "explanation": "フローログはサブネット全体のトラフィック記録用であり、ファイアウォールルール個別のインサイト分析には専用のロギングが必要です。"
+        },
+        {
+          "text": "監視したいファイアーウォールルールの「ファイアーウォールルールロギング」を有効にする。",
+          "isCorrect": true,
+          "explanation": "Firewall Insightsがメトリクスと分析情報を生成するためには、大前提として各VPCファイアウォールルールのロギング機能が有効になっている必要があるためです。"
+        }
+      ]
     }
   ],
   "5_security_iam": [
@@ -2688,32 +3104,6 @@ const allQuizData = {
     },
     {
       "id": 3,
-      "question": "【MLレコメンドエンジンの精度向上】\nEコマースサイトの機械学習モデル（レコメンド）の「結果の質（精度）」を向上させたい。",
-      "options": [
-        {
-          "text": "モデルのトレーニングをCloud GPUからCloud TPUに移行する。",
-          "isCorrect": false,
-          "explanation": "TPUへの移行は学習時間の短縮（パフォーマンス）には寄与しますが、モデルの精度自体の向上には繋がりません。"
-        },
-        {
-          "text": "新しいCPUアーキテクチャが利用可能になった時点でモデルをデプロイする。",
-          "isCorrect": false,
-          "explanation": "ハードウェアを新しくしても予測精度は改善しません。"
-        },
-        {
-          "text": "メトリクスをBigQueryにエクスポートし、モデルの効率性を分析する。",
-          "isCorrect": false,
-          "explanation": "運用効率の分析であり、モデルの推奨精度の改善策ではありません。"
-        },
-        {
-          "text": "レコメンデーションの履歴と結果をBigQueryに保存し、トレーニングデータとして使用する。",
-          "isCorrect": true,
-          "explanation": "機械学習の精度を向上させる最も確実な方法は「良質な教師データ（履歴データ）を蓄積・学習させる」ことであり、BigQuery ML等を活用するのがベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 4,
       "question": "【PIIとクレジットカード情報の秘匿化】\nカスタマーサポートのチャット履歴を保存・分析する際、個人情報(PII)やカード情報をマスキング・消去したい。",
       "options": [
         {
@@ -2739,7 +3129,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 5,
+      "id": 4,
       "question": "【PCI DSSコンプライアンスのスコープ最小化】\nクレジットカード決済のトレンド分析は行いたいが、平文のカード番号は保存せず、PCIの監査範囲を最小限にしたい。",
       "options": [
         {
@@ -2765,7 +3155,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 6,
+      "id": 5,
       "question": "【監査人へのIAMポリシー変更の共有】\n年1回のIAMポリシー変更監査プロセスを合理化し、監査人へ必要なデータ（ログ）のみを迅速に共有したい。",
       "options": [
         {
@@ -2791,8 +3181,8 @@ const allQuizData = {
       ]
     },
     {
-      "id": 7,
-      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBig",
+      "id": 6,
+      "question": "【BigQueryのPIIアクセス制御とコスト最適化】\nBigQueryのテーブル内でPII（個人情報）へのアクセスを制限し、他チームにはPIIを除いたデータを低コストで提供したい。",
       "options": [
         {
           "text": "PIIを除いた標準のビューを作成し、IAMロールを割り当てる。",
@@ -2817,7 +3207,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 8,
+      "id": 7,
       "question": "【Active DirectoryとGoogle IDの同期】\n既存のオンプレミスActive Directoryを残したまま、Google CloudのID認証（SSO）と連携させたい。",
       "options": [
         {
@@ -2843,137 +3233,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 9,
-      "question": "【AIモデルの解釈性向上】\nMLモデルの予測精度向上と、出力結果に対して解釈性（どの特徴量が貢献したか）を持たせたい。",
-      "options": [
-        {
-          "text": "Google Cloudのオペレーションスイートを使用する。",
-          "isCorrect": false,
-          "explanation": "オペレーションスイート（監視・ロギング）はインフラの可観測性ツールであり、AIモデルの解釈用ではありません。"
-        },
-        {
-          "text": "Vision AIを使う。",
-          "isCorrect": false,
-          "explanation": "Vision AIは画像解析APIであり、予測モデルの解釈性向上とは無関係です。"
-        },
-        {
-          "text": "Jupyter Notebooksを使う。",
-          "isCorrect": false,
-          "explanation": "開発環境（ノートブック）自体が、モデルの解釈性機能を自動提供するわけではありません。"
-        },
-        {
-          "text": "説明可能なAI (AI Explanations) を使う。",
-          "isCorrect": true,
-          "explanation": "AI Explanationsを利用することで、各特徴量が予測結果にどの程度寄与したかを定量化・可視化でき、モデルの解釈性を高めることができます。"
-        }
-      ]
-    },
-    {
-      "id": 10,
-      "question": "【コンテナの脆弱性スキャンとデプロイ検証】\nCI/CDパイプラインにおいて、検証済みのコンテナのみがGCPにデプロイされることをシステム的に保証したい。",
-      "options": [
-        {
-          "text": "Jenkinsを構成し、Kritisを利用してコンテナに暗号署名を行う。",
-          "isCorrect": false,
-          "explanation": "外部ツールに頼らず、GCPネイティブのフルマネージドサービスを利用する方が推奨されます。"
-        },
-        {
-          "text": "信頼されたサービスアカウントのみがデプロイできるようにContainer Registryを構成する。",
-          "isCorrect": false,
-          "explanation": "権限の制限だけでは、「コンテナに脆弱性がないか（検証済みか）」の内容の担保はできません。"
-        },
-        {
-          "text": "セキュリティSMEがすべてのコードのチェックインをピアレビューする。",
-          "isCorrect": false,
-          "explanation": "手動レビューはデプロイの自動化・迅速化の妨げになり、システム的な強制力もありません。"
-        },
-        {
-          "text": "Container Registryで脆弱性スキャンを使用し、GKEでBinary Authorizationを有効にして署名・検証する。",
-          "isCorrect": true,
-          "explanation": "脆弱性スキャンで安全性を確認し、Binary Authorizationで「署名（検証）されたイメージ以外はクラスタ上で起動させない」という強制力を持たせるのがベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 11,
-      "question": "【非構造化データの探索とクリーニング】\n時間の経過とともに劣化したオンプレミスのデータに対して、異常を検出しクリーニング（データラングリング）を行いたい。",
-      "options": [
-        {
-          "text": "Cloud Storageにアップロードし、Cloud Datalabを使用してクリーニングする。",
-          "isCorrect": false,
-          "explanation": "Datalab（Jupyter環境）はコードベースの分析環境であり、GUIベースの高速なデータクリーニングには専用ツールの方が適しています。"
-        },
-        {
-          "text": "Cloud Datalabをオンプレミスシステムに直接接続する。",
-          "isCorrect": false,
-          "explanation": "クラウドへのアップロードを介さない直接接続はパフォーマンスや連携の面で推奨されません。"
-        },
-        {
-          "text": "Cloud Dataprepをオンプレミスシステムに直接接続する。",
-          "isCorrect": false,
-          "explanation": "DataprepはCloud StorageやBigQueryを直接のソースとすることが前提のクラウドネイティブなサービスです。"
-        },
-        {
-          "text": "Cloud Storageにファイルをアップロードし、Cloud Dataprepを使用して検索とクリーニングを行う。",
-          "isCorrect": true,
-          "explanation": "Cloud Dataprepは、GUIベースで異常値の検出やデータクレンジングを視覚的かつ高速に行えるため、このユースケースに最適です。"
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "question": "【監査可能なコンテナのバージョン管理】\n本番環境のデプロイメントが、ソースコードのどのコミットに該当するかを完全にリンクさせ監査可能にしたい。",
-      "options": [
-        {
-          "text": "デプロイメントにリンクするコメントをコミットに追加する。",
-          "isCorrect": false,
-          "explanation": "開発者の手動入力に依存するため、ミスが発生しやすく監査証跡として不十分です。"
-        },
-        {
-          "text": "開発者がコミットに \"latest\" のタグを付ける。",
-          "isCorrect": false,
-          "explanation": "\"latest\"タグは常に最新のものに上書きされてしまうため、過去のバージョンを特定できず監査不可能です。"
-        },
-        {
-          "text": "コードのコミットに日時のタグを付ける。",
-          "isCorrect": false,
-          "explanation": "日時だけでは、正確なソースコードの状態（どのブランチのどの変更か）を一意に特定できません。"
-        },
-        {
-          "text": "コンテナタグがソースコードのコミットハッシュと一致するようにする。",
-          "isCorrect": true,
-          "explanation": "Gitのコミットハッシュをコンテナイメージのタグとして使用することで、稼働中のコンテナとソースコードの正確な状態が1対1で一意に結びつき、完全な監査性を担保できます。"
-        }
-      ]
-    },
-    {
-      "id": 13,
-      "question": "【Kubernetes環境への動的デプロイメントとCI/CD】\nGKEベースで、動的拡張、CI/CD、ダイナミックテンプレートによるバンドルデプロイを実現するツールを組み合わせたい。",
-      "options": [
-        {
-          "text": "GKE, Jenkins, Cloud Load Balancing",
-          "isCorrect": false,
-          "explanation": "Cloud Load Balancingはインフラ要素であり、動的テンプレート（バンドル）をデプロイする機能は持っていません。"
-        },
-        {
-          "text": "GKE, Cloud Load Balancing",
-          "isCorrect": false,
-          "explanation": "同様に、CI/CDやテンプレートエンジンの要件を満たすツールが欠けています。"
-        },
-        {
-          "text": "GKE, Cloud Deployment Manager",
-          "isCorrect": false,
-          "explanation": "Deployment ManagerはGCPリソースを作るものであり、K8s内のアプリケーションバンドルのデプロイには適していません。"
-        },
-        {
-          "text": "GKE, Jenkins, Helm",
-          "isCorrect": true,
-          "explanation": "実行環境にGKE、CI/CDにJenkins、そしてKubernetesアプリケーションのダイナミックテンプレートおよびパッケージマネージャーとして「Helm」を使用するのが要件をすべて満たす正解です。"
-        }
-      ]
-    },
-    {
-      "id": 14,
+      "id": 8,
       "question": "【HIPAAコンプライアンス監査への対応】\n医療系システムがHIPAAなどのプライバシーコンプライアンス監査を確実に通過するようにしたい。",
       "options": [
         {
@@ -2999,33 +3259,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 15,
-      "question": "【PIIデータを保存しないDataflowパイプライン】\n外部パートナーから受け取るデータ内のPII（個人情報）を、ストレージに一切保存することなく処理してBig",
-      "options": [
-        {
-          "text": "PIIを分離し、保持ポリシーが設定されたCloud Storageに保存する。",
-          "isCorrect": false,
-          "explanation": "「PIIデータを一切保存しない」という要件に完全に違反しています。"
-        },
-        {
-          "text": "一度Cloud Storageに保存し、パイプラインでDLP APIを使ってPIIを削除する。",
-          "isCorrect": false,
-          "explanation": "一時的にせよCloud StorageにPIIを含む生データを書き込んでしまうため、要件違反です。"
-        },
-        {
-          "text": "BigQueryにインポートし、パイプラインでPIIを持つ列をスキップして新しいテーブルにコピーする。",
-          "isCorrect": false,
-          "explanation": "こちらも一度BigQueryにPIIが保存されてしまうため不可です。"
-        },
-        {
-          "text": "Dataflowでデータを取り込み、インメモリのパイプライン処理中にDLP APIでPIIを削除して結果をBigQueryに保存する。",
-          "isCorrect": true,
-          "explanation": "Dataflowによるストリーミング/バッチ処理の途中でDLP APIを呼び出してPIIを秘匿化・削除することで、ディスクにPIIを一度も保存せずに安全なデータのみをウェアハウスにロードできます。"
-        }
-      ]
-    },
-    {
-      "id": 16,
+      "id": 9,
       "question": "【セキュリティチームへの権限付与】\nセキュリティチームに対し、組織内のすべてのプロジェクトを詳細に「閲覧・把握」できる権限を付与したい。",
       "options": [
         {
@@ -3051,59 +3285,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 17,
-      "question": "【CI/CDでのテストとデプロイの連動】\nリポジトリのコード変更を本番環境にデプロイする前に、安全にステージングで検証するパイプラインを作りたい。",
-      "options": [
-        {
-          "text": "10%のユーザーにマスターブランチの変更をデプロイして本番でテストする。",
-          "isCorrect": false,
-          "explanation": "ステージング環境での検証を経ずに本番トラフィックを流すのはリスクが高すぎます。"
-        },
-        {
-          "text": "Spinnakerを使用して本番環境にビルドを配置し、本番環境でテストを実行する。",
-          "isCorrect": false,
-          "explanation": "本番環境で直接テストを行うことは推奨されません。"
-        },
-        {
-          "text": "Spinnakerでred/blackデプロイを使用する。",
-          "isCorrect": false,
-          "explanation": "デプロイ手法としては有効ですが、本番前の「検証（ステージングテスト）」のステップが抜けています。"
-        },
-        {
-          "text": "Jenkinsでタグを監視し、ステージングタグでテスト環境にデプロイ・検証後、本番タグを付けてデプロイする。",
-          "isCorrect": true,
-          "explanation": "タグ（バージョン）に基づいて異なる環境へプロモートしていくフローは、誤ったコードの本番流出を防ぐCI/CDのベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 18,
-      "question": "【Cloud Buildを用いた継続的ビルド】\nCloud Buildでコンテナを継続的にビルドし、バージョンを追跡可能にして保存したい。",
-      "options": [
-        {
-          "text": "イメージを1つ構築し、「latest」というラベルを付けてコンテナレジストリにプッシュする。",
-          "isCorrect": false,
-          "explanation": "latestタグは常に上書きされるため、バージョン管理や切り戻しができず非推奨です。"
-        },
-        {
-          "text": "バージョン番号をタグ付けして、Cloud Storageにプッシュする。",
-          "isCorrect": false,
-          "explanation": "コンテナイメージはCloud Storageのバケットではなく、専用のContainer Registry (Artifact Registry) に保存すべきです。"
-        },
-        {
-          "text": "Schedulerで1分ごとにリポジトリをチェックし、タイムスタンプでタグ付けする。",
-          "isCorrect": false,
-          "explanation": "ポーリング（定期チェック）は非効率であり、コード変更のWebhookトリガーを使用すべきです。"
-        },
-        {
-          "text": "新しいソース変更のトリガーを設定し、コミットハッシュでタグ付けしてコンテナレジストリにプッシュする。",
-          "isCorrect": true,
-          "explanation": "コード変更駆動のトリガーと、一意性を保証するGitコミットハッシュをタグに用いてRegistryへ保存するのがベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 19,
+      "id": 10,
       "question": "【IAMポリシーの階層と有効化】\n組織、フォルダ、プロジェクトの各レベルにIAMポリシーが存在する場合、最終的にどの権限が有効になるか。",
       "options": [
         {
@@ -3129,33 +3311,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 20,
-      "question": "【CI/CDパイプラインのセキュリティ自動化】\nアジャイル開発においてリリースのスピードを維持しつつ、セキュリティエラー（脆弱性）を未然に防ぎたい。",
-      "options": [
-        {
-          "text": "インターフェースのテスト用スタブを確保する。",
-          "isCorrect": false,
-          "explanation": "単体テスト用スタブは機能のテストには役立ちますが、セキュリティ脆弱性の発見には直接寄与しません。"
-        },
-        {
-          "text": "すべてのコードのチェックインをセキュリティSMEが手動でピアレビューする。",
-          "isCorrect": false,
-          "explanation": "専門家による全量手動レビューはリリーススピードを著しく低下させ、アジリティの要件に反します。"
-        },
-        {
-          "text": "コード署名と信頼できるバイナリリポジトリのみを有効にする。",
-          "isCorrect": false,
-          "explanation": "署名は改ざん防止にはなりますが、ソースコード内の脆弱性そのものを発見するものではありません。"
-        },
-        {
-          "text": "CI/CDパイプラインの一部として、脆弱性スキャナとソースコードセキュリティアナライザを自動実行する。",
-          "isCorrect": true,
-          "explanation": "CI/CDパイプラインに静的/動的なセキュリティスキャンを組み込むことで、開発スピードを落とさずに自動で脆弱性を検知・ブロックできます。"
-        }
-      ]
-    },
-    {
-      "id": 21,
+      "id": 11,
       "question": "【GKEからのGoogle APIへの安全なアクセス】\nGKE上のアプリケーションからGoogle Cloudのサービス（API）へ、セキュリティと管理性を確保して接続したい。",
       "options": [
         {
@@ -3181,7 +3337,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 22,
+      "id": 12,
       "question": "【Firestoreデータベース間のアクセス制御】\n新しいゲームのプログラムから、古いゲームのFirestoreにアクセスさせたいが、権限は最小限にしたい。",
       "options": [
         {
@@ -3207,33 +3363,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 23,
-      "question": "【環境間でのコンテナデプロイ制限】\n開発・ステージング環境でテストされていない未承認のコンテナが、本番のGKEクラスタにデプロイされるのを防ぎたい。",
-      "options": [
-        {
-          "text": "Kubernetesのライフサイクルフックを設定する。",
-          "isCorrect": false,
-          "explanation": "ライフサイクルフック（postStartなど）はコンテナ起動時の処理を定義するものであり、デプロイ自体のセキュリティ検証・ブロック機能ではありません。"
-        },
-        {
-          "text": "Kubernetesアドミッションコントローラを独自に作成する。",
-          "isCorrect": false,
-          "explanation": "独自実装は可能ですが、「最小限の労力で迅速に導入できるGoogle Cloudソリューション」という要件からは外れます。"
-        },
-        {
-          "text": "チームがデプロイを防ぐための企業ポリシー（社内ルール）を導入する。",
-          "isCorrect": false,
-          "explanation": "ルールだけではシステム的な強制力がなく、誤操作を防げません。"
-        },
-        {
-          "text": "開発、ステージング、本番クラスタにバイナリ認証（Binary Authorization）ポリシーを設定し、CI/CDで署名を行う。",
-          "isCorrect": true,
-          "explanation": "Binary Authorizationを利用することで、前段の環境でテスト・署名されたイメージ以外は本番クラスタで実行できないようシステムレベルで強制できます。"
-        }
-      ]
-    },
-    {
-      "id": 24,
+      "id": 13,
       "question": "【マイクロサービスのシークレット管理】\n多数のマイクロサービスが使用するデータベース接続などの「認証情報」を安全に保管・提供したい。",
       "options": [
         {
@@ -3259,7 +3389,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 25,
+      "id": 14,
       "question": "【ログの改ざん防止と信頼性検証】\nアプリケーションに記録されたログデータが、後から変更（改ざん）されていないことを確実に検証したい。",
       "options": [
         {
@@ -3285,7 +3415,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 26,
+      "id": 15,
       "question": "【Cloud Functions間の認証と呼び出し制限】\nCloud Function (A) から別のCloud Function (B) を呼び出す際、BはAからのみリクエストを受け付けるようにしたい。",
       "options": [
         {
@@ -3309,37 +3439,9 @@ const allQuizData = {
           "explanation": "呼び出される関数を認証必須（IAM制限）にし、呼び出し元関数のサービスアカウントにのみ「起動元（Invoker）」ロールを与え、OIDCトークンで認証させるのがGCPのベストプラクティスです。"
         }
       ]
-    }
-  ],
-  "6_data_analytics": [
-    {
-      "id": 1,
-      "question": "【災害対策のテスト手順自動化】\nミッションクリティカルなアプリのDR（災害復旧）テスト手順を、インフラのプロビジョニングと監視を含めGoogleネイティブの手法で自動化したい。",
-      "options": [
-        {
-          "text": "gcloudスクリプトでプロビジョニングし、Activity Logsで監視・デバッグを行う。",
-          "isCorrect": false,
-          "explanation": "自前のスクリプトは管理負荷が高く、Activity Logsは主にAPI監査用であり詳細なインフラ監視には適していません。"
-        },
-        {
-          "text": "gcloudスクリプトでプロビジョニングし、Stackdriverで監視・デバッグを行う。",
-          "isCorrect": false,
-          "explanation": "監視にStackdriverを使用するのは正しいですが、インフラ構築に自前スクリプトを使うのはGoogle推奨のベストプラクティスではありません。"
-        },
-        {
-          "text": "Deployment Managerを使用してプロビジョニングし、Activity Logsで監視・デバッグを行う。",
-          "isCorrect": false,
-          "explanation": "インフラ構築ツールは正しいですが、監視ツールとしてActivity Logsを使用するのは不適切です。"
-        },
-        {
-          "text": "Deployment Managerを使用してプロビジョニングし、Stackdriverを使用して監視とデバッグを行う。",
-          "isCorrect": true,
-          "explanation": "インフラのコード化・自動化にはDeployment Manager（またはTerraform）を使用し、システムの稼働状態の監視にはStackdriver (Cloud Monitoring) を使用するのがDRテストのベストプラクティスです。"
-        }
-      ]
     },
     {
-      "id": 2,
+      "id": 16,
       "question": "【リソースの物理ロケーション制限】\n会社のポリシーに基づき、特定のリソースがGoogle Cloudの許可されたリージョンにのみデプロイされるよう物理的な作成場所を制限したい。",
       "options": [
         {
@@ -3365,59 +3467,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 3,
-      "question": "【別リージョンへのVMコピー展開】\n本番VMのコピーを管理・交換しやすい形で、別リージョンの別プロジェクトに新しいインスタンスとして迅速に展開したい。",
-      "options": [
-        {
-          "text": "ルートディスクのスナップショットを作成し、それを別リージョンでのVM作成時に直接選択する。",
-          "isCorrect": false,
-          "explanation": "スナップショットから直接別リージョン・別プロジェクトでVMを起動するよりも、カスタムイメージ化する方が管理と展開の汎用性が高くなります。"
-        },
-        {
-          "text": "Linuxのddコマンドでイメージファイルを作成し、新しいVMを作成する。",
-          "isCorrect": false,
-          "explanation": "OS内部のコマンドで手動コピーを行うのはダウンタイムや不整合のリスクがあり、クラウドネイティブな手法ではありません。"
-        },
-        {
-          "text": "Linuxのddコマンドとnetcatを使用してルートディスクをストリーミングコピーする。",
-          "isCorrect": false,
-          "explanation": "同様に、手動でのデータストリーミングは非効率かつエラーが発生しやすくなります。"
-        },
-        {
-          "text": "スナップショットを作成し、そこからCloud Storageにイメージファイルを作成し、それを元に新しいVMを作成する。",
-          "isCorrect": true,
-          "explanation": "スナップショットからカスタムイメージ（イメージファイル）を作成することで、グローバルリソースとして任意のリージョンやプロジェクトで簡単にVMのベースとして再利用・管理が可能になります。"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "question": "【侵入テスト（Cloud Function）の定期実行】\n毎週火曜日にリリースされるアプリに対し、セキュリティチームが作成した侵入テスト用のCloud Functionを定期的に自動実行したい。",
-      "options": [
-        {
-          "text": "Cloud Tasksと、Cloud FunctionのトリガーとなるCloud Storageを設定する。",
-          "isCorrect": false,
-          "explanation": "リリースプロセスとテスト実行を連動させる要件に対し、Cloud Storageのファイル作成イベントをトリガーとするのは直接的な構成ではありません。"
-        },
-        {
-          "text": "IAMとConfidential Computingを設定して、Cloud Functionをトリガーする。",
-          "isCorrect": false,
-          "explanation": "これらはセキュリティ・暗号化関連の機能であり、スケジュール実行やイベント駆動のトリガー機能ではありません。"
-        },
-        {
-          "text": "Cloud Loggingシンクと、Cloud FunctionのトリガーとなるCloud Storageを設定する。",
-          "isCorrect": false,
-          "explanation": "ログをトリガーにするのは、定期的なアプリケーションのリリースに対するテスト実行パイプラインとして不適切です。"
-        },
-        {
-          "text": "Cloud Functionを起動するPub/Subキューに通知するようにデプロイジョブを設定する。",
-          "isCorrect": true,
-          "explanation": "アプリケーションのデプロイ（リリース）ジョブの完了時にPub/Subへメッセージを発行し、それをトリガーとして侵入テストのCloud Functionを起動させるのが、CI/CDに統合された最もスマートなイベント駆動アーキテクチャです。"
-        }
-      ]
-    },
-    {
-      "id": 5,
+      "id": 17,
       "question": "【IDのドメイン制限】\nセキュリティチームの要請で、会社のドメイン外のIAMユーザーがGoogle Cloud組織内のプロジェクトで権限を取得することをシステム的に禁止したい。",
       "options": [
         {
@@ -3443,137 +3493,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 6,
-      "question": "【高可用性SLAを担保するレジリエンステスト】\n新規ユーザー解放に伴い、負荷増加やゾーン障害発生時でもアプリケーションがSLA(99.99%)を維持できるかレジリエンス（耐障害性）をテストしたい。",
-      "options": [
-        {
-          "text": "リードレプリカを構成しKPIを監視しながら手動でフェイルオーバーをトリガーする。",
-          "isCorrect": false,
-          "explanation": "DBの手動フェイルオーバーだけでは、アプリケーション層のオートスケールやゾーン障害に対する包括的な耐障害性テストになりません。"
-        },
-        {
-          "text": "ユーザーグループを日ごとに大きくし、両方のゾーンのランダムなリソースを終了させる。",
-          "isCorrect": false,
-          "explanation": "段階的な公開はカナリアリリースには有効ですが、急激なスパイクや障害に対するストレステストの要件をすぐには満たせません。"
-        },
-        {
-          "text": "既存ユーザーの入力をキャプチャして再生し、一方のゾーンの全リソースを終了させる。",
-          "isCorrect": false,
-          "explanation": "既存のユーザー入力の再生だけでは、未知の未登録ユーザーの予測不可能なトラフィックパターン（ランダム性）をシミュレートしきれません。"
-        },
-        {
-          "text": "ランダムなユーザー入力を作成して負荷を再生し、両ゾーンのランダムなリソースを停止させカオスエンジニアリングを導入する。",
-          "isCorrect": true,
-          "explanation": "実シナリオに近いランダムなトラフィック負荷をかけつつ、意図的にリソースを停止（カオスエンジニアリング）させることで、オートスケールと自己修復機能がSLAを満たして正しく動作するかを最も確実にテストできます。"
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "question": "【モノリシックからマイクロサービスへの移行の利点説明】\n拡張性と信頼性に欠けるモノリシックアプリを、マイクロサービスとマネージドサービスへ移行する価値（メリット）をリーダーに説得したい。",
-      "options": [
-        {
-          "text": "このプロセスは、Migrate for Compute Engineで自動化できます。",
-          "isCorrect": false,
-          "explanation": "これはリフト＆シフト（VM移行）のツールであり、マイクロサービスへのアーキテクチャ再構築を自動化するものではありません。"
-        },
-        {
-          "text": "コストが大幅に削減され、基盤インフラの管理が容易になり、CI/CDを自動管理できるようになる。",
-          "isCorrect": false,
-          "explanation": "マイクロサービス化によってシステム全体の複雑さは増すことがあり、必ずしも「コストが大幅に削減」されるわけではありません。"
-        },
-        {
-          "text": "モノリシックなソリューションはDockerでコンテナ化しKubernetesにデプロイできる。",
-          "isCorrect": false,
-          "explanation": "コンテナ化するだけではモノリシックのままであり、マイクロサービスとしての利点（疎結合）を得られません。"
-        },
-        {
-          "text": "インフラとアプリの切り離し、新機能の独立したリリース、CI/CD・A/Bテストの管理、スケーリングが容易になる。",
-          "isCorrect": true,
-          "explanation": "マイクロサービス化の最大の利点は「サービスごとの独立した開発・テスト・デプロイ・スケーリング」が可能になり、ビジネスのアジリティとシステムの信頼性が向上することです。"
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "question": "【Bigtableのパフォーマンス・負荷テスト】\nCompute EngineとCloud Bigtableで構成されるサービスの拡張性を検証するため、QAチームが負荷テストツールを展開する際のベストプラクティスを含めたい。",
-      "options": [
-        {
-          "text": "負荷テストツールが本番環境に対して定期的に実行されるようスケジュールする。",
-          "isCorrect": false,
-          "explanation": "本番環境への直接的な負荷テストは、実際の顧客に影響を与えるリスクがあるため避けるべきです。"
-        },
-        {
-          "text": "サービスが使用するすべてのサードパーティシステムが高負荷に対応できるか確認する。",
-          "isCorrect": false,
-          "explanation": "サードパーティへの意図しないDDoS攻撃になりかねず、テスト範囲から除外またはモック化すべきです。"
-        },
-        {
-          "text": "負荷テストツールで再現するため、本番サービスのすべてのトランザクションを記録する機能を組み込む。",
-          "isCorrect": false,
-          "explanation": "本番での全件記録はパフォーマンスの低下やプライバシー問題を引き起こすため不適切です。"
-        },
-        {
-          "text": "負荷テストでCloud Bigtableの性能が検証されることを確認し、詳細なロギングとメトリクス収集機能を持たせる。",
-          "isCorrect": true,
-          "explanation": "マネージドサービスであっても、スキーマ設計に依存するBigtable自体のパフォーマンスを計測してボトルネックを特定することは必須であり、詳細なメトリクス収集は負荷テストの基本要件です。"
-        }
-      ]
-    },
-    {
-      "id": 9,
-      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、QAプロセスの改善に加えて、アーキテクチャやデプロイ手法のアプローチを変更したい。",
-      "options": [
-        {
-          "text": "リレーショナルデータベースをNoSQLデータベースで置き換える。",
-          "isCorrect": false,
-          "explanation": "データベースの種別変更はデータモデルの要件によるものであり、デプロイメントの安全性（ロールバック削減）の直接的な解決策ではありません。"
-        },
-        {
-          "text": "QA環境をカナリアリリースで置き換える。",
-          "isCorrect": false,
-          "explanation": "カナリアリリースは本番環境に対するデプロイ手法であり、QA環境自体を置き換える（なくす）ものではありません。"
-        },
-        {
-          "text": "リレーショナルデータベースシステムへの依存度を低減する。",
-          "isCorrect": false,
-          "explanation": "これ自体はデプロイの安全性を高める具体的なアーキテクチャ・リリースモデルの変更になりません。"
-        },
-        {
-          "text": "グリーン・ブルーのデプロイモデルを導入し、モノリシックなプラットフォームをマイクロサービスに分割する。",
-          "isCorrect": true,
-          "explanation": "Blue/Greenデプロイによりトラフィックの切り替えだけで安全にリリース・切り戻しが可能になり、マイクロサービス化により変更範囲（デプロイの爆発半径）を最小化できるため、ロールバックのリスクが激減します。"
-        }
-      ]
-    },
-    {
-      "id": 10,
-      "question": "【VMwareからのリフト＆シフト移行計画】\nオンプレミスのVMware環境で稼働する多数のLinux VMを、Googleが推奨する方法（ベストプラクティス）に従ってCompute Engineに移行したい。",
-      "options": [
-        {
-          "text": "現在のVM環境を評価し、全VMにサードパーティ製エージェントをインストールして移行する。",
-          "isCorrect": false,
-          "explanation": "個別のエージェントインストールは管理オーバーヘッドが大きく、GCPのネイティブな移行ツールの利点を活かしていません。"
-        },
-        {
-          "text": "アプリケーションリストに基づき、Migrate for Compute Engineで全VMを「個別に」移行する。",
-          "isCorrect": false,
-          "explanation": "依存関係を持つVM群を個別に移行するとシステムが壊れるため、論理的なグループ（ウェーブ）単位で移行すべきです。"
-        },
-        {
-          "text": "現在のVM環境を評価し、全ディスクのイメージを作成してインポートしVMを作成する。",
-          "isCorrect": false,
-          "explanation": "手動でのイメージ作成とインポートはダウンタイムが長くなり、大規模な移行手法としては非効率です。"
-        },
-        {
-          "text": "仮想マシンの評価を行い、移行プランを定義した上でMigrate for Compute EngineのRunBookを準備して移行を実行する。",
-          "isCorrect": true,
-          "explanation": "VMの依存関係と移行順序を定義した「RunBook」を使用し、グループ（ウェーブ）単位で計画的に移行を自動化するのが、GCP公式のベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 11,
+      "id": 18,
       "question": "【PCI DSS準拠環境の構築プラットフォーム】\nクレジットカード情報を扱うためPCI DSSに準拠する必要があるワークロードをクラウドに移行し、オーケストレーションにGKEを利用したい。",
       "options": [
         {
@@ -3599,111 +3519,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 12,
-      "question": "【Datastoreの新しいインデックスデプロイ】\nApp Engineアプリでエラーの原因となっているCloud Datastoreの不足インデックスを、作成したYAML設定ファイルから反映（デプロイ）したい。",
-      "options": [
-        {
-          "text": "App EngineのデフォルトのCloud Storageバケットに設定ファイルをアップロードして検出させる。",
-          "isCorrect": false,
-          "explanation": "バケットにアップロードするだけではインデックスは自動生成されません。"
-        },
-        {
-          "text": "組み込みのPythonモジュールでHTTPリクエストを作成し設定ファイルを送信する。",
-          "isCorrect": false,
-          "explanation": "コード内部から手動でインデックス設定を送信するのは一般的なデプロイ手順ではありません。"
-        },
-        {
-          "text": "Datastore Adminを使用して現在のインデックスを削除し、新しいファイルをアップロードする。",
-          "isCorrect": false,
-          "explanation": "既存の正常なインデックスまで削除してしまい、アプリケーションに障害をもたらします。"
-        },
-        {
-          "text": "設定ファイルを指定して `gcloud datastore create-indexes` コマンドを実行する。",
-          "isCorrect": true,
-          "explanation": "ローカルの構成ファイル（index.yamlなど）に基づいて新しいインデックスのみを安全に追加生成するには、このgcloudコマンドを使用するのが正しい手順です。"
-        }
-      ]
-    },
-    {
-      "id": 13,
-      "question": "【人気コンテンツ配信のパフォーマンス改善（CDN）】\nGCEインスタンスからユーザーへ直接音楽ファイルをストリーミングしている環境で、人気曲へのアクセス集中による再生失敗（負荷）を解決したい。",
-      "options": [
-        {
-          "text": "人気曲をCloud SQLにコピーし、オーバーロード時にそこから取得するようにする。",
-          "isCorrect": false,
-          "explanation": "Cloud SQLはリレーショナルDBであり、大容量のメディアファイル（Blob）のストリーミング配信には不向きでコストもかかります。"
-        },
-        {
-          "text": "Cloud Filestoreボリュームを作成し、ダウンロードしてバックエンドGCEから配信する。",
-          "isCorrect": false,
-          "explanation": "ファイルストレージに変えても、GCEインスタンス自体へのネットワーク・処理負荷が集中する問題は解決しません。"
-        },
-        {
-          "text": "すべてのGCEにgcsfuseを使用してバケットをマウントし、GCEから配信する。",
-          "isCorrect": false,
-          "explanation": "GCEがストリーミングのボトルネックになるアーキテクチャ上の欠陥が残ったままです。"
-        },
-        {
-          "text": "MIGを作成し、Cloud Storageバケットと共にグローバルLBのバックエンドに設定し、バケット側でCloud CDNを有効にする。",
-          "isCorrect": true,
-          "explanation": "静的な音楽ファイルをCloud Storageに置き、Cloud CDNを有効にしたロードバランサを経由させることで、エッジでキャッシュが効き、人気曲のトラフィックをGCEインスタンスから完全にオフロードしてパフォーマンスを劇的に改善できます。"
-        }
-      ]
-    },
-    {
-      "id": 14,
-      "question": "【GKEでの一貫したホスト名の維持】\nGKE上のデータベースやクラスタ化されたワークロードにおいて、Podのスケーリングや再起動後も「一貫した永続的なホスト名」のセットを維持したい。",
-      "options": [
-        {
-          "text": "ロールベースのアクセスコントロール (RBAC)",
-          "isCorrect": false,
-          "explanation": "RBACはAPIの権限管理を行うものであり、ネットワークやホスト名のアイデンティティ管理とは無関係です。"
-        },
-        {
-          "text": "永続ボリューム (Persistent Volume)",
-          "isCorrect": false,
-          "explanation": "ストレージの永続化は行えますが、PodのネットワークID（ホスト名）を一貫させる機能はありません。"
-        },
-        {
-          "text": "コンテナの環境変数",
-          "isCorrect": false,
-          "explanation": "Podが再作成された際に新しいIPや名前が割り当てられるため、環境変数だけではDNSレベルの恒久的なホスト名解決はできません。"
-        },
-        {
-          "text": "StatefulSetsを使用する",
-          "isCorrect": true,
-          "explanation": "StatefulSetは、スケジュールされた場所や再起動に関わらず、Podに対して一意で永続的なネットワークID（ホスト名）とストレージを保証するため、ステートフルワークロードに最適です。"
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "question": "【Pub/Subパブリッシングレイテンシ改善】\nアプリケーションからPub/Subへのメッセージ発行（パブリッシュ）時にタイムアウトや数分間の待機（レイテンシ）が発生するのを改善したい。",
-      "options": [
-        {
-          "text": "バックアップのPub/Subメッセージキューを作成する。",
-          "isCorrect": false,
-          "explanation": "キューを増やしても、クライアント側での発行時の送信遅延自体の解決にはなりません。"
-        },
-        {
-          "text": "サブスクライバーのプルモデルからプッシュモデルに移行する。",
-          "isCorrect": false,
-          "explanation": "これは「受信側（サブスクライバー）」の挙動の変更であり、「発行側（パブリッシャー）」のレイテンシ改善には寄与しません。"
-        },
-        {
-          "text": "Pub/Sub Total Timeoutのリトライ値を大きくする。",
-          "isCorrect": false,
-          "explanation": "タイムアウトエラーは減るかもしれませんが、レイテンシ（待機時間）自体はさらに長くなってしまいます。"
-        },
-        {
-          "text": "Pub/Subメッセージのバッチ処理をオフにする。",
-          "isCorrect": true,
-          "explanation": "パブリッシャーライブラリのバッチ処理（複数メッセージが溜まるか一定時間経つまで送信を待機する設定）を無効化することで、メッセージが即座にネットワークに送信され、パブリッシングのレイテンシを最小化できます。"
-        }
-      ]
-    },
-    {
-      "id": 16,
+      "id": 19,
       "question": "【VMからBigQueryへの接続エラー解消】\nCompute Engine上のPythonスクリプトからBigQueryに接続する際のエラーを、Googleのベストプラクティスに従って修正したい。",
       "options": [
         {
@@ -3729,7 +3545,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 17,
+      "id": 20,
       "question": "【BigQueryの顧客提供暗号鍵（CMEK）】\n会社のセキュリティ要件に従い、Google Cloud外でインポートした暗号化キーを使用してBigQueryの機密データを保護したい。",
       "options": [
         {
@@ -3755,137 +3571,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 18,
-      "question": "【新規プロジェクトのコスト最小化（割引の活用）】\n需要が不明瞭なスタートアップのプロジェクトにおいて、インフラコストを自動的に最小化し、運用スタッフを増やさずにベストプラクティスを適用したい。",
-      "options": [
-        {
-          "text": "無料期間と継続利用割引を活用し、コスト管理スタッフを新たに配置する。",
-          "isCorrect": false,
-          "explanation": "スタッフの新規配置は人件費（コスト）の増大を招くため要件に反します。"
-        },
-        {
-          "text": "無料期間とコミットメント利用割引を利用し、スタッフを配置する。",
-          "isCorrect": false,
-          "explanation": "需要が不明瞭な段階で1〜3年の長期契約（コミットメント）を結ぶのはリスクが高く不適切です。"
-        },
-        {
-          "text": "無料期間とコミットメント利用割引を利用し、チームにトレーニングを提供する。",
-          "isCorrect": false,
-          "explanation": "同様に、需要が予測できないワークロードに対するコミットメント利用割引の適用は最適ではありません。"
-        },
-        {
-          "text": "無料期間および継続利用割引を利用し、サービスコスト管理のトレーニングをチームに提供する。",
-          "isCorrect": true,
-          "explanation": "リソースの利用時間に応じて自動的に適用される「継続利用割引（Sustained Use Discount）」を活用し、チームにトレーニングを行って自己管理させるのが、不確実な需要に対する最もコスト効率の良いアプローチです。"
-        }
-      ]
-    },
-    {
-      "id": 19,
-      "question": "【サードパーティからの大容量データ移行】\n10TBのデータをサードパーティのオブジェクトストレージサービスからCloud Storageへ、最小コストかつ最速で移行したい。",
-      "options": [
-        {
-          "text": "Google CloudからTransfer Applianceをリクエストする。",
-          "isCorrect": false,
-          "explanation": "アプライアンスの配送に数週間かかるため、10TB程度であればネットワーク経由の方が圧倒的に早く完了します。"
-        },
-        {
-          "text": "gsutil mvコマンドでデータを移動する。",
-          "isCorrect": false,
-          "explanation": "コマンドを実行するマシンのネットワーク帯域に依存し、マネージドな移行サービスではありません。"
-        },
-        {
-          "text": "オンプレミスにデータをダウンロードして、Cloud Storageにアップロードする。",
-          "isCorrect": false,
-          "explanation": "2回の転送（ダウンロードとアップロード）が発生し、時間と通信コストの無駄です。"
-        },
-        {
-          "text": "Storage Transfer Serviceを使用してデータを移動する。",
-          "isCorrect": true,
-          "explanation": "クラウド間（サードパーティストレージからGCSへ）のデータ転送において、中継サーバーを立てることなくGoogleのバックボーンを活用して高速・安全・低コストに自動転送できるStorage Transfer Serviceが最適です。"
-        }
-      ]
-    },
-    {
-      "id": 20,
-      "question": "【信頼性の高いタスクスケジューリング】\nGCEインスタンスで構成される分散システム上で、ネットワーク分断やVM停止に耐えうる信頼性の高いタスクスケジューリングを実装したい。",
-      "options": [
-        {
-          "text": "GKEのCronサービスを使用してPub/Subに発行し、GCEでサブスクライブする。",
-          "isCorrect": false,
-          "explanation": "スケジューリングのためだけにGKEクラスタを構築・運用するのはオーバーヘッドが大きすぎます。"
-        },
-        {
-          "text": "App EngineのCronを使って、GCE上の処理サービスに直接HTTPでメッセージを発行する。",
-          "isCorrect": false,
-          "explanation": "直接通信では、GCEインスタンスが停止していたりスケールアウトしている際の再送・分散処理が難しく、信頼性が低くなります。"
-        },
-        {
-          "text": "GKEのCronを使って、GCEサービスに直接発行する。",
-          "isCorrect": false,
-          "explanation": "上記と同様の理由で不適切です。"
-        },
-        {
-          "text": "App Engine（またはCloud Scheduler）のCronを使用してPub/Subトピックに発行し、GCE上の処理サービスでサブスクライブする。",
-          "isCorrect": true,
-          "explanation": "フルマネージドなスケジューラでタスクを起動し、Pub/Subの非同期キューイングを介してバックエンド（GCE）に渡すことで、VMの一時的な停止や増減に影響されない極めて信頼性の高いジョブ実行アーキテクチャになります。"
-        }
-      ]
-    },
-    {
       "id": 21,
-      "question": "【APIのバージョニング戦略】\n後方互換性のない大きな変更（改訂）を行うAPIにおいて、既存のクライアントコードを壊さずに安定性を確保したい。",
-      "options": [
-        {
-          "text": "現行APIにDEPRECATEDの接尾辞を付け、新APIに現在のバージョン番号を引き継ぐ。",
-          "isCorrect": false,
-          "explanation": "既存クライアントのリクエスト先が突然新しい互換性のない仕様に変わってしまうため、システムが破壊されます。"
-        },
-        {
-          "text": "古いAPIを置き換える1ヶ月前に、メーリングリストで変更をお知らせする。",
-          "isCorrect": false,
-          "explanation": "猶予期間を設けても、エンドポイントを直接上書きしてしまえば期日に一斉にシステム障害が発生するリスクがあります。"
-        },
-        {
-          "text": "APIドキュメントの自動生成プロセスを作成し、CI/CDで更新する。",
-          "isCorrect": false,
-          "explanation": "ドキュメントの更新は重要ですが、APIの挙動自体の後方互換性を保証する技術的な解決策ではありません。"
-        },
-        {
-          "text": "後方互換性のない変更ごとにバージョン番号を増加させるAPIのバージョン管理戦略を使用する。",
-          "isCorrect": true,
-          "explanation": "URIパス等にメジャーバージョン（v1, v2等）を含め、互換性を破る変更時はバージョンをインクリメントして別エンドポイントとして提供するのが、クライアントを保護するAPI設計のベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 22,
-      "question": "【Cloud Shell環境でのユーティリティの永続化】\nCloud Shellにおいて、セッションが切れて再起動しても持続し、かつデフォルトの実行パスが通っている場所にカスタムツールを保存したい。",
-      "options": [
-        {
-          "text": "/google/scripts に保存する。",
-          "isCorrect": false,
-          "explanation": "このディレクトリはCloud Shellの永続ストレージ領域外であり、セッション終了時に破棄されます。"
-        },
-        {
-          "text": "/usr/local/bin に保存する。",
-          "isCorrect": false,
-          "explanation": "ルートファイルシステムへの変更は一時的なVMのライフサイクルに紐づくため、再起動すると消えてしまいます。"
-        },
-        {
-          "text": "Cloud Storage に保存する。",
-          "isCorrect": false,
-          "explanation": "永続化はされますが、毎回ダウンロードする手間がかかり、「デフォルトの実行パスにある」という要件を満たしません。"
-        },
-        {
-          "text": "ホームディレクトリ直下の ~/bin に保存する。",
-          "isCorrect": true,
-          "explanation": "Cloud Shellの `$HOME` ディレクトリはユーザー専用の永続ディスクとしてマウントされており再起動後も持続します。また `~/bin` はデフォルトでPATHに含まれているため最適です。"
-        }
-      ]
-    },
-    {
-      "id": 23,
       "question": "【フォルダ権限（Project Owner）の制限】\n組織レベルで「Project Owner」権限を持つ開発チームに対し、特定のフォルダ（Finance）内のプロジェクトではリソース作成を禁止したい。",
       "options": [
         {
@@ -3911,7 +3597,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 24,
+      "id": 22,
       "question": "【Cloud StorageのCMEKキーローテーション】\nDataprocで処理するCloud Storage上の機密データを暗号化し、かつコンプライアンス要件に従って「暗号化キー自体をローテーション」できるようにしたい。",
       "options": [
         {
@@ -3937,35 +3623,7 @@ const allQuizData = {
       ]
     },
     {
-      "id": 25,
-      "question": "【App EngineのDBクエリ最小化（専用Memcache）】\nCloud SQLをバックエンドとするApp Engineアプリで、データベースの負荷を下げるためにクエリ発行数を最小限にしたい。",
-      "options": [
-        {
-          "text": "Memcacheを「共有」にし、クエリハッシュキーでキャッシュをチェックする。",
-          "isCorrect": false,
-          "explanation": "共有Memcacheはベストエフォートでありキャッシュ容量が保証されないため、キャッシュヒット率が安定せずDBの負荷低減策として確実ではありません。"
-        },
-        {
-          "text": "共有Memcacheを使用し、1分ごとのcronタスクで全結果をキャッシュに投入する。",
-          "isCorrect": false,
-          "explanation": "不要なクエリまで定期実行することになり、DB負荷の最小化に逆行します。"
-        },
-        {
-          "text": "専用Memcacheを使用し、1分ごとのcronタスクで結果をキャッシュに投入する。",
-          "isCorrect": false,
-          "explanation": "同様に、cronによる一括キャッシュは非効率です。"
-        },
-        {
-          "text": "専用Memcacheを設定し、クエリハッシュのキーでキャッシュをチェックしてからCloud SQLにクエリを発行する。",
-          "isCorrect": true,
-          "explanation": "容量が固定・保証される「専用Memcache」を使用し、リクエストの都度キャッシュを確認する（キャッシュアサイドアプローチ）ことで、データベースへの不要なクエリを最も効率的に削減できます。"
-        }
-      ]
-    }
-  ],
-  "7_cicd_deployment": [
-    {
-      "id": 1,
+      "id": 23,
       "question": "【Pub/Subへの安全なアクセス認証】\nVM上のアプリケーションからCloud Pub/Subへメッセージを発行する際、Google推奨のベストプラクティスに従って認証を行いたい。",
       "options": [
         {
@@ -3989,217 +3647,455 @@ const allQuizData = {
           "explanation": "GCPのリソース間通信（VMからPub/Sub）においては、VMに割り当てられたサービスアカウントに必要なIAMロールを付与して認証させるのが最も安全で公式に推奨されるベストプラクティスです。"
         }
       ]
+    }
+  ],
+  "6_data_analytics": [
+    {
+      "id": 1,
+      "question": "【MLレコメンドエンジンの精度向上】\nEコマースサイトの機械学習モデル（レコメンド）の「結果の質（精度）」を向上させたい。",
+      "options": [
+        {
+          "text": "モデルのトレーニングをCloud GPUからCloud TPUに移行する。",
+          "isCorrect": false,
+          "explanation": "TPUへの移行は学習時間の短縮（パフォーマンス）には寄与しますが、モデルの精度自体の向上には繋がりません。"
+        },
+        {
+          "text": "新しいCPUアーキテクチャが利用可能になった時点でモデルをデプロイする。",
+          "isCorrect": false,
+          "explanation": "ハードウェアを新しくしても予測精度は改善しません。"
+        },
+        {
+          "text": "メトリクスをBigQueryにエクスポートし、モデルの効率性を分析する。",
+          "isCorrect": false,
+          "explanation": "運用効率の分析であり、モデルの推奨精度の改善策ではありません。"
+        },
+        {
+          "text": "レコメンデーションの履歴と結果をBigQueryに保存し、トレーニングデータとして使用する。",
+          "isCorrect": true,
+          "explanation": "機械学習の精度を向上させる最も確実な方法は「良質な教師データ（履歴データ）を蓄積・学習させる」ことであり、BigQuery ML等を活用するのがベストプラクティスです。"
+        }
+      ]
     },
     {
       "id": 2,
-      "question": "【Cloud StorageのCMEKキーローテーション】\nDataprocで処理するCloud Storage上の機密データを暗号化し、かつコンプライアンス要件に従って暗号化キー自体をローテーションできるようにしたい。",
+      "question": "【AIモデルの解釈性向上】\nMLモデルの予測精度向上と、出力結果に対して解釈性（どの特徴量が貢献したか）を持たせたい。",
       "options": [
         {
-          "text": "GPGキーペアを生成し、GPGキーで手動で暗号化してアップロードする。",
+          "text": "Google Cloudのオペレーションスイートを使用する。",
           "isCorrect": false,
-          "explanation": "クライアントサイドでの暗号化はデータ処理（Dataprocなど）とのシームレスな統合を妨げます。"
+          "explanation": "オペレーションスイート（監視・ロギング）はインフラの可観測性ツールであり、AIモデルの解釈用ではありません。"
         },
         {
-          "text": "AES-256キーを生成し、顧客提供鍵 (CSEK) を使用する。",
+          "text": "Vision AIを使う。",
           "isCorrect": false,
-          "explanation": "CSEKはAPIリクエストのたびにキーを提供する必要があり、一元的なキーローテーション管理には適していません。"
+          "explanation": "Vision AIは画像解析APIであり、予測モデルの解釈性向上とは無関係です。"
         },
         {
-          "text": "Cloud KMSで鍵を作成し、KMSのencryptメソッドで手動暗号化する。",
+          "text": "Jupyter Notebooksを使う。",
           "isCorrect": false,
-          "explanation": "手動で暗号化・復号のロジックをアプリケーションに組み込む必要があり、透過的なデータ処理ができなくなります。"
+          "explanation": "開発環境（ノートブック）自体が、モデルの解釈性機能を自動提供するわけではありません。"
         },
         {
-          "text": "Cloud KMSで鍵を作成し、バケットの暗号化キー（CMEK）に設定する。",
+          "text": "説明可能なAI (AI Explanations) を使う。",
           "isCorrect": true,
-          "explanation": "バケットのデフォルトキーにCloud KMSを指定することで、保存時の暗号化とDataproc等からの読み取り時の復号が完全に透過的になり、かつKMS側で容易にキーローテーション管理が可能になります。"
+          "explanation": "AI Explanationsを利用することで、各特徴量が予測結果にどの程度寄与したかを定量化・可視化でき、モデルの解釈性を高めることができます。"
         }
       ]
     },
     {
       "id": 3,
-      "question": "【開発環境インフラのコスト可視化と最適化】\n開発VMリソースのコストを財務部門に可視化しつつ、頻繁な起動/停止に備えてVMの状態を保持したい。",
+      "question": "【非構造化データの探索とクリーニング】\n時間の経過とともに劣化したオンプレミスのデータに対して、異常を検出しクリーニング（データラングリング）を行いたい。",
       "options": [
         {
-          "text": "VMのCPU使用率のラベルを適用し、BigQueryの請求書エクスポートに含める。",
+          "text": "Cloud Storageにアップロードし、Cloud Datalabを使用してクリーニングする。",
           "isCorrect": false,
-          "explanation": "CPU使用率といったメトリクスは請求データと直接リンクするものではありません。"
+          "explanation": "Datalab（Jupyter環境）はコードベースの分析環境であり、GUIベースの高速なデータクリーニングには専用ツールの方が適しています。"
         },
         {
-          "text": "すべての状態をローカルSSDに保存し、スナップショットを取ってVMを終了させる。",
+          "text": "Cloud Datalabをオンプレミスシステムに直接接続する。",
           "isCorrect": false,
-          "explanation": "ローカルSSDはVM停止時にデータが消失するため、状態を永続化する用途には不適切です。"
+          "explanation": "クラウドへのアップロードを介さない直接接続はパフォーマンスや連携の面で推奨されません。"
         },
         {
-          "text": "すべての永続ディスクに `--auto-delete` フラグを使用し、VMを終了させる。",
+          "text": "Cloud Dataprepをオンプレミスシステムに直接接続する。",
           "isCorrect": false,
-          "explanation": "このフラグではVM停止時にディスクも削除されてしまい、状態を持続させる要件を満たせません。"
+          "explanation": "DataprepはCloud StorageやBigQueryを直接のソースとすることが前提のクラウドネイティブなサービスです。"
         },
         {
-          "text": "すべての永続ディスクに `--no-auto-delete` フラグを使用してVMを停止し、BigQuery請求書エクスポートとラベルでコストを関連付ける。",
+          "text": "Cloud Storageにファイルをアップロードし、Cloud Dataprepを使用して検索とクリーニングを行う。",
           "isCorrect": true,
-          "explanation": "`--no-auto-delete` でディスクと状態を維持しつつVMのコンピューティング課金を止め、さらにラベルとBigQueryエクスポートを組み合わせることで財務部門への確実なコスト可視化が実現します。"
+          "explanation": "Cloud Dataprepは、GUIベースで異常値の検出やデータクレンジングを視覚的かつ高速に行えるため、このユースケースに最適です。"
         }
       ]
     },
     {
       "id": 4,
-      "question": "【GKEのクラスタオートスケーリング有効化】\n既存のGKEクラスタにおいて、アプリケーションのトラフィック増加に応じてノード数を自動的にスケーリングさせたい。",
+      "question": "【PIIデータを保存しないDataflowパイプライン】\n外部パートナーから受け取るデータ内のPII（個人情報）を、ストレージに一切保存することなく処理してBigQueryへ入れたい。",
       "options": [
         {
-          "text": "`gcloud container clusters resize CLUSTER_NAME --size=10` コマンドを使用する。",
+          "text": "PIIを分離し、保持ポリシーが設定されたCloud Storageに保存する。",
           "isCorrect": false,
-          "explanation": "`resize`コマンドは静的にクラスタのノード数を変更するものであり、「自動スケーリング」を有効化するものではありません。"
+          "explanation": "「PIIデータを一切保存しない」という要件に完全に違反しています。"
         },
         {
-          "text": "`gcloud container clusters create` コマンドでオートスケーリング付きの新しいクラスタを作成する。",
+          "text": "一度Cloud Storageに保存し、パイプラインでDLP APIを使ってPIIを削除する。",
           "isCorrect": false,
-          "explanation": "「既存のクラスタ」を変更する要件に反します。"
+          "explanation": "一時的にせよCloud StorageにPIIを含む生データを書き込んでしまうため、要件違反です。"
         },
         {
-          "text": "`gcloud compute instances add-tags` コマンドでインスタンスにタグを追加する。",
+          "text": "BigQueryにインポートし、パイプラインでPIIを持つ列をスキップして新しいテーブルにコピーする。",
           "isCorrect": false,
-          "explanation": "タグを追加してもオートスケーリング機能は有効になりません。"
+          "explanation": "こちらも一度BigQueryにPIIが保存されてしまうため不可です。"
         },
         {
-          "text": "`gcloud container clusters update CLUSTER_NAME --enable-autoscaling` コマンドを使用して既存のクラスタを更新する。",
+          "text": "Dataflowでデータを取り込み、インメモリのパイプライン処理中にDLP APIでPIIを削除して結果をBigQueryに保存する。",
           "isCorrect": true,
-          "explanation": "既存クラスタの設定を更新する`update`コマンドに`--enable-autoscaling`と最小/最大ノード数を付与することで、クラスタの自動スケーリングが正しく有効化されます。"
+          "explanation": "Dataflowによるストリーミング/バッチ処理の途中でDLP APIを呼び出してPIIを秘匿化・削除することで、ディスクにPIIを一度も保存せずに安全なデータのみをウェアハウスにロードできます。"
+        }
+      ]
+    }
+  ],
+  "7_cicd_deployment": [
+    {
+      "id": 1,
+      "question": "【コンテナの脆弱性スキャンとデプロイ検証】\nCI/CDパイプラインにおいて、検証済みのコンテナのみがGCPにデプロイされることをシステム的に保証したい。",
+      "options": [
+        {
+          "text": "Jenkinsを構成し、Kritisを利用してコンテナに暗号署名を行う。",
+          "isCorrect": false,
+          "explanation": "外部ツールに頼らず、GCPネイティブのフルマネージドサービスを利用する方が推奨されます。"
+        },
+        {
+          "text": "信頼されたサービスアカウントのみがデプロイできるようにContainer Registryを構成する。",
+          "isCorrect": false,
+          "explanation": "権限の制限だけでは、「コンテナに脆弱性がないか（検証済みか）」の内容の担保はできません。"
+        },
+        {
+          "text": "セキュリティSMEがすべてのコードのチェックインをピアレビューする。",
+          "isCorrect": false,
+          "explanation": "手動レビューはデプロイの自動化・迅速化の妨げになり、システム的な強制力もありません。"
+        },
+        {
+          "text": "Container Registryで脆弱性スキャンを使用し、GKEでBinary Authorizationを有効にして署名・検証する。",
+          "isCorrect": true,
+          "explanation": "脆弱性スキャンで安全性を確認し、Binary Authorizationで「署名（検証）されたイメージ以外はクラスタ上で起動させない」という強制力を持たせるのがベストプラクティスです。"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "【監査可能なコンテナのバージョン管理】\n本番環境のデプロイメントが、ソースコードのどのコミットに該当するかを完全にリンクさせ監査可能にしたい。",
+      "options": [
+        {
+          "text": "デプロイメントにリンクするコメントをコミットに追加する。",
+          "isCorrect": false,
+          "explanation": "開発者の手動入力に依存するため、ミスが発生しやすく監査証跡として不十分です。"
+        },
+        {
+          "text": "開発者がコミットに \"latest\" のタグを付ける。",
+          "isCorrect": false,
+          "explanation": "\"latest\"タグは常に最新のものに上書きされてしまうため、過去のバージョンを特定できず監査不可能です。"
+        },
+        {
+          "text": "コードのコミットに日時のタグを付ける。",
+          "isCorrect": false,
+          "explanation": "日時だけでは、正確なソースコードの状態（どのブランチのどの変更か）を一意に特定できません。"
+        },
+        {
+          "text": "コンテナタグがソースコードのコミットハッシュと一致するようにする。",
+          "isCorrect": true,
+          "explanation": "Gitのコミットハッシュをコンテナイメージのタグとして使用することで、稼働中のコンテナとソースコードの正確な状態が1対1で一意に結びつき、完全な監査性を担保できます。"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "【Kubernetes環境への動的デプロイメントとCI/CD】\nGKEベースで、動的拡張、CI/CD、ダイナミックテンプレートによるバンドルデプロイを実現するツールを組み合わせたい。",
+      "options": [
+        {
+          "text": "GKE, Jenkins, Cloud Load Balancing",
+          "isCorrect": false,
+          "explanation": "Cloud Load Balancingはインフラ要素であり、動的テンプレート（バンドル）をデプロイする機能は持っていません。"
+        },
+        {
+          "text": "GKE, Cloud Load Balancing",
+          "isCorrect": false,
+          "explanation": "同様に、CI/CDやテンプレートエンジンの要件を満たすツールが欠けています。"
+        },
+        {
+          "text": "GKE, Cloud Deployment Manager",
+          "isCorrect": false,
+          "explanation": "Deployment ManagerはGCPリソースを作るものであり、K8s内のアプリケーションバンドルのデプロイには適していません。"
+        },
+        {
+          "text": "GKE, Jenkins, Helm",
+          "isCorrect": true,
+          "explanation": "実行環境にGKE、CI/CDにJenkins、そしてKubernetesアプリケーションのダイナミックテンプレートおよびパッケージマネージャーとして「Helm」を使用するのが要件をすべて満たす正解です。"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "【Cloud Buildを用いた継続的ビルド】\nCloud Buildでコンテナを継続的にビルドし、バージョンを追跡可能にして保存したい。",
+      "options": [
+        {
+          "text": "イメージを1つ構築し、「latest」というラベルを付けてコンテナレジストリにプッシュする。",
+          "isCorrect": false,
+          "explanation": "latestタグは常に上書きされるため、バージョン管理や切り戻しができず非推奨です。"
+        },
+        {
+          "text": "バージョン番号をタグ付けして、Cloud Storageにプッシュする。",
+          "isCorrect": false,
+          "explanation": "コンテナイメージはCloud Storageのバケットではなく、専用のContainer Registry (Artifact Registry) に保存すべきです。"
+        },
+        {
+          "text": "Schedulerで1分ごとにリポジトリをチェックし、タイムスタンプでタグ付けする。",
+          "isCorrect": false,
+          "explanation": "ポーリング（定期チェック）は非効率であり、コード変更のWebhookトリガーを使用すべきです。"
+        },
+        {
+          "text": "新しいソース変更のトリガーを設定し、コミットハッシュでタグ付けしてコンテナレジストリにプッシュする。",
+          "isCorrect": true,
+          "explanation": "コード変更駆動のトリガーと、一意性を保証するGitコミットハッシュをタグに用いてRegistryへ保存するのがベストプラクティスです。"
         }
       ]
     },
     {
       "id": 5,
-      "question": "【Anthos Service MeshのSLO監視とアラート】\nリクエストレイテンシが特定の閾値を超えた場合にアラートを出すSREプラクティスをAnthosクラスタに実装したい。",
+      "question": "【CI/CDパイプラインのセキュリティ自動化】\nアジャイル開発においてリリースのスピードを維持しつつ、セキュリティエラー（脆弱性）を未然に防ぎたい。",
       "options": [
         {
-          "text": "プロジェクトでCloud Trace APIを有効にし、Cloud Traceのメトリクスに基づいてアラートを送信する。",
+          "text": "インターフェースのテスト用スタブを確保する。",
           "isCorrect": false,
-          "explanation": "Cloud Traceは単一リクエストのドリルダウン分析用であり、サービス全体の可用性やSLO評価アラートの基盤としては適していません。"
+          "explanation": "単体テスト用スタブは機能のテストには役立ちますが、セキュリティ脆弱性の発見には直接寄与しません。"
         },
         {
-          "text": "Cloud Profilerを使用してカスタムメトリックを作成し、アラートを出す。",
+          "text": "すべてのコードのチェックインをセキュリティSMEが手動でピアレビューする。",
           "isCorrect": false,
-          "explanation": "ProfilerはCPUやメモリなどのコードレベルのパフォーマンス解析用であり、ネットワークレイテンシのSLO監視用ではありません。"
+          "explanation": "専門家による全量手動レビューはリリーススピードを著しく低下させ、アジリティの要件に反します。"
         },
         {
-          "text": "Anthos Config ManagementでSLOとアラートポリシーを定義するyamlファイルを作成する。",
+          "text": "コード署名と信頼できるバイナリリポジトリのみを有効にする。",
           "isCorrect": false,
-          "explanation": "設定管理ツールではSLOに基づく動的なアラート監視システムの構成は直接的には行えません。"
+          "explanation": "署名は改ざん防止にはなりますが、ソースコード内の脆弱性そのものを発見するものではありません。"
         },
         {
-          "text": "Anthos Service Meshをインストールし、Cloud ConsoleでService Level Objective (SLO)を定義してアラートポリシーを作成する。",
+          "text": "CI/CDパイプラインの一部として、脆弱性スキャナとソースコードセキュリティアナライザを自動実行する。",
           "isCorrect": true,
-          "explanation": "Anthos Service Meshは各サービスのレイテンシなどのメトリクスを自動収集し、コンソール上で直接サービスレベル目標（SLO）とそれに基づくエラーバジェットアラートを定義できます。"
+          "explanation": "CI/CDパイプラインに静的/動的なセキュリティスキャンを組み込むことで、開発スピードを落とさずに自動で脆弱性を検知・ブロックできます。"
         }
       ]
     },
     {
       "id": 6,
-      "question": "【Cloud SQLのフェイルオーバー機能テスト】\nトラフィックが多い時間帯にデータベースクラッシュ時にレプリカがマスターに昇格しなかった事象の再発を防ぎたい。",
+      "question": "【環境間でのコンテナデプロイ制限】\n開発・ステージング環境でテストされていない未承認のコンテナが、本番のGKEクラスタにデプロイされるのを防ぎたい。",
       "options": [
         {
-          "text": "別のデータベースを使用する。",
+          "text": "Kubernetesのライフサイクルフックを設定する。",
           "isCorrect": false,
-          "explanation": "DBを変更しても、システム切り替えテストを行わなければ高可用性が担保される確証は得られません。"
+          "explanation": "ライフサイクルフック（postStartなど）はコンテナ起動時の処理を定義するものであり、デプロイ自体のセキュリティ検証・ブロック機能ではありません。"
         },
         {
-          "text": "より定期的にデータベースのスナップショットを作成する。",
+          "text": "Kubernetesアドミッションコントローラを独自に作成する。",
           "isCorrect": false,
-          "explanation": "スナップショットはデータ復旧用であり、自動フェイルオーバー機構の健全性をテストするものではありません。"
+          "explanation": "独自実装は可能ですが、「最小限の労力で迅速に導入できるGoogle Cloudソリューション」という要件からは外れます。"
         },
         {
-          "text": "データベースのインスタンスを大きくする。",
+          "text": "チームがデプロイを防ぐための企業ポリシー（社内ルール）を導入する。",
           "isCorrect": false,
-          "explanation": "スペック不足が原因でない場合、フェイルオーバーの失敗回避策にはなりません。"
+          "explanation": "ルールだけではシステム的な強制力がなく、誤操作を防げません。"
         },
         {
-          "text": "データベースのフェイルオーバーを定期的にテスト（手動トリガー等）する。",
+          "text": "開発、ステージング、本番クラスタにバイナリ認証（Binary Authorization）ポリシーを設定し、CI/CDで署名を行う。",
           "isCorrect": true,
-          "explanation": "高可用性構成が有事の際に正しく機能するかどうかを検証するため、平常時に定期的なフェイルオーバー演習（カオスエンジニアリング）を実施して動作確認することがベストプラクティスです。"
+          "explanation": "Binary Authorizationを利用することで、前段の環境でテスト・署名されたイメージ以外は本番クラスタで実行できないようシステムレベルで強制できます。"
         }
       ]
     },
     {
       "id": 7,
-      "question": "【Hadoopジョブのクラウド移行によるコスト最小化】\nデータサイエンスチームのHadoopジョブを、コード基盤を変更せずにインフラ管理の手間とコストを最小化してGCPに移行したい。",
+      "question": "【侵入テスト（Cloud Function）の定期実行】\n毎週火曜日にリリースされるアプリに対し、セキュリティチームが作成した侵入テスト用のCloud Functionを定期的に自動実行したい。",
       "options": [
         {
-          "text": "標準的なインスタンスを使用して、Compute Engineに手動でHadoopクラスタを展開する。",
+          "text": "Cloud Tasksと、Cloud FunctionのトリガーとなるCloud Storageを設定する。",
           "isCorrect": false,
-          "explanation": "手動展開はインフラ管理の手間が大きく、標準インスタンスではコスト最小化の要件を満たしません。"
+          "explanation": "リリースプロセスとテスト実行を連動させる要件に対し、Cloud Storageのファイル作成イベントをトリガーとするのは直接的な構成ではありません。"
         },
         {
-          "text": "標準的なワーカーインスタンスを使用してDataprocクラスタを作成する。",
+          "text": "IAMとConfidential Computingを設定して、Cloud Functionをトリガーする。",
           "isCorrect": false,
-          "explanation": "Dataprocで手間は省けますが、標準ワーカーではコスト最小化の要件を満たしきれません。"
+          "explanation": "これらはセキュリティ・暗号化関連の機能であり、スケジュール実行やイベント駆動のトリガー機能ではありません。"
         },
         {
-          "text": "プリエンプト可能なインスタンスを使用して、Compute Engineに手動でHadoopクラスタを展開する。",
+          "text": "Cloud Loggingシンクと、Cloud FunctionのトリガーとなるCloud Storageを設定する。",
           "isCorrect": false,
-          "explanation": "コストは下がりますが、手動展開によるインフラ管理のオーバーヘッドが残ります。"
+          "explanation": "ログをトリガーにするのは、定期的なアプリケーションのリリースに対するテスト実行パイプラインとして不適切です。"
         },
         {
-          "text": "プリエンプティブル ワーカー インスタンスを使用して Dataproc クラスタを作成する。",
+          "text": "Cloud Functionを起動するPub/Subキューに通知するようにデプロイジョブを設定する。",
           "isCorrect": true,
-          "explanation": "フルマネージドHadoop環境であるDataprocを利用することでインフラ管理の手間を省き、ワーカーノードに安価なプリエンプティブルVMを指定することでコストを最小化できます。"
+          "explanation": "アプリケーションのデプロイ（リリース）ジョブの完了時にPub/Subへメッセージを発行し、それをトリガーとして侵入テストのCloud Functionを起動させるのが、CI/CDに統合された最もスマートなイベント駆動アーキテクチャです。"
         }
       ]
     },
     {
       "id": 8,
-      "question": "【GKEからの安全なアウトバウンド通信（NAT）】\n外部IPを持たない（許可されていない）GKEクラスタから、インターネット上のサードパーティサービスへ安全にアクセスしたい。",
+      "question": "【本番デプロイのロールバック回数削減】\nエラーによる計画外のロールバックを減らすため、QAプロセスの改善に加えて、アーキテクチャやデプロイ手法のアプローチを変更したい。",
       "options": [
         {
-          "text": "Compute Engineインスタンスを作成しNATプロキシをインストールし、GKE上の全トラフィックを経由させる。",
+          "text": "リレーショナルデータベースをNoSQLデータベースで置き換える。",
           "isCorrect": false,
-          "explanation": "独自のNATプロキシの運用は管理オーバーヘッドが高く、単一障害点になるリスクがあります。"
+          "explanation": "データベースの種別変更はデータモデルの要件によるものであり、デプロイメントの安全性（ロールバック削減）の直接的な解決策ではありません。"
         },
         {
-          "text": "GKEクラスターをプライベートクラスターとして構成し、VPC上でプライベートGoogleアクセスを構成する。",
+          "text": "QA環境をカナリアリリースで置き換える。",
           "isCorrect": false,
-          "explanation": "プライベートGoogleアクセスはGCP内部サービスへのアクセス用であり、インターネット上のサードパーティAPIへのアクセスはできません。"
+          "explanation": "カナリアリリースは本番環境に対するデプロイ手法であり、QA環境自体を置き換える（なくす）ものではありません。"
         },
         {
-          "text": "GKEクラスタをルートベースのクラスタとして構成し、VPC上にプライベートGoogleアクセスを構成する。",
+          "text": "リレーショナルデータベースシステムへの依存度を低減する。",
           "isCorrect": false,
-          "explanation": "同様に、サードパーティへのインターネットアクセス要件を満たせません。"
+          "explanation": "これ自体はデプロイの安全性を高める具体的なアーキテクチャ・リリースモデルの変更になりません。"
         },
         {
-          "text": "GKEクラスターをプライベートクラスターとして設定し、クラスターのサブネットにCloud NAT Gatewayを設定する。",
+          "text": "グリーン・ブルーのデプロイモデルを導入し、モノリシックなプラットフォームをマイクロサービスに分割する。",
           "isCorrect": true,
-          "explanation": "パブリックIPを持たないプライベートGKEクラスタのノードがインターネットへアクセスするには、マネージドなCloud NATゲートウェイを配置するのが安全でスケーラブルなベストプラクティスです。"
+          "explanation": "Blue/Greenデプロイによりトラフィックの切り替えだけで安全にリリース・切り戻しが可能になり、マイクロサービス化により変更範囲（デプロイの爆発半径）を最小化できるため、ロールバックのリスクが激減します。"
         }
       ]
     },
     {
       "id": 9,
-      "question": "【時系列センサーデータの保存】\n50,000個のセンサーから毎秒10回の読み取り（タイムスタンプと値）を行う天気図データのパフォーマンスを最適化して保存したい。",
+      "question": "【Datastoreの新しいインデックスデプロイ】\nApp Engineアプリでエラーの原因となっているCloud Datastoreの不足インデックスを、作成したYAML設定ファイルから反映（デプロイ）したい。",
       "options": [
         {
-          "text": "Google Cloud Storageを使用する。",
+          "text": "App EngineのデフォルトのCloud Storageバケットに設定ファイルをアップロードして検出させる。",
           "isCorrect": false,
-          "explanation": "毎秒50万回の細かい書き込み（I/O）を直接Cloud Storageに対して行うのは適していません。"
+          "explanation": "バケットにアップロードするだけではインデックスは自動生成されません。"
         },
         {
-          "text": "Google Cloud SQLを使用する。",
+          "text": "組み込みのPythonモジュールでHTTPリクエストを作成し設定ファイルを送信する。",
           "isCorrect": false,
-          "explanation": "リレーショナルDBでは毎秒50万回の書き込みスループットを処理できません。"
+          "explanation": "コード内部から手動でインデックス設定を送信するのは一般的なデプロイ手順ではありません。"
         },
         {
-          "text": "Google BigQueryを使用する。",
+          "text": "Datastore Adminを使用して現在のインデックスを削除し、新しいファイルをアップロードする。",
           "isCorrect": false,
-          "explanation": "BigQueryへのストリーミングも可能ですが、高速なリアルタイムの書き込みと読み込み（Key-Valueアクセス）が両立する用途にはNoSQLが勝ります。"
+          "explanation": "既存の正常なインデックスまで削除してしまい、アプリケーションに障害をもたらします。"
         },
         {
-          "text": "Google Cloud Bigtableを使用する。",
+          "text": "設定ファイルを指定して `gcloud datastore create-indexes` コマンドを実行する。",
           "isCorrect": true,
-          "explanation": "Bigtableは高スループットの書き込みと時系列データ（タイムスタンプを持つデータ）のネイティブサポートを備えており、IoTや大量のセンサーデータ処理に最適なNoSQLです。"
+          "explanation": "ローカルの構成ファイル（index.yamlなど）に基づいて新しいインデックスのみを安全に追加生成するには、このgcloudコマンドを使用するのが正しい手順です。"
         }
       ]
     },
     {
       "id": 10,
+      "question": "【Pub/Subパブリッシングレイテンシ改善】\nアプリケーションからPub/Subへのメッセージ発行（パブリッシュ）時にタイムアウトや数分間の待機（レイテンシ）が発生するのを改善したい。",
+      "options": [
+        {
+          "text": "バックアップのPub/Subメッセージキューを作成する。",
+          "isCorrect": false,
+          "explanation": "キューを増やしても、クライアント側での発行時の送信遅延自体の解決にはなりません。"
+        },
+        {
+          "text": "サブスクライバーのプルモデルからプッシュモデルに移行する。",
+          "isCorrect": false,
+          "explanation": "これは「受信側（サブスクライバー）」の挙動の変更であり、「発行側（パブリッシャー）」のレイテンシ改善には寄与しません。"
+        },
+        {
+          "text": "Pub/Sub Total Timeoutのリトライ値を大きくする。",
+          "isCorrect": false,
+          "explanation": "タイムアウトエラーは減るかもしれませんが、レイテンシ（待機時間）自体はさらに長くなってしまいます。"
+        },
+        {
+          "text": "Pub/Subメッセージのバッチ処理をオフにする。",
+          "isCorrect": true,
+          "explanation": "パブリッシャーライブラリのバッチ処理（複数メッセージが溜まるか一定時間経つまで送信を待機する設定）を無効化することで、メッセージが即座にネットワークに送信され、パブリッシングのレイテンシを最小化できます。"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "【信頼性の高いタスクスケジューリング】\nGCEインスタンスで構成される分散システム上で、ネットワーク分断やVM停止に耐えうる信頼性の高いタスクスケジューリングを実装したい。",
+      "options": [
+        {
+          "text": "GKEのCronサービスを使用してPub/Subに発行し、GCEでサブスクライブする。",
+          "isCorrect": false,
+          "explanation": "スケジューリングのためだけにGKEクラスタを構築・運用するのはオーバーヘッドが大きすぎます。"
+        },
+        {
+          "text": "App EngineのCronを使って、GCE上の処理サービスに直接HTTPでメッセージを発行する。",
+          "isCorrect": false,
+          "explanation": "直接通信では、GCEインスタンスが停止していたりスケールアウトしている際の再送・分散処理が難しく、信頼性が低くなります。"
+        },
+        {
+          "text": "GKEのCronを使って、GCEサービスに直接発行する。",
+          "isCorrect": false,
+          "explanation": "上記と同様の理由で不適切です。"
+        },
+        {
+          "text": "App Engine（またはCloud Scheduler）のCronを使用してPub/Subトピックに発行し、GCE上の処理サービスでサブスクライブする。",
+          "isCorrect": true,
+          "explanation": "フルマネージドなスケジューラでタスクを起動し、Pub/Subの非同期キューイングを介してバックエンド（GCE）に渡すことで、VMの一時的な停止や増減に影響されない極めて信頼性の高いジョブ実行アーキテクチャになります。"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "【APIのバージョニング戦略】\n後方互換性のない大きな変更（改訂）を行うAPIにおいて、既存のクライアントコードを壊さずに安定性を確保したい。",
+      "options": [
+        {
+          "text": "現行APIにDEPRECATEDの接尾辞を付け、新APIに現在のバージョン番号を引き継ぐ。",
+          "isCorrect": false,
+          "explanation": "既存クライアントのリクエスト先が突然新しい互換性のない仕様に変わってしまうため、システムが破壊されます。"
+        },
+        {
+          "text": "古いAPIを置き換える1ヶ月前に、メーリングリストで変更をお知らせする。",
+          "isCorrect": false,
+          "explanation": "猶予期間を設けても、エンドポイントを直接上書きしてしまえば期日に一斉にシステム障害が発生するリスクがあります。"
+        },
+        {
+          "text": "APIドキュメントの自動生成プロセスを作成し、CI/CDで更新する。",
+          "isCorrect": false,
+          "explanation": "ドキュメントの更新は重要ですが、APIの挙動自体の後方互換性を保証する技術的な解決策ではありません。"
+        },
+        {
+          "text": "後方互換性のない変更ごとにバージョン番号を増加させるAPIのバージョン管理戦略を使用する。",
+          "isCorrect": true,
+          "explanation": "URIパス等にメジャーバージョン（v1, v2等）を含め、互換性を破る変更時はバージョンをインクリメントして別エンドポイントとして提供するのが、クライアントを保護するAPI設計のベストプラクティスです。"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "question": "【Cloud Shell環境でのユーティリティの永続化】\nCloud Shellにおいて、セッションが切れて再起動しても持続し、かつデフォルトの実行パスが通っている場所にカスタムツールを保存したい。",
+      "options": [
+        {
+          "text": "/google/scripts に保存する。",
+          "isCorrect": false,
+          "explanation": "このディレクトリはCloud Shellの永続ストレージ領域外であり、セッション終了時に破棄されます。"
+        },
+        {
+          "text": "/usr/local/bin に保存する。",
+          "isCorrect": false,
+          "explanation": "ルートファイルシステムへの変更は一時的なVMのライフサイクルに紐づくため、再起動すると消えてしまいます。"
+        },
+        {
+          "text": "Cloud Storage に保存する。",
+          "isCorrect": false,
+          "explanation": "永続化はされますが、毎回ダウンロードする手間がかかり、「デフォルトの実行パスにある」という要件を満たしません。"
+        },
+        {
+          "text": "ホームディレクトリ直下の ~/bin に保存する。",
+          "isCorrect": true,
+          "explanation": "Cloud Shellの `$HOME` ディレクトリはユーザー専用の永続ディスクとしてマウントされており再起動後も持続します。また `~/bin` はデフォルトでPATHに含まれているため最適です。"
+        }
+      ]
+    },
+    {
+      "id": 14,
       "question": "【CI/CDでのテストとデプロイの連動】\nリポジトリへの変更を自動でビルド・テストし、成功した検証済みのコンテナイメージのみを開発環境に自動デプロイしたい。",
       "options": [
         {
@@ -4221,136 +4117,6 @@ const allQuizData = {
           "text": "Cloud Buildトリガーを作成しコードテストとイメージ保存を行い、新イメージを監視するデプロイメントパイプラインを作成し、専用ツールのみにデプロイ権限を与える。",
           "isCorrect": true,
           "explanation": "ビルド処理（CI）とデプロイ処理（CD）を明確なパイプラインとして分離し、専用のデプロイメントツールにのみデプロイ権限を持たせるのが、DevSecOpsのベストプラクティスです。"
-        }
-      ]
-    },
-    {
-      "id": 11,
-      "question": "【グローバルなKubernetes Ingressの構成】\nus-central1にあるGKEクラスタのWeb APIを、アジアのユーザーにも低遅延で提供するためマルチリージョンへ拡張したい。",
-      "options": [
-        {
-          "text": "クラスタ内のアプリケーションに割り当てるメモリとCPUを増やす。",
-          "isCorrect": false,
-          "explanation": "リソースを増やしても、地理的な物理距離によるネットワーク遅延（レイテンシ）は解決しません。"
-        },
-        {
-          "text": "クラウドCDNを有効にしたグローバルHTTPロードバランサーを使用する。",
-          "isCorrect": false,
-          "explanation": "CDNは静的コンテンツのキャッシュに有効ですが、API（動的データ）のレイテンシ改善には、ユーザーに近いリージョンでコンピュートを動かす必要があります。"
-        },
-        {
-          "text": "第2のGKEクラスターを作成し、LoadBalancerタイプのサービスを使用してパブリックIPをDNSゾーンに追加する。",
-          "isCorrect": false,
-          "explanation": "個別のLBとDNS設定では、単一のエニーキャストIPで最適なリージョンへルーティングするグローバルLBの利点を活かせません。"
-        },
-        {
-          "text": "asia-southeast1に第2のGKEクラスターを作成し、kubemci（またはAnthos Ingress）を使用してグローバルHTTP(S)ロードバランサーを作成する。",
-          "isCorrect": true,
-          "explanation": "ユーザーに近い別リージョンにクラスタをデプロイし、マルチクラスタIngressを利用してグローバルロードバランサで束ねることで、単一IPでユーザーを最寄りのクラスタへルーティングし遅延を最小化できます。"
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "question": "【マイクロサービス障害のシミュレーション】\nGKE上で動作するアプリケーションにおいて、特定のマイクロサービスが突然クラッシュした際のレジリエンス動作を検証したい。",
-      "options": [
-        {
-          "text": "挙動を観察するために、Kubernetesクラスタのノードの1つを破壊する。",
-          "isCorrect": false,
-          "explanation": "ノード全体の破壊はインフラ障害テストであり、アプリケーションレイヤーの特定の「マイクロサービスのクラッシュ」を正確にシミュレートできません。"
-        },
-        {
-          "text": "Kubernetesクラスタのノードにtaintを追加し、アンチアフィニティラベルを設定する。",
-          "isCorrect": false,
-          "explanation": "スケジューリングの制御機能であり、障害シミュレーションの手法ではありません。"
-        },
-        {
-          "text": "Istioのトラフィック管理機能を使って、クラッシュしたマイクロサービスからトラフィックを誘導する。",
-          "isCorrect": false,
-          "explanation": "障害時の回避策の設定であり、障害自体を人工的に発生（シミュレート）させる機能ではありません。"
-        },
-        {
-          "text": "Istioのフォールト・インジェクション機能を、不具合のある動作をシミュレートしたい特定のマイクロサービスに使用する。",
-          "isCorrect": true,
-          "explanation": "サービスメッシュ（Istio/Anthos）のフォールトインジェクション機能を利用することで、コードを変更せずに意図的な遅延やHTTPエラー（クラッシュ）を挿入し、安全に障害テスト（カオスエンジニアリング）を実施できます。"
-        }
-      ]
-    },
-    {
-      "id": 13,
-      "question": "【Firewall Insightsのログ欠落解決】\nNetwork Intelligence CenterのFirewall Insightsダッシュボードで、ルールの効率を評価したいが表示されるログ行がない問題を解決したい。",
-      "options": [
-        {
-          "text": "ユーザーアカウントにcompute.networkAdminのIAMロールが割り当てられていることを確認する。",
-          "isCorrect": false,
-          "explanation": "権限があっても、ログ自体の取得機能がオンになっていなければインサイトは生成されません。"
-        },
-        {
-          "text": "Google Cloud SDKをインストールし、コマンドライン出力にFirewallのログがないことを確認する。",
-          "isCorrect": false,
-          "explanation": "表示されない原因の調査にはならず、問題解決の手段として不適切です。"
-        },
-        {
-          "text": "Virtual Private Cloud（VPC）のフローロギングを有効にする。",
-          "isCorrect": false,
-          "explanation": "フローログはサブネット全体のトラフィック記録用であり、ファイアウォールルール個別のインサイト分析には専用のロギングが必要です。"
-        },
-        {
-          "text": "監視したいファイアーウォールルールの「ファイアーウォールルールロギング」を有効にする。",
-          "isCorrect": true,
-          "explanation": "Firewall Insightsがメトリクスと分析情報を生成するためには、大前提として各VPCファイアウォールルールのロギング機能が有効になっている必要があるためです。"
-        }
-      ]
-    },
-    {
-      "id": 14,
-      "question": "【大量センサーデータのメタ情報結合】\n1000の会議室から毎秒送られるモーションセンサーデータ（非構造化データ）とアカウント情報を紐付けて追跡・分析したい。",
-      "options": [
-        {
-          "text": "リレーショナルデータベースを使用する。",
-          "isCorrect": false,
-          "explanation": "高速かつ連続的に生成される非構造・半構造のセンサーデータにはRDBMSはスループットやスキーマの観点で不向きです。"
-        },
-        {
-          "text": "フラットファイルを使用する。",
-          "isCorrect": false,
-          "explanation": "ファイル出力ではメタ情報との結合や即座のクエリ分析ができません。"
-        },
-        {
-          "text": "Blobストアを使用する。",
-          "isCorrect": false,
-          "explanation": "Blobストア（Cloud Storage等）は保存には適していますが、他のデータと紐付けて即時検索する用途には適していません。"
-        },
-        {
-          "text": "NoSQLデータベースを使用する。",
-          "isCorrect": true,
-          "explanation": "連続生成される大量のセンサーデータ（非構造化データ）の書き込みスループット要件を満たしつつ、柔軟なスキーマで関連情報を保存・分析するにはNoSQLデータベースが最適解となります。"
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "question": "【Cloud Storageアップロードの整合性確認】\nCloud Storageへアップロードした重要ファイルがオンプレミスのものと同一であることを、コストと労力を最小限に抑えて確認したい。",
-      "options": [
-        {
-          "text": "アップロード後、ダウンロードしてLinux diffで比較する。",
-          "isCorrect": false,
-          "explanation": "再度ダウンロードする通信コストと時間がかかり、「最小限に抑える」要件に反します。"
-        },
-        {
-          "text": "Linux shasumで計算後アップロードし、ダウンロードしてshasumで比較する。",
-          "isCorrect": false,
-          "explanation": "同様に、ダウンロードによる通信オーバーヘッドが大きく非効率です。"
-        },
-        {
-          "text": "アップロード後、CRC32Cハッシュを計算するカスタムJavaアプリケーションを開発し、gsutil ls -L と比較する。",
-          "isCorrect": false,
-          "explanation": "`gsutil` に組み込まれているハッシュ計算機能を活用せず、自前でアプリを開発するのは労力がかかりすぎます。"
-        },
-        {
-          "text": "gsutil -m でアップロード後、gsutil hash -c でローカルのハッシュを取得し gsutil ls -L の出力と比較する。",
-          "isCorrect": true,
-          "explanation": "ダウンロードし直すことなく、ローカルのツールで計算したハッシュ値と、Cloud Storage上のメタデータとして保持されているハッシュ値を直接比較することで、最小限の通信コストと労力でデータの整合性を確認できます。"
         }
       ]
     }
